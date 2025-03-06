@@ -108,7 +108,7 @@ def write_json():
                     "real_estate": values[20]
                 },
                 "earnings": {
-                    "total": -70,
+                    "total": values[22] + values[23] + values[24],
                     "operating_income": values[22],
                     "financial": values[23],
                     "real_estate": values[24]
