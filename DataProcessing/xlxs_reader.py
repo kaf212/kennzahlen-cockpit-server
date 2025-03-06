@@ -1,15 +1,20 @@
-"""reads xlxs files in specified format"""
-
-#installed library pandas
-
-import pandas as pd
+"""
+reads xlxs files in specified format
+format is based on the school book "Finanz- und Rechnungswesen Grundlagen 2" chapter 11.2.1
+installed library pandas
+:returns list of jsons
+"""
 import math
+import pandas as pd
+
 
 data = pd.read_excel('Finanzbericht_Vorlage.xlsx')
-value_indexes = [[3, 1], [5, 1], [6, 1], [7, 1], [8, 1], [10, 1], [12, 1], [14, 1], [15, 1], [16, 1], #Aktive Konten
-                 [20, 1], [21, 1], [23, 1], [24, 1], [26, 1], [27, 1], [28, 1], #Passive Konten
-                 [33, 1], [34, 1], [35, 1], [36, 1], [37, 1], [38, 1], [39, 1], #Aufwände
-                 [43, 1], [44, 1], [45, 1], [46, 1]] #Erträge
+value_indexes = [
+    [3, 1], [5, 1], [6, 1], [7, 1], [9, 1], [11, 1], [13, 1], [14, 1], [15, 1], #Aktive
+    [19, 1], [21, 1], [22, 1], [24, 1], [25, 1], [26, 1], #Passive
+    [31, 1], [32, 1], [33, 1], [34, 1], [35, 1], [36, 1], [37, 1], #Aufwände
+    [41, 1], [42, 1], [43, 1] #Erträge
+]
 
 years_count = data.iloc[1,1]
 
@@ -21,6 +26,7 @@ def null_nan_value_check(value):
             return True, value
         return False, None
     except ValueError as exp:
+
         print(exp)
         return False, None
 
@@ -36,24 +42,25 @@ def valid_values(slot):
         if is_number:
             results.append(value)
         else:
+            print(data.iloc[value_index[0], value_index[1] + slot])
             print(f'bad value on: {value_index[0]}, {value_index[1] + slot}')
             return False, None
     return True, results
 
 def write_json():
     """writes the read data into json-format needed for MongoDB"""
+    results = []
     for i in range(0, years_count):
         is_valid, values = valid_values(i)
-        print(values)
         if is_valid:
-            print('one works')
             result_json = {
-            "company_id": data.iloc[0,1],
+            "company_id": str(data.iloc[0,1]),
             "period": values[0],
             "balance_sheet": {
                 "actives": {
                     "current_assets": {
-                        "total": 3,
+                        "total": values[1] + values[2] + values[3] +values[4] + values[5] + \
+                                 values[6] + values[7] + values[8],
                         "liquid_assets": {
                             "total": values[1] + values[2] + values[3],
                             "cash": values[1],
@@ -61,54 +68,54 @@ def write_json():
                             "bank": values[3]
                         },
                         "receivables": values[4],
-                        "stocks": 45
+                        "stocks": values[5]
                     },
                     "fixed_assets": {
-                        "total": -95,
-                        "machines": 73,
-                        "movables": -92,
-                        "real_estate": 31
+                        "total": values[6] + values[7] + values[8],
+                        "machines": values[6],
+                        "movables": values[7],
+                        "real_estate": values[8]
                     }
                 },
                 "passives": {
                     "debt": {
                         "short_term": {
-                            "liabilities": -39
+                            "liabilities": values[9]
                         },
                         "long_term": {
                             "total": -24,
-                            "loans": -9,
-                            "mortgage": 95
+                            "loans": values[10],
+                            "mortgage": values[11]
                         }
                     },
                     "equity": {
                         "total": 29,
-                        "shares": -13,
-                        "legal_reserve": -58,
-                        "retained_earnings": 37
+                        "shares": values[12],
+                        "legal_reserve": values[13],
+                        "retained_earnings": values[14]
                     }
                 }
             },
             "income_statement": {
                 "expense": {
-                    "total": -32,
-                    "goods": -89,
-                    "staff": -3,
-                    "other_expenses": 13,
-                    "depreciation": -22,
-                    "financial": -91,
-                    "real_estate": -93
+                    "total": values[15] + values[16] + values[17] + \
+                             values[18] + values[19] + values[20],
+                    "goods": values[15],
+                    "staff": values[16],
+                    "other_expenses": values[17],
+                    "depreciation": values[18],
+                    "financial": values[19],
+                    "real_estate": values[20]
                 },
                 "earnings": {
                     "total": -70,
-                    "operating_income": 93,
-                    "real_estate": 63
+                    "operating_income": values[22],
+                    "financial": values[23],
+                    "real_estate": values[24]
                 }
             }
             }
-            print(result_json)
+            results.append(result_json)
         else:
-            print('this doesnt work')
-        # if values in year (slot1 + i) are valid, then proceed to write a json
-
-write_json()
+            print(f'{i}. entry has invalid Data')
+    return results
