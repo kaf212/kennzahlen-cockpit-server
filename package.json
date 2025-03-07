@@ -18,6 +18,7 @@
   "homepage": "https://github.com/kaf212/kennzahlen-cockpit-server#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "mongoose": "^8.12.1"
   }
 }
