@@ -91,12 +91,19 @@ async function seedReportCollection() {
 
 async function seedRoleCollection() {
     const documentCount = await Role.countDocuments()
-    if (documentCount === 0) {
-        const testRole = new Role({
-            name: "testRole",
-            password: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+    if (documentCount !== 2) {
+        await Role.deleteMany({}) // delete all documents
+
+        const adminRole = new Role({
+            name: "Admin",
+            password: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
         })
-        await testRole.save()
+        const standardRole = new Role({
+            name: "Standard",
+            password: "fe6d3468cf5c74d8ec2a95b40f2e05338c37a4202f8fad692d2b64a9cf9b468a"
+        })
+        await adminRole.save()
+        await standardRole.save()
         console.log('seeded collection "role"')
     }
 
