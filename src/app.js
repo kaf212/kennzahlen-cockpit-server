@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const connectDB = require("../scripts/db")
+const seedDB = require("../scripts/seedDB")
 
 
 const app = express()
@@ -16,5 +17,7 @@ app.use((err, req, res, next) => {
 connectDB().then(r => {
     console.log(r)
 })
+
+seedDB()
 
 module.exports = app

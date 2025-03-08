@@ -1,3 +1,6 @@
+const mongoose = require("mongoose")
+
+
 // mongoose schemas translated from the original ERD JSON schema by ChatGPT:
 // https://chatgpt.com/share/67cb33d1-8f8c-8011-904d-5dfaff431d58
 
@@ -80,10 +83,6 @@ const incomeStatementSchema = new mongoose.Schema({
 
 // **** Main report schema ****
 const reportSchema = new mongoose.Schema({
-    _id: {
-        type: String,
-        match: /^[a-fA-F0-9]{24}$/, // Match for MongoDB ObjectId string format
-    },
     company_id: { type: String },
     period: { type: String },
     balance_sheet: {
@@ -94,6 +93,6 @@ const reportSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-const Report = mongoose.model('Report', reportSchema);
+const Report = mongoose.model('Report', reportSchema, "report");
 
 module.exports = Report;
