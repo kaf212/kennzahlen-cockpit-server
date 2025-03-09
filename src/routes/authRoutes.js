@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const express = require("express")
 const authenticateUser = require("../auth/auth")
-const authenticateToken = require("../middleware/tokenAuth")
+const {authenticateToken, authenticateAdmin} = require("../middleware/tokenAuth")
 
 const router = express.Router()
 router.use(express.json())
@@ -27,7 +27,11 @@ router.post("/login", (req, res)=>{
 })
 
 router.get("/protected", authenticateToken, (req, res)=>{
-    res.json("Access granted to protected route")
+    res.json(`Access granted to protected route ${req.jwtPayload.role}`)
+})
+
+router.get("/admin", authenticateAdmin, (req, res)=>{
+    res.json(`Access granted to protected route ${req.jwtPayload.role}`)
 })
 
 module.exports = router
