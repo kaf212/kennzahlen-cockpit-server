@@ -1,4 +1,7 @@
 const bcrypt = require('bcrypt')
+const jwt = require("jsonwebtoken");
+
+const secretKey = process.env.SECRET_KEY
 
 
 const dummyDB = [
@@ -8,16 +11,29 @@ const dummyDB = [
     // Salt generation in async will cause error
 ]
 
-function authenticateUser(role, password) {
+function authenticateUser(res, role, password) {
+    /*
+    * Gets called for each login request and returns a JWT upon successful verification of the credentials
+    * :param: res (object):     http-response
+    * :param: role (str):       Name of the role
+    * :param: password (str):   Password for the role
+    *
+    * :return: http-response
+    */
     const foundRole = dummyDB.find((r) => r.name === role);
 
-    if (!foundRole) {
-        console.error(`Role not found: ${role}`)
+    if (foundRole) {
+        // Hash and compare the provided password with the hash value in the database
+        // Source: https://dev.to/jaimaldullat/a-step-by-step-guide-to-creating-a-restful-api-using-nodejs-and-express-including-crud-operations-and-authentication-2mo2
+        if (bcrypt.compareSync(password, foundRole.password)) {
+            const token = jwt.sign({role: foundRole.name}, secretKey, {
+                expiresIn: '1h'
+            });
+            return res.json({"token": token})
+        }
     }
-    // source: https://dev.to/jaimaldullat/a-step-by-step-guide-to-creating-a-restful-api-using-nodejs-and-express-including-crud-operations-and-authentication-2mo2
-    if (bcrypt.compareSync(password, foundRole.password)) {
-        return foundRole
-    }
+    // For security reasons, error messages will not inform the user if the password or the role is incorrect.
+    return res.status(401).json({ error: 'Authentication failed: Incorrect password or role' })
 }
 
 module.exports = authenticateUser
