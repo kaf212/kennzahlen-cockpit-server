@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const express = require("express")
 const authenticateUser = require("../auth/auth")
+const authenticateToken = require("../middleware/tokenAuth")
 
 const router = express.Router()
 router.use(express.json())
@@ -23,6 +24,10 @@ router.post("/login", (req, res)=>{
     });
 
     res.json(token)
+})
+
+router.get("/protected", authenticateToken, (req, res)=>{
+    res.json("Access granted to protected route")
 })
 
 module.exports = router
