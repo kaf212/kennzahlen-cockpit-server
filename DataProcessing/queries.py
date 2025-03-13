@@ -7,38 +7,42 @@ package installed, pymongo
 import xlxs_reader as xlxsr
 import pymongo
 
-request = {"data": 123, "brand": "string"}
 
-def initial_query(*args, **kwargs):
+def equity_ratio(request):
     """
-
-    :return:
-    """
-
-    def wrapper(func):
-        brand = request["brand"]
-        #help, what am i doing???
-        # aka work in progress
-
-        myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-        mydb = myclient["mydatabase"]
-        mycol = mydb["entries"]
-
-        myquery = {"company_id": brand}
-        data = mycol.find(myquery)
-        return func(data)
-
-    return wrapper
-
-
-@initial_query(request)
-def eigenfinanzierungsgrad(data):
-    """
-
     :param data:
     :return:
     """
-    pass
+    '''
+    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+    mydb = myclient["mydatabase"]
+    mycol = mydb["entries"]
+
+    myquery = {"company_id": request['company_id']}
+    data = mycol.find(myquery)
+    '''
+
+    result = {
+        "company_id": request['company_id'],
+        "equity_ratios": []
+    }
+    data = xlxsr.write_json()
+
+    for data_set in data:
+        if data_set:
+            equity = data_set["balance_sheet"]["passives"]["equity"]["total"]
+            current_assets_total = data_set["balance_sheet"]["actives"]["current_assets"]["total"]
+            fixed_assets_total = data_set["balance_sheet"]["actives"]["fixed_assets"]["total"]
+
+            key_figure = equity / (current_assets_total + fixed_assets_total)
+
+            result["equity_ratios"].append({
+                "period" : data_set["period"],
+                "key_figure" : key_figure
+            })
+
+    #return mock data results
+    return result
 
 #Fremdfinanzierungsgrad
 #Selbstfinanzierungsgrad
@@ -52,3 +56,13 @@ def eigenfinanzierungsgrad(data):
 #Eigenkapitalrendite
 #Gesamtkapitalrendite
 #Umsatzrendite
+
+def main():
+    """
+    main
+    :return:
+    """
+    print( equity_ratio({"company_id":"example"}) )
+
+if __name__ == "__main__":
+    main()

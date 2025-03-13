@@ -59,8 +59,7 @@ def write_json():
             "balance_sheet": {
                 "actives": {
                     "current_assets": {
-                        "total": values[1] + values[2] + values[3] +values[4] + values[5] + \
-                                 values[6] + values[7] + values[8],
+                        "total": values[1] + values[2] + values[3] +values[4] + values[5],
                         "liquid_assets": {
                             "total": values[1] + values[2] + values[3],
                             "cash": values[1],
@@ -83,13 +82,13 @@ def write_json():
                             "liabilities": values[9]
                         },
                         "long_term": {
-                            "total": -24,
+                            "total": values[10] + values[11],
                             "loans": values[10],
                             "mortgage": values[11]
                         }
                     },
                     "equity": {
-                        "total": 29,
+                        "total": values[12] + values[13] + values[14],
                         "shares": values[12],
                         "legal_reserve": values[13],
                         "retained_earnings": values[14]
