@@ -80,13 +80,10 @@ describe("Tests for report collection", ()=>{
         expect(foundDocument[0].company_id).toEqual("12345")
     })
 
-    // add additional test cases for report collection here
 })
 
 describe("Tests for company collection", ()=>{
-    // add test cases for company collection here
 })
 
 describe("Tests for role collection", ()=>{
-    // add test cases for role collection here
 })

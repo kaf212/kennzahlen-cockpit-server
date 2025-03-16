@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const Report = require("../../models/Report");
-const Company = require("../../models/Company");
-const Role = require("../../models/Role");
+const Report = require("../models/Report.js");
+const Company = require("../models/Company.js");
+const Role = require("../models/Role.js");
 
 beforeAll(async () => {
     await mongoose.connect("mongodb://localhost:27017/kennzahlen");
@@ -49,6 +49,7 @@ describe("Tests for reports", () => {
             await Report.create({ company_id: "12345" });
         } catch (error) {
             expect(error).toBeDefined();
+            console.log("period darf nicht leer sein")
         }
     });
 
@@ -57,6 +58,7 @@ describe("Tests for reports", () => {
             await Report.create({ company_id: "11111", period: "2025-Q1", balance: -120 });
         } catch (error) {
             expect(error).toBeDefined();
+            console.log("Wert darf nicht Negativ sein")
         }
     });
 });
@@ -64,32 +66,37 @@ describe("Tests for reports", () => {
 describe("Tests for companies", () => {
 
     it("Erstellen eines neuen Unternehmens", async () => {
-        const company = new Company({ id: "00123", name: "Kennzahlen AG" });
+        const company = new Company({ name: "Kennzahlen AG" });
         await company.save();
 
-        const c = await Company.findOne({ id: "00123" });
+        const c = await Company.findOne({ name: "Kennzahlen AG" });
         expect(c).not.toBeNull();
         expect(c.name).toEqual("Kennzahlen AG");
     });
 
     it("Löschen eines Unternehmens", async () => {
-        await Company.deleteOne({ id: "00123" });
-        const dc = await Company.findOne({ id: "00123" });
-        expect(dc).toBeNull();
+        await new Company({ name: "Kennzahlen12" }).save();
+        await Company.deleteOne({ name: "Kennzahlen12" });
+        const dr = await Company.findOne({ name: "Kennzahlen12" });
+        expect(dr).toBeNull();
     });
 
+
     it("Aktualisieren des Unternehmensnamens", async () => {
-        await Company.updateOne({ id: "00123" }, { $set: { name: "Kennzahlen 2 AG" } });
-        const uc = await Company.findOne({ id: "00123" });
+        await new Company({ name: "Kennzahlen AG" }).save();
+        await Company.updateOne({ name: "Kennzahlen AG" }, { $set: { name: "Kennzahlen 2 AG" } });
+        const uc = await Company.findOne({ name: "Kennzahlen 2 AG" });
         expect(uc).not.toBeNull();
         expect(uc.name).toEqual("Kennzahlen 2 AG");
     });
 
+
     it("Erstellen eines Unternehmens ohne Namen", async () => {
         try {
-            await Company.create({ id: "00124", name: null });
+            await Company.create({name: null });
         } catch (error) {
             expect(error).toBeDefined();
+            console.log("Name darf nicht leer sein")
         }
     });
 });
@@ -97,32 +104,35 @@ describe("Tests for companies", () => {
 describe("Tests for roles", () => {
 
     it("Erstellen einer neuen Rolle", async () => {
-        const role = new Role({ id: "admin", name: "laib", password: "12345" });
+        const role = new Role({ name: "laib", password: "12345" });
         await role.save();
 
-        const r = await Role.findOne({ id: "admin" });
+        const r = await Role.findOne({ name: "laib" });
         expect(r).not.toBeNull();
         expect(r.name).toEqual("laib");
     });
 
     it("Löschen einer Rolle", async () => {
-        await Role.deleteOne({ id: "admin" });
-        const dr = await Role.findOne({ id: "admin" });
+        await new Role({ name: "admins", password: "admin123" }).save();
+        await Role.deleteOne({ name: "admins" });
+        const dr = await Role.findOne({ name: "admins" });
         expect(dr).toBeNull();
     });
 
     it("Aktualisieren des Rollennamens", async () => {
-        await Role.updateOne({ id: "admin" }, { $set: { name: "Neuer Admin" } });
-        const ur = await Role.findOne({ id: "admin" });
-        expect(ur).not.toBeNull();
-        expect(ur.name).toEqual("Neuer Admin");
+        await new Role({ name: "admin" }).save();
+        await Role.updateOne({ name: "admin" }, { $set: { name: "admin 121" } });
+        const uc = await Role.findOne({ name: "admin 121" });
+        expect(uc).not.toBeNull();
+        expect(uc.name).toEqual("admin 121");
     });
 
     it("Erstellen einer Rolle ohne Namen", async () => {
         try {
-            await Role.create({ id: "editor", name: null, password: "12345" });
+            await Role.create({name: null, password: "12345" });
         } catch (error) {
             expect(error).toBeDefined();
+            console.log("Name darf nicht leer sein")
         }
     });
 });
