@@ -10,10 +10,11 @@ import pandas as pd
 
 data = pd.read_excel('Finanzbericht_Vorlage.xlsx')
 value_indexes = [
-    [3, 1], [5, 1], [6, 1], [7, 1], [9, 1], [11, 1], [13, 1], [14, 1], [15, 1], #Aktive
+    [3, 1],
+    [5, 1], [6, 1], [7, 1], [9, 1], [11, 1], [13, 1], [14, 1], [15, 1], #Aktive
     [19, 1], [21, 1], [22, 1], [24, 1], [25, 1], [26, 1], #Passive
-    [31, 1], [32, 1], [33, 1], [34, 1], [35, 1], [36, 1], [37, 1], #Aufwände
-    [41, 1], [42, 1], [43, 1] #Erträge
+    [31, 1], [32, 1], [33, 1], [34, 1], [35, 1], [36, 1], #Aufwände
+    [40, 1], [41, 1], [42, 1] #Erträge
 ]
 
 years_count = data.iloc[1,1]
@@ -107,10 +108,10 @@ def write_json():
                     "real_estate": values[20]
                 },
                 "earnings": {
-                    "total": values[22] + values[23] + values[24],
-                    "operating_income": values[22],
+                    "total": values[21] + values[22] + values[23],
+                    "operating_income": values[21],
                     "financial": values[23],
-                    "real_estate": values[24]
+                    "real_estate": values[22]
                 }
             }
             }
