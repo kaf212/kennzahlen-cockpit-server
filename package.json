@@ -1,0 +1,25 @@
+{
+  "name": "kennzahlen-cockpit-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaf212/kennzahlen-cockpit-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaf212/kennzahlen-cockpit-server/issues"
+  },
+  "homepage": "https://github.com/kaf212/kennzahlen-cockpit-server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jest": "^29.7.0",
+    "mongoose": "^8.12.1"
+  }
+}
