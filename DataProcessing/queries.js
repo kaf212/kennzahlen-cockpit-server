@@ -1,6 +1,5 @@
 const {MongoClient} = require('mongodb');
 
-
 async function EquityRatio(request) {
     try {
         const uri = "mongodb://localhost:27017/";
