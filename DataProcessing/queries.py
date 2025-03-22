@@ -4,7 +4,7 @@ A collection of functions for the key figures, uses the Json called from the DB.
 
 package installed, pymongo
 """
-import xlxs_reader as xlxsr
+import xlsx_reader as xlxsr
 import pymongo
 
 
@@ -26,7 +26,7 @@ def equity_ratio(request):
         "company_id": request['company_id'],
         "equity_ratios": []
     }
-    data = xlxsr.write_json()
+    data = xlxsr.main()
 
     for data_set in data:
         if data_set:
@@ -62,7 +62,7 @@ def debt_ratio(request):
         "company_id": request['company_id'],
         "debt_ratio": []
     }
-    data = xlxsr.write_json()
+    data = xlxsr.main()
 
     for data_set in data:
         if data_set:
@@ -99,7 +99,7 @@ def self_finanzing_ratio(request):
         "company_id": request['company_id'],
         "self_finanzing_ratio": []
     }
-    data = xlxsr.write_json()
+    data = xlxsr.main()
 
     for data_set in data:
         if data_set:
@@ -135,7 +135,7 @@ def working_capital_intensity(request):
         "company_id": request['company_id'],
         "working_capital_intensity": []
     }
-    data = xlxsr.write_json()
+    data = xlxsr.main()
 
     for data_set in data:
         if data_set:
@@ -171,7 +171,7 @@ def fixed_asset_intensity(request):
         "company_id": request['company_id'],
         "fixed_asset_intensity": []
     }
-    data = xlxsr.write_json()
+    data = xlxsr.main()
 
     for data_set in data:
         if data_set:
