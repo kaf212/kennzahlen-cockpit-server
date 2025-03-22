@@ -3,6 +3,8 @@ const Report = require("../models/Report.js");
 const Company = require("../models/Company.js");
 const Role = require("../models/Role.js");
 
+///Create own branch
+
 beforeAll(async () => {
     await mongoose.connect("mongodb://localhost:27017/kennzahlen");
 });
