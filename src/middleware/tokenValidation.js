@@ -4,7 +4,7 @@ const express = require("express")
 const secretKey = process.env.SECRET_KEY
 
 
-function validateToken(req) {
+function validateToken(req, res) {
     /*
     * Reads a JWT from the header of a provided http-request and validates the token.
     * Source: https://dev.to/jaimaldullat/a-step-by-step-guide-to-creating-a-restful-api-using-nodejs-and-express-including-crud-operations-and-authentication-2mo2
@@ -14,19 +14,22 @@ function validateToken(req) {
     * :return: http-response (object)
     */
 
-    const token = req.header('Authorization')
 
-    if (!token) {
-        return res.status(401).json({ error: 'Authentication token missing' })
+    const authHeader = req.header('Authorization');
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: 'Authentication token missing or malformed' });
     }
-    let jwtPayload = undefined
-    jwt.verify(token, secretKey, (err, payload) => {
-        if (err) {
-            return res.status(403).json({ error: 'Token is invalid'})
-        }
-        jwtPayload = payload
-    });
-    return jwtPayload
+
+    /*
+    Prevent jwtPayload from being undefined
+    Bug found by ChatGPT (https://chatgpt.com/share/67e01958-bc68-8011-8db0-16deafd5fd7b)
+     */
+    try {
+        const payload = jwt.verify(token, secretKey);
+        return payload;
+    } catch (err) {
+        return res.status(403).json({ error: 'Token is invalid' });
+    }
 }
 
 function authenticateToken(req, res, next) {
@@ -38,7 +41,13 @@ function authenticateToken(req, res, next) {
     *
     * :return: void
     */
-    req.jwtPayload = validateToken(req)
+
+
+    const payload = validateToken(req, res);
+    if (!payload.role) return; // Stops execution if token is invalid
+    // Bug found by ChatGPT (https://chatgpt.com/share/67e01958-bc68-8011-8db0-16deafd5fd7b)
+
+    req.jwtPayload = payload
     next()
 }
 
@@ -53,7 +62,7 @@ function authenticateAdmin(req, res, next) {
     */
     const jwtPayload = validateToken(req)
     if (jwtPayload.role !== "Admin") {
-        res.status(401).json("Authentication failed: admin privileges required")
+        return res.status(401).json("Authentication failed: admin privileges required")
     }
     else {
         req.jwtPayload = jwtPayload
