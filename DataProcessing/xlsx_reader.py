@@ -8,8 +8,8 @@ import math
 import pandas as pd
 
 
-def main():
-    data = pd.read_excel('Finanzbericht_Vorlage.xlsx')
+def main(filepath):
+    data = pd.read_excel(filepath)
     value_indexes = [
         [3, 1],
         [5, 1], [6, 1], [7, 1], [9, 1], [11, 1], [13, 1], [14, 1], [15, 1],  # Aktive
@@ -129,4 +129,4 @@ def write_json(data, years_count, value_indexes):
 
 
 if __name__ == '__main__':
-    main()
+    print(main("./Finanzbericht_Vorlage.xlsx"))
