@@ -9,6 +9,13 @@ import pandas as pd
 
 
 def main(filepath):
+    """
+    this runs the whole script.
+    Reads the excel file and returns the results as list of json
+    on bad entries it returns "report contains invalid data"
+    :param filepath:
+    :return: list of json
+    """
     data = pd.read_excel(filepath)
     value_indexes = [
         [3, 1],
@@ -46,7 +53,7 @@ def valid_values(slot, data, years_count, value_indexes):
     for value_index in value_indexes:
         val = data.iloc[value_index[0], value_index[1] + slot]
         is_number, value = null_nan_value_check(val)
-        if is_number:
+        if is_number and value >= 0:
             results.append(value)
         else:
             print(data.iloc[value_index[0], value_index[1] + slot])
@@ -125,7 +132,7 @@ def write_json(data, years_count, value_indexes):
             results.append(result_json)
         else:
             # Enables the backend and unit tests to know if invalid reports were excluded from data processing
-            results.append(f"report contains invalid data")
+            results.append("report contains invalid data")
             print(f'{i}. entry has invalid Data')
     return results
 
