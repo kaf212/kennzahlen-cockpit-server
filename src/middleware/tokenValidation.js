@@ -15,11 +15,12 @@ function validateToken(req, res) {
     */
 
 
-    const token = req.header('Authorization');
+    let token = req.header('Authorization');
 
     if (!token || !token.startsWith("Bearer ")) {
         return res.status(401).json({ error: 'Authentication token missing or malformed' });
     }
+    token = token.replace("Bearer ", "") // remove string "Bearer" from the token
 
     /*
     Prevent jwtPayload from being undefined
