@@ -16,17 +16,17 @@ afterAll(async () => {
 describe("Tests for reports", () => {
 
     it("Einfügen eines Reports in die Datenbank", async () => {
-        const report = new Report({ company_id: "12345", period: "2025-Q1" });
+        const report = new Report({ company_id: "12345", period: 2025 });
         await report.save();
 
         const r = await Report.findOne({ company_id: "12345" });
         expect(r).not.toBeNull();
         expect(r.company_id).toEqual("12345");
-        expect(r.period).toEqual("2025-Q1");
+        expect(r.period).toEqual(2025);
     });
 
     it("Löschen eines Reports aus der Datenbank", async () => {
-        const report = new Report({ company_id: "54321", period: "2025-Q2" });
+        const report = new Report({ company_id: "54321", period: 2025 });
         await report.save();
 
         await Report.deleteOne({ company_id: "54321" });
@@ -36,14 +36,14 @@ describe("Tests for reports", () => {
     });
 
     it("Ändern eines bestehenden Reports", async () => {
-        const report = new Report({ company_id: "67890", period: "2025-Q3" });
+        const report = new Report({ company_id: "67890", period: 2025 });
         await report.save();
 
-        await Report.updateOne({ company_id: "67890" }, { $set: { period: "2026-Q1" } });
+        await Report.updateOne({ company_id: "67890" }, { $set: { period: 2026 } });
 
         const ur = await Report.findOne({ company_id: "67890" });
         expect(ur).not.toBeNull();
-        expect(ur.period).toEqual("2026-Q1");
+        expect(ur.period).toEqual(2026);
     });
 
     it("Änderung eines Reports mit fehlendem Pflichtfeld", async () => {
@@ -57,7 +57,7 @@ describe("Tests for reports", () => {
 
     it("Negativer Wert in einem Liquiditätsfeld", async () => {
         try {
-            await Report.create({ company_id: "11111", period: "2025-Q1", balance: -120 });
+            await Report.create({ company_id: "11111", period: 2025, balance: -120 });
         } catch (error) {
             expect(error).toBeDefined();
             console.log("Wert darf nicht Negativ sein")

@@ -84,7 +84,7 @@ const incomeStatementSchema = new mongoose.Schema({
 // **** Main report schema ****
 const reportSchema = new mongoose.Schema({
     company_id: { type: String },
-    period: { type: String },
+    period: { type: Number },
     balance_sheet: {
         actives: activesSchema,
         passives: passivesSchema
