@@ -2,6 +2,8 @@ const express = require("express")
 const cors = require("cors")
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes")
+const connectDB = require("../scripts/db")
+const seedDB = require("../scripts/seedDB")
 
 const app = express()
 
@@ -18,5 +20,11 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({message: err.message})
 })
+
+connectDB().then(r => {
+    console.log(r)
+})
+
+seedDB()
 
 module.exports = app
