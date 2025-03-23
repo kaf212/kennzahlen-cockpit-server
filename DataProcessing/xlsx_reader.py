@@ -124,6 +124,8 @@ def write_json(data, years_count, value_indexes):
             }
             results.append(result_json)
         else:
+            # Enables the backend and unit tests to know if invalid reports were excluded from data processing
+            results.append(f"report contains invalid data")
             print(f'{i}. entry has invalid Data')
     return results
 
