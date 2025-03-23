@@ -15,8 +15,9 @@ function validateToken(req, res) {
     */
 
 
-    const authHeader = req.header('Authorization');
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    const token = req.header('Authorization');
+
+    if (!token || !token.startsWith("Bearer ")) {
         return res.status(401).json({ error: 'Authentication token missing or malformed' });
     }
 
@@ -24,12 +25,13 @@ function validateToken(req, res) {
     Prevent jwtPayload from being undefined
     Bug found by ChatGPT (https://chatgpt.com/share/67e01958-bc68-8011-8db0-16deafd5fd7b)
      */
+    let payload = undefined
     try {
-        const payload = jwt.verify(token, secretKey);
-        return payload;
+        payload = jwt.verify(token, secretKey);
     } catch (err) {
         return res.status(403).json({ error: 'Token is invalid' });
     }
+    return payload
 }
 
 function authenticateToken(req, res, next) {
@@ -60,7 +62,10 @@ function authenticateAdmin(req, res, next) {
     *
     * :return: void
     */
-    const jwtPayload = validateToken(req)
+    const jwtPayload = validateToken(req, res)
+    if (jwtPayload.role === undefined) {
+        return null // exit the function if token validation has failed in order to prevent double response sending
+    }
     if (jwtPayload.role !== "Admin") {
         return res.status(401).json("Authentication failed: admin privileges required")
     }
