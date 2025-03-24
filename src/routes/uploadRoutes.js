@@ -1,5 +1,6 @@
 const express = require("express")
 const multer = require("multer")
+const { spawnSync } = require('child_process');
 const path = require("path")
 const fs = require("fs")
 
@@ -27,9 +28,23 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-router.post("/", upload.single("file"), (req, res)=>{
+router.post("/", upload.single("file"), async (req, res)=>{
     // File must be sent using multipart/form-data with the key "file" in the form
+
+    const pythonProcess = await spawnSync('python', [
+        '../DataProcessing/mock_xlsx_reader.py',
+        'main',
+        '../uploads/1742846096188-test_file_01.xlsx'
+    ]);
+    const result = pythonProcess.stdout?.toString()?.trim();
+    const error = pythonProcess.stderr?.toString()?.trim();
+    console.log(result)
+    if (error) {
+        console.error(error)
+    }
+
     res.json({"message": "File upload successful"})
+
 })
 
 module.exports = router
