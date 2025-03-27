@@ -15,7 +15,7 @@ async function checkCompanyExistenceByName(companyName) {
 async function checkCompanyExistenceById(companyId) {
     try {
         const found = await Company.findById(companyId)
-        if (found.length > 0) { // Company.find() returns an array, which would always evaluate as true
+        if (found !== null) {
             return true
         }
         return false
@@ -79,6 +79,18 @@ router.patch("/:id", async (req, res, next)=>{
 
     await Company.findByIdAndUpdate(companyId, {$set: companyJson}, {runValidators: true})
     return res.status(201).json({message: "company updated successfully"})
+})
+
+router.delete("/:id", async (req, res, next)=>{
+    const companyId = req.params.id
+
+    if (!(await checkCompanyExistenceById(companyId))) {
+        return res.status(404).json({message: "company not found"})
+    }
+
+    await Company.findByIdAndDelete(companyId)
+    return res.status(200).json({message: "company deleted successfully"})
+
 })
 
 
