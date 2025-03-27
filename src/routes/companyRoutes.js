@@ -4,12 +4,24 @@ const Company = require("../models/Company")
 
 const router = express.Router()
 
-async function checkCompanyExistence(companyName) {
+async function checkCompanyExistenceByName(companyName) {
     const found = await Company.find({name: companyName})
-    if (found) {
+    if (found.length > 0) { // Company.find() returns an array, which would always evaluate as true
         return true
     }
     return false
+}
+
+async function checkCompanyExistenceById(companyId) {
+    try {
+        const found = await Company.findById(companyId)
+        if (found.length > 0) { // Company.find() returns an array, which would always evaluate as true
+            return true
+        }
+        return false
+    } catch (err) {}
+    return false
+
 }
 
 router.get("/", async (req, res, next)=>{
@@ -43,12 +55,30 @@ router.post("/", async (req, res, next)=> {
     if (!req.body.hasOwnProperty("name")) {
         return res.status(400).json({message: "invalid json format"})
     }
-    if (await checkCompanyExistence(req.body.name)) {
+    if (await checkCompanyExistenceByName(req.body.name)) {
         return res.status(400).json({message: `company ${req.body.name} already exists`})
     }
     const newCompany = new Company({name: req.body.name})
     await newCompany.save()
     res.status(201).json({message: "company created successfully"})
+})
+
+
+router.patch("/:id", async (req, res, next)=>{
+    const companyJson = req.body
+    const companyId = req.params.id
+    if (!(await checkCompanyExistenceById(companyId))) {
+        return res.status(404).json({message: "company not found"})
+    }
+    if (!companyJson.hasOwnProperty("name")) {
+        return res.status(400).json({message: "invalid json format"})
+    }
+    if (await checkCompanyExistenceByName(companyJson.name) === true) {
+        return res.status(400).json({message: `company with name ${req.body.name} already exists`})
+    }
+
+    await Company.findByIdAndUpdate(companyId, {$set: companyJson}, {runValidators: true})
+    return res.status(201).json({message: "company updated successfully"})
 })
 
 
