@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Report = require("../../models/Report.js");
 const Company = require("../../models/Company.js");
 const Role = require("../../models/Role.js");
+const CustomKeyFigure = require("../../models/customKeyFigure")
 
 /*
  All test cases for report, company and role have been programmed by Adam Laib.
@@ -142,3 +143,23 @@ describe("Tests for roles", () => {
         }
     });
 });
+
+describe("Tests for custom key figures", ()=> {
+
+    it("Create new custom key figure", async ()=> {
+        const newKeyFigure = new CustomKeyFigure({
+            name: "Liquiditätsgrad 1",
+            formula: "liquid_assets/long_term"
+        })
+
+        const savedKeyFigure = await newKeyFigure.save()
+
+        expect(savedKeyFigure).toHaveProperty("_id")
+        expect(savedKeyFigure.name).toBe("Liquiditätsgrad 1")
+        expect(savedKeyFigure.formula).toBe("liquid_assets/long_term")
+
+        await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
+    })
+
+
+})
