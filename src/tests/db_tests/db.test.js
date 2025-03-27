@@ -178,4 +178,21 @@ describe("Tests for custom key figures", ()=> {
         await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
     })
 
+    it("Should delete an existing document", async () => {
+        const newKeyFigure = new CustomKeyFigure({
+            name: "Liquiditätsgrad 1",
+            formula: "liquid_assets*100/long_term"
+        })
+
+        const savedKeyFigure = await newKeyFigure.save()
+        const keyFigureId = savedKeyFigure._id
+
+        // Delete the custom key figure
+        await CustomKeyFigure.findByIdAndDelete(keyFigureId)
+
+        const deletedKeyFigure = await CustomKeyFigure.findById(keyFigureId)
+
+        expect(deletedKeyFigure).toBeNull()
+    })
+
 })
