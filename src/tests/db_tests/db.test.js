@@ -3,7 +3,11 @@ const Report = require("../../models/Report.js");
 const Company = require("../../models/Company.js");
 const Role = require("../../models/Role.js");
 
-///Create my own branch
+/*
+ All test cases for report, company and role have been programmed by Adam Laib.
+ The git blame is misinforming because the tests were copied and pasted from the original file to into this file
+ becuase the original file by Adam was in the wrong location.
+ */
 
 beforeAll(async () => {
     await mongoose.connect("mongodb://localhost:27017/kennzahlen");
