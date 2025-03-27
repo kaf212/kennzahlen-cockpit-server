@@ -149,17 +149,33 @@ describe("Tests for custom key figures", ()=> {
     it("Create new custom key figure", async ()=> {
         const newKeyFigure = new CustomKeyFigure({
             name: "Liquiditätsgrad 1",
-            formula: "liquid_assets/long_term"
+            formula: "liquid_assets*100/long_term"
         })
 
         const savedKeyFigure = await newKeyFigure.save()
 
         expect(savedKeyFigure).toHaveProperty("_id")
         expect(savedKeyFigure.name).toBe("Liquiditätsgrad 1")
-        expect(savedKeyFigure.formula).toBe("liquid_assets/long_term")
+        expect(savedKeyFigure.formula).toBe("liquid_assets*100/long_term")
 
         await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
     })
 
+    it("Modify an existing custom key figure", async ()=> {
+        const newKeyFigure = new CustomKeyFigure({
+            name: "Liquiditätsgrad 1",
+            formula: "liquid_assets*100/long_term"
+        })
+
+        const savedKeyFigure = await newKeyFigure.save()
+
+        // Modify the custom key figure
+        savedKeyFigure.formula = "updated"
+        const updatedKeyFigure = await savedKeyFigure.save()
+
+        expect(updatedKeyFigure.formula).toBe("updated")
+
+        await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
+    })
 
 })
