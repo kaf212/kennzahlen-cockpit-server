@@ -3,6 +3,7 @@ const cors = require("cors")
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes")
 const companyRoutes = require("./routes/companyRoutes")
+const customKeyFigureRoutes = require("./routes/customKeyFigureRoutes")
 const connectDB = require("../scripts/db")
 const seedDB = require("../scripts/seedDB")
 
@@ -13,6 +14,7 @@ app.use(express.json())
 
 app.use("/auth", authRoutes)
 app.use("/companies", companyRoutes)
+app.use("/customKeyFigures", customKeyFigureRoutes)
 
 
 // Automatically respond with 500 when next(err) is called in an endpoint
