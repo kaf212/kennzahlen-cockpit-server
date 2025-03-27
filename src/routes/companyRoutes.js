@@ -4,6 +4,13 @@ const Company = require("../models/Company")
 
 const router = express.Router()
 
+async function checkCompanyExistence(companyName) {
+    const found = await Company.find({name: companyName})
+    if (found) {
+        return true
+    }
+    return false
+}
 
 router.get("/", async (req, res, next)=>{
     try {
@@ -31,5 +38,18 @@ router.get("/:id", async (req, res, next)=> {
         next(err)
     }
 })
+
+router.post("/", async (req, res, next)=> {
+    if (!req.body.hasOwnProperty("name")) {
+        return res.status(400).json({message: "invalid json format"})
+    }
+    if (await checkCompanyExistence(req.body.name)) {
+        return res.status(400).json({message: `company ${req.body.name} already exists`})
+    }
+    const newCompany = new Company({name: req.body.name})
+    await newCompany.save()
+    res.status(201).json({message: "company created successfully"})
+})
+
 
 module.exports = router
