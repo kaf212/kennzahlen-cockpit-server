@@ -1,6 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const Company = require("../models/Company")
+const {authenticateAdmin} = require("../middleware/tokenValidation")
 
 const router = express.Router()
 
@@ -51,7 +52,7 @@ router.get("/:id", async (req, res, next)=> {
     }
 })
 
-router.post("/", async (req, res, next)=> {
+router.post("/", authenticateAdmin,async (req, res, next)=> {
     if (!req.body.hasOwnProperty("name")) {
         return res.status(400).json({message: "invalid json format"})
     }
@@ -64,7 +65,7 @@ router.post("/", async (req, res, next)=> {
 })
 
 
-router.patch("/:id", async (req, res, next)=>{
+router.patch("/:id", authenticateAdmin,async (req, res, next)=>{
     const companyJson = req.body
     const companyId = req.params.id
     if (!(await checkCompanyExistenceById(companyId))) {
@@ -81,7 +82,7 @@ router.patch("/:id", async (req, res, next)=>{
     return res.status(201).json({message: "company updated successfully"})
 })
 
-router.delete("/:id", async (req, res, next)=>{
+router.delete("/:id", authenticateAdmin, async (req, res, next)=>{
     const companyId = req.params.id
 
     if (!(await checkCompanyExistenceById(companyId))) {
