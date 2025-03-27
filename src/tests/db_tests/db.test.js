@@ -2,8 +2,13 @@ const mongoose = require("mongoose");
 const Report = require("../../models/Report.js");
 const Company = require("../../models/Company.js");
 const Role = require("../../models/Role.js");
+const CustomKeyFigure = require("../../models/customKeyFigure")
 
-///Create my own branch
+/*
+ All test cases for report, company and role have been programmed by Adam Laib.
+ The git blame is misinforming because the tests were copied and pasted from the original file to into this file
+ becuase the original file by Adam was in the wrong location.
+ */
 
 beforeAll(async () => {
     await mongoose.connect("mongodb://localhost:27017/kennzahlen");
@@ -138,3 +143,56 @@ describe("Tests for roles", () => {
         }
     });
 });
+
+describe("Tests for custom key figures", ()=> {
+
+    it("Create new custom key figure", async ()=> {
+        const newKeyFigure = new CustomKeyFigure({
+            name: "Liquiditätsgrad 1",
+            formula: "liquid_assets*100/long_term"
+        })
+
+        const savedKeyFigure = await newKeyFigure.save()
+
+        expect(savedKeyFigure).toHaveProperty("_id")
+        expect(savedKeyFigure.name).toBe("Liquiditätsgrad 1")
+        expect(savedKeyFigure.formula).toBe("liquid_assets*100/long_term")
+
+        await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
+    })
+
+    it("Modify an existing custom key figure", async ()=> {
+        const newKeyFigure = new CustomKeyFigure({
+            name: "Liquiditätsgrad 1",
+            formula: "liquid_assets*100/long_term"
+        })
+
+        const savedKeyFigure = await newKeyFigure.save()
+
+        // Modify the custom key figure
+        savedKeyFigure.formula = "updated"
+        const updatedKeyFigure = await savedKeyFigure.save()
+
+        expect(updatedKeyFigure.formula).toBe("updated")
+
+        await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
+    })
+
+    it("Should delete an existing document", async () => {
+        const newKeyFigure = new CustomKeyFigure({
+            name: "Liquiditätsgrad 1",
+            formula: "liquid_assets*100/long_term"
+        })
+
+        const savedKeyFigure = await newKeyFigure.save()
+        const keyFigureId = savedKeyFigure._id
+
+        // Delete the custom key figure
+        await CustomKeyFigure.findByIdAndDelete(keyFigureId)
+
+        const deletedKeyFigure = await CustomKeyFigure.findById(keyFigureId)
+
+        expect(deletedKeyFigure).toBeNull()
+    })
+
+})
