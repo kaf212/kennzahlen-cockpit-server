@@ -54,7 +54,7 @@ router.get("/:id", async (req, res, next)=> {
 })
 
 
-router.post("/",async (req, res, next)=> {
+router.post("/", authenticateAdmin , (req, res, next)=> {
     if (await checkCustomKeyFigureExistenceByName(req.body.name)) {
         return res.status(400).json({message: `custom key figure ${req.body.name} already exists`})
     }
@@ -69,7 +69,7 @@ router.post("/",async (req, res, next)=> {
 })
 
 
-router.patch("/:id",async (req, res, next)=>{
+router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
     const customKeyFigureJson = req.body
     const customKeyFigureId = req.params.id
 
@@ -105,7 +105,7 @@ router.patch("/:id",async (req, res, next)=>{
 })
 
 
-router.delete("/:id", async (req, res, next)=>{
+router.delete("/:id", authenticateAdmin, async (req, res, next)=>{
     const customKeyFigureId = req.params.id
 
     if (!(await checkCustomFigureExistenceById(customKeyFigureId))) {
