@@ -81,16 +81,21 @@ router.patch("/:id",async (req, res, next)=>{
         return res.status(400).json({message: `custom key figure with name ${customKeyFigureJson.name} already exists`})
     }
 
-    try {
-        // Create a new CustomKeyFigure object and validate it with mongoose according to the rules of the model
-        const validationObject = new CustomKeyFigure({name: customKeyFigureJson.name, formula: customKeyFigureJson.formula})
-        await validationObject.validate()
-    } catch (err) {
-        return res.status(400).json({message: "Invalid JSON format"})
+    /*
+    Mongoose validation is not used here because it would not allow missing attributes,
+    but missing attributes are normal in a PATCH endpoint when not every attribute needs to be updated.
+    So validation is performed by checking if the provided attributes from the request exist in the mongoose model.
+     */
+    // Source: https://chatgpt.com/share/67e6cffc-4308-8011-bbea-5a4eda7b76f5
+    const validFields = Object.keys(CustomKeyFigure.schema.paths); // Allowed fields from schema
+    const invalidFields = Object.keys(customKeyFigureJson).filter(key => !validFields.includes(key));
 
+    if (invalidFields.length > 0) {
+        return res.status(400).json({message: "invalid attributes in JSON object"})
     }
 
-    const result = await CustomKeyFigure.findByIdAndUpdate(customKeyFigureId, {$set: customKeyFigureJson}, {runValidators: true})
+    await CustomKeyFigure.findByIdAndUpdate(customKeyFigureId, {$set: customKeyFigureJson}, {new: true, runValidators: true})
+
     return res.status(201).json({message: "custom key figure updated successfully"})
 
 })
