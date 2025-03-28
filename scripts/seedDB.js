@@ -25,7 +25,7 @@ async function seedReportCollection() {
     if (documentCount === 0) {
         const testReport = new Report({
             company_id: "12345",
-            period: "2025-Q1",
+            period: 2025,
             balance_sheet: {
                 actives: {
                     current_assets: {
