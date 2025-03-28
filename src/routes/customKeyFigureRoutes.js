@@ -105,5 +105,18 @@ router.patch("/:id",async (req, res, next)=>{
 })
 
 
+router.delete("/:id", async (req, res, next)=>{
+    const customKeyFigureId = req.params.id
+
+    if (!(await checkCustomFigureExistenceById(customKeyFigureId))) {
+        return res.status(404).json({message: "custom key figure not found"})
+    }
+
+    await CustomKeyFigure.findByIdAndDelete(customKeyFigureId)
+    return res.status(200).json({message: "custom key figure deleted successfully"})
+
+})
+
+
 
 module.exports = router
