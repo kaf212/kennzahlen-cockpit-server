@@ -14,6 +14,18 @@ async function checkCustomKeyFigureExistenceByName(customKeyFigureName) {
     return false
 }
 
+async function checkCustomFigureExistenceById(customFigreId) {
+    try {
+        const found = await CustomKeyFigure.findById(customFigreId)
+        if (found !== null) {
+            return true
+        }
+        return false
+    } catch (err) {}
+    return false
+
+}
+
 router.get("/", async (req, res, next)=>{
     try {
         const keyFigures = await CustomKeyFigure.find({})
@@ -53,6 +65,33 @@ router.post("/",async (req, res, next)=> {
     } catch (err) { // If mongoose model validation fails
         return res.status(400).json({message: "Invalid JSON format"})
     }
+
+})
+
+
+router.patch("/:id",async (req, res, next)=>{
+    const customKeyFigureJson = req.body
+    const customKeyFigureId = req.params.id
+
+    if (!(await checkCustomFigureExistenceById(customKeyFigureId))) {
+        return res.status(404).json({message: "custom key figure not found"})
+    }
+
+    if (await checkCustomKeyFigureExistenceByName(customKeyFigureJson.name) === true) {
+        return res.status(400).json({message: `custom key figure with name ${customKeyFigureJson.name} already exists`})
+    }
+
+    try {
+        // Create a new CustomKeyFigure object and validate it with mongoose according to the rules of the model
+        const validationObject = new CustomKeyFigure({name: customKeyFigureJson.name, formula: customKeyFigureJson.formula})
+        await validationObject.validate()
+    } catch (err) {
+        return res.status(400).json({message: "Invalid JSON format"})
+
+    }
+
+    const result = await CustomKeyFigure.findByIdAndUpdate(customKeyFigureId, {$set: customKeyFigureJson}, {runValidators: true})
+    return res.status(201).json({message: "custom key figure updated successfully"})
 
 })
 
