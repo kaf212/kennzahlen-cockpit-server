@@ -73,6 +73,10 @@ router.patch("/:id",async (req, res, next)=>{
     const customKeyFigureJson = req.body
     const customKeyFigureId = req.params.id
 
+    if (Object.keys(customKeyFigureJson).length === 0) {
+        return res.status(400).json({message: "no JSON provided"})
+    }
+
     if (!(await checkCustomFigureExistenceById(customKeyFigureId))) {
         return res.status(404).json({message: "custom key figure not found"})
     }
