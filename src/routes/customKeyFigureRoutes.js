@@ -54,7 +54,7 @@ router.get("/:id", async (req, res, next)=> {
 })
 
 
-router.post("/", authenticateAdmin , (req, res, next)=> {
+router.post("/", authenticateAdmin, async (req, res, next)=> {
     if (await checkCustomKeyFigureExistenceByName(req.body.name)) {
         return res.status(400).json({message: `custom key figure ${req.body.name} already exists`})
     }
