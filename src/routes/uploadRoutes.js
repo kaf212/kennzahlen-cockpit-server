@@ -58,11 +58,13 @@ router.post("/", upload.single("file"), async (req, res)=>{
         'main',
         filePath
     ]);
+
     const result = pythonProcess.stdout?.toString()?.trim();
     const error = pythonProcess.stderr?.toString()?.trim();
-    console.log(result)
+
     if (error) {
         console.error(error)
+        return res.status(500).json({message: "internal server error"})
     }
 
     res.json({"message": "File upload successful"})
