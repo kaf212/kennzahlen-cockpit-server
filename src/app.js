@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes")
+const uploadRoutes = require("./routes/uploadRoutes")
 const companyRoutes = require("./routes/companyRoutes")
 const customKeyFigureRoutes = require("./routes/customKeyFigureRoutes")
 const connectDB = require("../scripts/db")
@@ -13,6 +14,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use("/auth", authRoutes)
+app.use("/upload", uploadRoutes)
 app.use("/companies", companyRoutes)
 app.use("/customKeyFigures", customKeyFigureRoutes)
 
