@@ -31,6 +31,14 @@ const upload = multer({ storage });
 router.post("/", upload.single("file"), async (req, res)=>{
     // File must be sent using multipart/form-data with the key "file" in the form
 
+    if (!req.file) {
+        return res.status(400).json({message: "no file provided"})
+    }
+    const fileType = req.file.mimetype
+    if (fileType !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+        return res.status(400).json({message: "files must be be of type .xlsx"})
+    }
+
     const filePath = req.file.path
 
     const pythonProcess = await spawnSync('python', [
