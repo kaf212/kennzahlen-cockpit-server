@@ -7,6 +7,17 @@ const fs = require("fs")
 const router = express.Router()
 router.use(express.json())
 
+function cleanUploadDirectory() {
+    // Source: https://hayageek.com/remove-all-files-from-directory-in-nodejs/
+    const uploadDir = "uploads"
+    const files = fs.readdirSync(uploadDir);
+
+    for (const file of files) {
+        const filePath = path.join(uploadDir, file);
+        fs.unlinkSync(filePath);
+    }
+}
+
 
 // Ensure 'uploads' directory exists
 const uploadDir = path.join(__dirname, "../../uploads");
@@ -54,6 +65,8 @@ router.post("/", upload.single("file"), async (req, res)=>{
     }
 
     res.json({"message": "File upload successful"})
+
+    cleanUploadDirectory()
 
 })
 
