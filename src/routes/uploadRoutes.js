@@ -31,10 +31,12 @@ const upload = multer({ storage });
 router.post("/", upload.single("file"), async (req, res)=>{
     // File must be sent using multipart/form-data with the key "file" in the form
 
+    const filePath = req.file.path
+
     const pythonProcess = await spawnSync('python', [
-        '../DataProcessing/mock_xlsx_reader.py',
+        'DataProcessing/mock_xlsx_reader.py',
         'main',
-        '../uploads/1742846096188-test_file_01.xlsx'
+        filePath
     ]);
     const result = pythonProcess.stdout?.toString()?.trim();
     const error = pythonProcess.stderr?.toString()?.trim();
