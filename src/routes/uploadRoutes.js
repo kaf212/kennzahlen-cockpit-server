@@ -47,6 +47,7 @@ router.post("/", upload.single("file"), async (req, res)=>{
     }
     const fileType = req.file.mimetype
     if (fileType !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+        cleanUploadDirectory()
         return res.status(400).json({message: "files must be be of type .xlsx"})
     }
 
