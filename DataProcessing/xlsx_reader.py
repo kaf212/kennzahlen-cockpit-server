@@ -10,7 +10,7 @@ import sys
 import json
 
 
-def main(filename):
+def main(filepath):
     """
     this runs the whole script.
     Reads the excel file and returns the results as list of json
@@ -18,7 +18,6 @@ def main(filename):
     :param filepath:
     :return: list of json
     """
-    filepath = f"uploads/{filename}"
     data = pd.read_excel(filepath)
     value_indexes = [
         [3, 1],
