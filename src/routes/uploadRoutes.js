@@ -81,7 +81,7 @@ router.post("/", upload.single("file"), async (req, res)=>{
     const filePath = `uploads/${fileName}`
 
     const pythonProcess = await spawnSync('python', [
-        'DataProcessing/xlsx_reader.py',
+        'src/data_processing/xlsx_reader.py',
         'main',
         filePath
     ]);
