@@ -100,8 +100,9 @@ router.post("/", upload.single("file"), async (req, res)=>{
     }
 
     saveReportToDb(result)
+    const reportCount = JSON.parse(result).length
 
-    res.json({"message": "File upload successful"})
+    res.status(201).json({"message": `successfully saved ${reportCount} reports`})
 
     cleanUploadDirectory()
 
