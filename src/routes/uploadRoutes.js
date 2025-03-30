@@ -51,12 +51,12 @@ router.post("/", upload.single("file"), async (req, res)=>{
         return res.status(400).json({message: "files must be be of type .xlsx"})
     }
 
-    const filePath = req.file.path
+    const fileName = req.file.filename
 
     const pythonProcess = await spawnSync('python', [
-        'DataProcessing/mock_xlsx_reader.py',
+        'DataProcessing/xlsx_reader.py',
         'main',
-        filePath
+        fileName
     ]);
 
     const result = pythonProcess.stdout?.toString()?.trim();

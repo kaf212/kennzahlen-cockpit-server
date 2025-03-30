@@ -6,9 +6,10 @@ installed library pandas
 """
 import math
 import pandas as pd
+import sys
 
 
-def main(filepath):
+def main(filename):
     """
     this runs the whole script.
     Reads the excel file and returns the results as list of json
@@ -16,6 +17,7 @@ def main(filepath):
     :param filepath:
     :return: list of json
     """
+    filepath = f"uploads/{filename}"
     data = pd.read_excel(filepath)
     value_indexes = [
         [3, 1],
@@ -28,6 +30,7 @@ def main(filepath):
     years_count = data.iloc[1, 1]
 
     json = write_json(data, years_count, value_indexes)
+    print(json)
     return json
 
 
@@ -137,5 +140,5 @@ def write_json(data, years_count, value_indexes):
     return results
 
 
-if __name__ == '__main__':
-    print(main("./Finanzbericht_Vorlage.xlsx"))
+if sys.argv[1] == 'main':
+    main(sys.argv[2])
