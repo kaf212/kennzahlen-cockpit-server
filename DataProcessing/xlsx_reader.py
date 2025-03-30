@@ -44,7 +44,7 @@ def null_nan_value_check(value):
         return False, None
     except ValueError as exp:
 
-        print(exp)
+        #print(exp)
         return False, None
 
 
@@ -52,7 +52,7 @@ def valid_values(slot, data, years_count, value_indexes):
     """checks if the xlsx file has valid values in it"""
     results = []
     if not str(years_count).isdigit():
-        print(f'{data.iloc[1, 1]} is not int')
+        #print(f'{data.iloc[1, 1]} is not int')
         return False
     for value_index in value_indexes:
         val = data.iloc[value_index[0], value_index[1] + slot]
@@ -60,8 +60,8 @@ def valid_values(slot, data, years_count, value_indexes):
         if is_number and value >= 0:
             results.append(value)
         else:
-            print(data.iloc[value_index[0], value_index[1] + slot])
-            print(f'bad value on: {value_index[0]}, {value_index[1] + slot}')
+            #print(data.iloc[value_index[0], value_index[1] + slot])
+            #print(f'bad value on: {value_index[0]}, {value_index[1] + slot}')
             return False, None
     return True, results
 
@@ -137,7 +137,7 @@ def write_json(data, years_count, value_indexes):
         else:
             # Enables the backend and unit tests to know if invalid reports were excluded from data processing
             results.append("report contains invalid data")
-            print(f'{i}. entry has invalid Data')
+            #print(f'{i}. entry has invalid Data')
     results = json.dumps(results)
     return results
 

@@ -18,6 +18,20 @@ function saveReportToDb(jsonData) {
     })
 }
 
+function validatePythonResult(result) {
+    let counter = 1
+    let errorMessage = undefined
+    JSON.parse(result).forEach(reportJson=>{
+        if (reportJson === "report contains invalid data") {
+            // If one of the reports in the xlsx file is invalid, the position of it and an error message is returned
+            errorMessage = `${counter}. report contains invalid data.`
+            // Second report will return "2. report contains invalid data"
+        }
+        counter += 1
+    })
+    return errorMessage
+}
+
 
 function cleanUploadDirectory() {
     // Source: https://hayageek.com/remove-all-files-from-directory-in-nodejs/
@@ -79,8 +93,13 @@ router.post("/", upload.single("file"), async (req, res)=>{
         return res.status(500).json({message: "internal server error"})
     }
 
-    const savedReport = saveReportToDb(result)
-    console.log(savedReport)
+    const errorMessage = validatePythonResult(result)
+    if (errorMessage) {
+        // If one report in the xlsx file is invalid, none of them are saved to the database and 400 is returned
+        return res.status(400).json({message: errorMessage})
+    }
+
+    saveReportToDb(result)
 
     res.json({"message": "File upload successful"})
 
