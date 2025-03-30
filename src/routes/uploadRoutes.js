@@ -3,9 +3,35 @@ const multer = require("multer")
 const { spawnSync } = require('child_process');
 const path = require("path")
 const fs = require("fs")
+const Report = require("../models/Report")
 
 const router = express.Router()
 router.use(express.json())
+
+
+
+function saveReportToDb(jsonData) {
+    jsonData = JSON.parse(jsonData)
+    Array.from(jsonData).forEach(async (jsonReport)=>{
+        const newReport = new Report(jsonReport)
+        await newReport.save()
+    })
+}
+
+function validatePythonResult(result) {
+    let counter = 1
+    let errorMessage = undefined
+    JSON.parse(result).forEach(reportJson=>{
+        if (reportJson === "report contains invalid data") {
+            // If one of the reports in the xlsx file is invalid, the position of it and an error message is returned
+            errorMessage = `${counter}. report contains invalid data.`
+            // Second report will return "2. report contains invalid data"
+        }
+        counter += 1
+    })
+    return errorMessage
+}
+
 
 function cleanUploadDirectory() {
     // Source: https://hayageek.com/remove-all-files-from-directory-in-nodejs/
@@ -51,10 +77,11 @@ router.post("/", upload.single("file"), async (req, res)=>{
         return res.status(400).json({message: "files must be be of type .xlsx"})
     }
 
-    const filePath = req.file.path
+    const fileName = req.file.filename
+    const filePath = `uploads/${fileName}`
 
     const pythonProcess = await spawnSync('python', [
-        'DataProcessing/mock_xlsx_reader.py',
+        'src/data_processing/xlsx_reader.py',
         'main',
         filePath
     ]);
@@ -67,7 +94,16 @@ router.post("/", upload.single("file"), async (req, res)=>{
         return res.status(500).json({message: "internal server error"})
     }
 
-    res.json({"message": "File upload successful"})
+    const errorMessage = validatePythonResult(result)
+    if (errorMessage) {
+        // If one report in the xlsx file is invalid, none of them are saved to the database and 400 is returned
+        return res.status(400).json({message: errorMessage})
+    }
+
+    saveReportToDb(result)
+    const reportCount = JSON.parse(result).length
+
+    res.status(201).json({"message": `successfully saved ${reportCount} reports`})
 
     cleanUploadDirectory()
 
