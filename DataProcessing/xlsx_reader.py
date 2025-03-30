@@ -7,6 +7,7 @@ installed library pandas
 import math
 import pandas as pd
 import sys
+import json
 
 
 def main(filename):
@@ -137,6 +138,7 @@ def write_json(data, years_count, value_indexes):
             # Enables the backend and unit tests to know if invalid reports were excluded from data processing
             results.append("report contains invalid data")
             print(f'{i}. entry has invalid Data')
+    results = json.dumps(results)
     return results
 
 

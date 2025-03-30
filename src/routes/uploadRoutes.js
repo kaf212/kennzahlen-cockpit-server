@@ -3,9 +3,21 @@ const multer = require("multer")
 const { spawnSync } = require('child_process');
 const path = require("path")
 const fs = require("fs")
+const Report = require("../models/Report")
 
 const router = express.Router()
 router.use(express.json())
+
+
+
+function saveReportToDb(jsonData) {
+    jsonData = JSON.parse(jsonData)
+    Array.from(jsonData).forEach(async (jsonReport)=>{
+        const newReport = new Report(jsonReport)
+        await newReport.save()
+    })
+}
+
 
 function cleanUploadDirectory() {
     // Source: https://hayageek.com/remove-all-files-from-directory-in-nodejs/
@@ -66,6 +78,9 @@ router.post("/", upload.single("file"), async (req, res)=>{
         console.error(error)
         return res.status(500).json({message: "internal server error"})
     }
+
+    const savedReport = saveReportToDb(result)
+    console.log(savedReport)
 
     res.json({"message": "File upload successful"})
 
