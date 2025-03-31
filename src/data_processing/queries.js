@@ -1,14 +1,10 @@
 const {MongoClient} = require('mongodb');
+const Report = require('/src/models/Report.js')
 
 async function equityRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -42,13 +38,8 @@ async function equityRatio(request) {
 
 async function debtRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -83,13 +74,8 @@ async function debtRatio(request) {
 
 async function selfFinancingRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -120,13 +106,8 @@ async function selfFinancingRatio(request) {
 
 async function workingCapitalIntensity(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -157,13 +138,8 @@ async function workingCapitalIntensity(request) {
 
 async function fixedAssetIntensity(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -194,13 +170,8 @@ async function fixedAssetIntensity(request) {
 
 async function cashRatio(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -230,13 +201,8 @@ async function cashRatio(request){
 
 async function quickCash(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -267,13 +233,8 @@ async function quickCash(request){
 
 async function currentRatio(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -303,13 +264,8 @@ async function currentRatio(request){
 
 async function fixedAssetCoverage1(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -339,13 +295,8 @@ async function fixedAssetCoverage1(request){
 
 async function fixedAssetCoverage2(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -377,13 +328,8 @@ async function fixedAssetCoverage2(request){
 //return on equity
 async function roe(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -415,13 +361,8 @@ async function roe(request){
 //return on assets
 async function roa(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -454,13 +395,8 @@ async function roa(request){
 
 async function profitMargin(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -475,6 +411,34 @@ async function profitMargin(request){
                 const keyFigure = (earnings - expenses) / earnings
 
                 result.profitMargin.push({
+                    "period": dataset.period,
+                    "key_figure": keyFigure
+                });
+            }
+        });
+        await client.close();
+        return result;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}
+
+async function customKeyFigure(request, keyFigureString){
+     try {
+        const query = {"company_id": request.company_id};
+        let data = Report.find(query)
+
+        const result = {
+            "company_id": request.company_id,
+            "customKeyFigure": []
+        };
+
+        await data.forEach((dataset) => {
+            if (dataset) {
+                // do the math and logic
+
+                result.customKeyFigure.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
