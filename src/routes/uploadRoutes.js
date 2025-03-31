@@ -4,6 +4,7 @@ const { spawnSync } = require('child_process');
 const path = require("path")
 const fs = require("fs")
 const Report = require("../models/Report")
+const Company = require("../models/Company")
 
 const router = express.Router()
 router.use(express.json())
@@ -11,11 +12,31 @@ router.use(express.json())
 
 
 function saveReportToDb(jsonData) {
-    jsonData = JSON.parse(jsonData)
     Array.from(jsonData).forEach(async (jsonReport)=>{
         const newReport = new Report(jsonReport)
         await newReport.save()
     })
+}
+
+async function setCompanyIdForReports(jsonData) {
+
+    /* The company_id attribute is first set to the company name in xlsx_reader.py
+    and is now substituted by the actual company ID from MongoDB */
+    jsonData = JSON.parse(jsonData)
+
+    const reports = await Promise.all(jsonData.map(async (report)=>{
+        const found_company = await Company.find({name: report.company_id})
+        if(found_company) {
+            const company = found_company[0]
+            report.company_id = company._id
+            return report
+        }
+    }))
+    if (reports.length === 0) {
+        return false
+    }
+    return reports
+
 }
 
 function validatePythonResult(result) {
@@ -100,8 +121,15 @@ router.post("/", upload.single("file"), async (req, res)=>{
         return res.status(400).json({message: errorMessage})
     }
 
-    saveReportToDb(result)
-    const reportCount = JSON.parse(result).length
+    const reportJson = await setCompanyIdForReports(result)
+
+    if (!reportJson) {
+        return res.status(404).json({message: `company not found`})
+    }
+
+    saveReportToDb(reportJson)
+
+    const reportCount = reportJson.length
 
     res.status(201).json({"message": `successfully saved ${reportCount} reports`})
 
