@@ -1,7 +1,7 @@
 """
 reads xlxs files in specified format
 format is based on the school book "Finanz- und Rechnungswesen Grundlagen 2" chapter 11.2.1
-installed library pandas
+installed library pandas (requires openpyxl)
 :returns list of jsons
 """
 import math
@@ -117,18 +117,18 @@ def write_json(data, years_count, value_indexes):
                     "expense": {
                         "total": values[15] + values[16] + values[17] + \
                                  values[18] + values[19] + values[20],
-                        "goods": values[15],
-                        "staff": values[16],
+                        "operating_expense": values[15],
+                        "staff_expense": values[16],
                         "other_expenses": values[17],
                         "depreciation": values[18],
-                        "financial": values[19],
-                        "real_estate": values[20]
+                        "financial_expense": values[19],
+                        "real_estate_expense": values[20]
                     },
                     "earnings": {
                         "total": values[21] + values[22] + values[23],
                         "operating_income": values[21],
-                        "financial": values[23],
-                        "real_estate": values[22]
+                        "financial_income": values[23],
+                        "real_estate_income": values[22]
                     }
                 }
             }

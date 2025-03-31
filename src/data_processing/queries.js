@@ -432,7 +432,7 @@ async function roa(request){
             if (dataset) {
                 const expenses = dataset.income_statement.expense.total;
                 const earnings = dataset.income_statement.earnings.total;
-                const financalExpense = dataset.income_statement.expense.financial;
+                const financalExpense = dataset.income_statement.expense.financial_expense;
                 const currentAssetsTotal = dataset.balance_sheet.actives.current_assets.total;
                 const fixedAssetsTotal = dataset.balance_sheet.actives.fixed_assets.total;
 
