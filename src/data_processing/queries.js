@@ -10,10 +10,7 @@ async function equityRatio(request) {
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "equity_ratios": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset){
@@ -23,7 +20,7 @@ async function equityRatio(request) {
 
                 const keyFigure = equity / (currentAssetsTotal + fixedAssetsTotal);
 
-                result.equity_ratios.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -50,10 +47,7 @@ async function debtRatio(request) {
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "debt_ratios": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset){
@@ -64,7 +58,7 @@ async function debtRatio(request) {
 
                 const keyFigure = (stDebt + ltDebt) / (currentAssetsTotal + fixedAssetsTotal);
 
-                result.debt_ratios.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -91,10 +85,7 @@ async function selfFinancingRatio(request) {
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "self_financing_ratios": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -104,7 +95,7 @@ async function selfFinancingRatio(request) {
 
                 const keyFigure = (legalReserve + retainedEarnings) / equityShares;
 
-                result.self_financing_ratios.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -128,10 +119,7 @@ async function workingCapitalIntensity(request) {
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "working_capital_intensity": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -141,7 +129,7 @@ async function workingCapitalIntensity(request) {
 
                 const keyFigure = liquidMoney / (currentAssetsTotal + fixedAssetsTotal);
 
-                result.working_capital_intensity.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -165,10 +153,7 @@ async function fixedAssetIntensity(request) {
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "fixed_asset_intensity": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -178,7 +163,7 @@ async function fixedAssetIntensity(request) {
 
                 const keyFigure = fixedAssets / (currentAssetsTotal + fixedAssetsTotal);
 
-                result.fixed_asset_intensity.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -202,10 +187,7 @@ async function cashRatio(request){
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "cash_ratio": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -214,7 +196,7 @@ async function cashRatio(request){
 
                 const keyFigure = liquidMoney / stDebt
 
-                result.cash_ratio.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -238,10 +220,7 @@ async function quickCash(request){
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "quick_cash": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -251,7 +230,7 @@ async function quickCash(request){
 
                 const keyFigure = (liquidMoney + receivables) / stDebt
 
-                result.quick_cash.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -275,10 +254,7 @@ async function currentRatio(request){
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "current_ratio": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -287,7 +263,7 @@ async function currentRatio(request){
 
                 const keyFigure = currentAssets / stDebt
 
-                result.current_ratio.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -311,10 +287,7 @@ async function fixedAssetCoverage1(request){
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "fixed_Asset_Coverage1": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -323,7 +296,7 @@ async function fixedAssetCoverage1(request){
 
                 const keyFigure = shares / fixedAssets
 
-                result.fixed_Asset_Coverage1.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -347,10 +320,7 @@ async function fixedAssetCoverage2(request){
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "fixed_Asset_Coverage2": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -360,7 +330,7 @@ async function fixedAssetCoverage2(request){
 
                 const keyFigure = (shares + ltDebt) / fixedAssets
 
-                result.fixed_Asset_Coverage2.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -385,10 +355,7 @@ async function roe(request){
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "roe": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -398,7 +365,7 @@ async function roe(request){
 
                 const keyFigure = (earnings - expenses) / shares
 
-                result.roe.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -423,10 +390,7 @@ async function roa(request){
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "roa": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -438,7 +402,7 @@ async function roa(request){
 
                 const keyFigure = (earnings + financalExpense - expenses) / (currentAssetsTotal + fixedAssetsTotal)
 
-                result.roa.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -462,10 +426,7 @@ async function profitMargin(request){
         const query = {"company_id": request.company_id};
         let data = database.collection('report').find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "profitMargin": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -474,7 +435,7 @@ async function profitMargin(request){
 
                 const keyFigure = (earnings - expenses) / earnings
 
-                result.profitMargin.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -505,4 +466,45 @@ async function printResults() {
 
 }
 
-printResults();
+async function getCurrentKeyFigures(company_id) {
+    const historicValues = {
+        equityRatio: await equityRatio({company_id}),
+        debtRatio: await debtRatio({company_id}),
+        selfFinancingRatio: await selfFinancingRatio({company_id}),
+        workingCapitalIntensity: await workingCapitalIntensity({company_id}),
+        fixedAssetIntensity: await fixedAssetIntensity({company_id}),
+        cashRatio: await cashRatio({company_id}),
+        quickCash: await quickCash({company_id}),
+        currentRatio: await currentRatio({company_id}),
+        fixedAssetCoverage1: await fixedAssetCoverage1({company_id}),
+        fixedAssetCoverage2: await fixedAssetCoverage2({company_id}),
+        roe: await roe({company_id}),
+        roa: await roa({company_id}),
+        profitMargin: await profitMargin({company_id})
+    }
+
+    let newestPeriod = undefined
+
+    for (const [keyFigure, historicValueArray] of Object.entries(historicValues)) {
+
+        let highestPeriodItem = historicValueArray[0]
+        Array.from(historicValueArray).forEach(item => {
+            if (item.period > highestPeriodItem.period) {
+                highestPeriodItem = item
+            }
+        })
+        historicValues[keyFigure] = highestPeriodItem.key_figure // Keep only the item with the highest period
+        newestPeriod = highestPeriodItem.period // Set the highest period as period for all current key figure values
+    }
+
+    const currentKeyFigures = {
+        period: newestPeriod,
+        keyFigures: historicValues
+    }
+    return currentKeyFigures
+}
+
+
+module.exports = {
+    getAllKeyFigures: getCurrentKeyFigures
+}
