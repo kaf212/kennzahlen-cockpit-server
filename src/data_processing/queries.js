@@ -1,10 +1,10 @@
 const {MongoClient} = require('mongodb');
-const Report = require('/src/models/Report.js')
+const Report = require('../models/Report')
 
 async function equityRatio(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -24,7 +24,6 @@ async function equityRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
         return result;
 
     } catch (e) {
@@ -36,7 +35,7 @@ async function equityRatio(request) {
 async function debtRatio(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -57,7 +56,7 @@ async function debtRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
+
         return result;
 
     } catch (e) {
@@ -69,7 +68,7 @@ async function debtRatio(request) {
 async function selfFinancingRatio(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -87,7 +86,7 @@ async function selfFinancingRatio(request) {
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -98,7 +97,7 @@ async function selfFinancingRatio(request) {
 async function workingCapitalIntensity(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -116,7 +115,7 @@ async function workingCapitalIntensity(request) {
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -127,7 +126,7 @@ async function workingCapitalIntensity(request) {
 async function fixedAssetIntensity(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -145,7 +144,7 @@ async function fixedAssetIntensity(request) {
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -156,7 +155,7 @@ async function fixedAssetIntensity(request) {
 async function cashRatio(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -173,7 +172,7 @@ async function cashRatio(request){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -184,7 +183,7 @@ async function cashRatio(request){
 async function quickCash(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -202,7 +201,7 @@ async function quickCash(request){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -213,7 +212,7 @@ async function quickCash(request){
 async function currentRatio(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -230,7 +229,7 @@ async function currentRatio(request){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -241,7 +240,7 @@ async function currentRatio(request){
 async function fixedAssetCoverage1(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -258,7 +257,7 @@ async function fixedAssetCoverage1(request){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -269,7 +268,7 @@ async function fixedAssetCoverage1(request){
 async function fixedAssetCoverage2(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -287,7 +286,7 @@ async function fixedAssetCoverage2(request){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -299,7 +298,7 @@ async function fixedAssetCoverage2(request){
 async function roe(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -317,7 +316,7 @@ async function roe(request){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -329,7 +328,7 @@ async function roe(request){
 async function roa(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -349,7 +348,7 @@ async function roa(request){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -360,7 +359,7 @@ async function roa(request){
 async function profitMargin(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = []
 
@@ -377,7 +376,7 @@ async function profitMargin(request){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -388,7 +387,7 @@ async function profitMargin(request){
 async function customKeyFigure(request, keyFigureString){
      try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -405,7 +404,7 @@ async function customKeyFigure(request, keyFigureString){
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
