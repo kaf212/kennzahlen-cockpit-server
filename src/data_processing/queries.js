@@ -466,21 +466,29 @@ async function printResults() {
 
 }
 
-async function getCurrentKeyFigures(company_id) {
+async function getCurrentKeyFigures(companyId) {
+    /*
+    Calls all calculation functions for all key figures and filters out the newest data from the historic values.
+    The individual calculation functions return the respective key figure for all available periods. All data except
+    the figures of the most recent period is removed and the array of historic values is substituted by the single most
+    recent value for the respective key figure.
+    :param: companyId (str): The ID of the company that should be queried
+    :return: currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
+    */
     const historicValues = {
-        equityRatio: await equityRatio({company_id}),
-        debtRatio: await debtRatio({company_id}),
-        selfFinancingRatio: await selfFinancingRatio({company_id}),
-        workingCapitalIntensity: await workingCapitalIntensity({company_id}),
-        fixedAssetIntensity: await fixedAssetIntensity({company_id}),
-        cashRatio: await cashRatio({company_id}),
-        quickCash: await quickCash({company_id}),
-        currentRatio: await currentRatio({company_id}),
-        fixedAssetCoverage1: await fixedAssetCoverage1({company_id}),
-        fixedAssetCoverage2: await fixedAssetCoverage2({company_id}),
-        roe: await roe({company_id}),
-        roa: await roa({company_id}),
-        profitMargin: await profitMargin({company_id})
+        equityRatio: await equityRatio({company_id: companyId}),
+        debtRatio: await debtRatio({company_id: companyId}),
+        selfFinancingRatio: await selfFinancingRatio({company_id: companyId}),
+        workingCapitalIntensity: await workingCapitalIntensity({company_id: companyId}),
+        fixedAssetIntensity: await fixedAssetIntensity({company_id: companyId}),
+        cashRatio: await cashRatio({company_id: companyId}),
+        quickCash: await quickCash({company_id: companyId}),
+        currentRatio: await currentRatio({company_id: companyId}),
+        fixedAssetCoverage1: await fixedAssetCoverage1({company_id: companyId}),
+        fixedAssetCoverage2: await fixedAssetCoverage2({company_id: companyId}),
+        roe: await roe({company_id: companyId}),
+        roa: await roa({company_id: companyId}),
+        profitMargin: await profitMargin({company_id: companyId})
     }
 
     let newestPeriod = undefined
@@ -490,13 +498,18 @@ async function getCurrentKeyFigures(company_id) {
         let highestPeriodItem = historicValueArray[0]
         Array.from(historicValueArray).forEach(item => {
             if (item.period > highestPeriodItem.period) {
-                highestPeriodItem = item
+                highestPeriodItem = item // Substitute the highest period item with current item if its period is newer
             }
         })
-        historicValues[keyFigure] = highestPeriodItem.key_figure // Keep only the item with the highest period
-        newestPeriod = highestPeriodItem.period // Set the highest period as period for all current key figure values
+
+        // Substitute the array of historic values with the most current key figure value:
+        historicValues[keyFigure] = highestPeriodItem.key_figure
+        // Set the highest period as period for all current key figure values:
+        newestPeriod = highestPeriodItem.period
     }
 
+    /* Create a new object with the filtered historic values object (= the current key figures)
+    and the corresponding period: */
     const currentKeyFigures = {
         period: newestPeriod,
         keyFigures: historicValues
