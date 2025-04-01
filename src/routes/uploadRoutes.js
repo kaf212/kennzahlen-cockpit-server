@@ -32,8 +32,7 @@ async function setCompanyIdForReports(jsonData) {
     const reports = await Promise.all(jsonData.map(async (report)=>{
         const found_company = await Company.findOne({name: report.company_id})
         if (found_company) { // The reports are only modified if their company was found in the DB
-            const company = found_company[0]
-            report.company_id = company._id
+            report.company_id = found_company._id
             return report
         } else {
             return null // Insert null into the reports array to indicate a failed modification
@@ -135,7 +134,7 @@ router.post("/", upload.single("file"), async (req, res)=>{
 
     const modifiedReportJson = await setCompanyIdForReports(reportJson)
 
-    if (!reportJson) {
+    if (!modifiedReportJson) {
         return res.status(404).json({message: `company not found`})
     }
 
