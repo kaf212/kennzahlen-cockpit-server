@@ -506,5 +506,5 @@ async function getCurrentKeyFigures(company_id) {
 
 
 module.exports = {
-    getAllKeyFigures: getCurrentKeyFigures
+    getCurrentKeyFigures
 }
