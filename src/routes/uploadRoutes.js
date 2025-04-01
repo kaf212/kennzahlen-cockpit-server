@@ -30,18 +30,20 @@ async function setCompanyIdForReports(jsonData) {
     /* The iteration has to be done with Promise.all() and map() because .forEach() doesn't wait for async returns
     inside the iteration */
     const reports = await Promise.all(jsonData.map(async (report)=>{
-        const found_company = await Company.find({name: report.company_id})
+        const found_company = await Company.findOne({name: report.company_id})
         if (found_company) { // The reports are only modified if their company was found in the DB
-            const company = found_company[0]
-            report.company_id = company._id
+            report.company_id = found_company._id
             return report
+        } else {
+            return null // Insert null into the reports array to indicate a failed modification
         }
     }))
 
-    if (reports.length === 0) {
-        // If the reports weren't modified, it means that no company with the given name was found
-        return false
+    if (reports.includes(null)) {
+        // If the modification process has failed for the reports, return false
+        return false;
     }
+
     return reports
 
 }
@@ -132,7 +134,7 @@ router.post("/", upload.single("file"), async (req, res)=>{
 
     const modifiedReportJson = await setCompanyIdForReports(reportJson)
 
-    if (!reportJson) {
+    if (!modifiedReportJson) {
         return res.status(404).json({message: `company not found`})
     }
 
