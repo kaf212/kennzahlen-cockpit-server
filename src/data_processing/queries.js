@@ -451,6 +451,15 @@ async function customKeyFigure(request, keyFigureString){
                      console.log('value not found')
                  }
                  })
+
+
+                for (const [accountName, accountValue] of Object.entries(values)) {
+                    if (typeof accountValue === 'object') {
+                        /* If the account is a group of subaccounts (for example current_assets),
+                        the total value of this group should be used instead of the entire object for evaluation. */
+                        values[accountName] = accountValue.total
+                    }
+                }
                 let keyFigure = math.evaluate(keyFigureString, values)
 
                 result.customKeyFigure.push({
