@@ -1,10 +1,12 @@
 const {MongoClient} = require('mongodb');
-const Report = require('/src/models/Report.js')
+const Report = require('../models/Report.js')
+const math = require('mathjs');
 
 async function equityRatio(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
+        console.log(data);
 
         const result = {
             "company_id": request.company_id,
@@ -27,7 +29,6 @@ async function equityRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
         return result;
 
     } catch (e) {
@@ -39,7 +40,7 @@ async function equityRatio(request) {
 async function debtRatio(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -63,7 +64,6 @@ async function debtRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
         return result;
 
     } catch (e) {
@@ -75,7 +75,7 @@ async function debtRatio(request) {
 async function selfFinancingRatio(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -96,7 +96,6 @@ async function selfFinancingRatio(request) {
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -107,7 +106,7 @@ async function selfFinancingRatio(request) {
 async function workingCapitalIntensity(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -128,7 +127,6 @@ async function workingCapitalIntensity(request) {
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -139,7 +137,7 @@ async function workingCapitalIntensity(request) {
 async function fixedAssetIntensity(request) {
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -160,7 +158,6 @@ async function fixedAssetIntensity(request) {
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -171,7 +168,7 @@ async function fixedAssetIntensity(request) {
 async function cashRatio(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -191,7 +188,6 @@ async function cashRatio(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -202,7 +198,7 @@ async function cashRatio(request){
 async function quickCash(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -223,7 +219,6 @@ async function quickCash(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -234,7 +229,7 @@ async function quickCash(request){
 async function currentRatio(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -254,7 +249,6 @@ async function currentRatio(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -265,7 +259,7 @@ async function currentRatio(request){
 async function fixedAssetCoverage1(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -285,7 +279,6 @@ async function fixedAssetCoverage1(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -296,7 +289,7 @@ async function fixedAssetCoverage1(request){
 async function fixedAssetCoverage2(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -317,7 +310,6 @@ async function fixedAssetCoverage2(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -329,7 +321,7 @@ async function fixedAssetCoverage2(request){
 async function roe(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -350,7 +342,6 @@ async function roe(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -362,7 +353,7 @@ async function roe(request){
 async function roa(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -385,7 +376,6 @@ async function roa(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -396,7 +386,7 @@ async function roa(request){
 async function profitMargin(request){
     try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -416,7 +406,6 @@ async function profitMargin(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -424,19 +413,51 @@ async function profitMargin(request){
     }
 }
 
+function searchReport(obj, keyString){
+    if (!obj || typeof obj !== 'object') return null
+    else{
+        if (obj.hasOwnProperty(keyString)) return obj[keyString];
+
+        for (let i in obj){
+            let value = searchReport(obj[i], keyString)
+            if (value !== null) return value;
+        }
+
+    }
+    return null
+}
+
 async function customKeyFigure(request, keyFigureString){
      try {
         const query = {"company_id": request.company_id};
-        let data = Report.find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "customKeyFigure": []
-        };
+         const result = {
+             "company_id": request.company_id,
+             "customKeyFigure": []
+         };
 
         await data.forEach((dataset) => {
             if (dataset) {
                 // do the math and logic
+                let variables = new Set(keyFigureString.match(/[a-zA-Z_]\w*/g));
+                console.log(variables)
+                 let values = {}
+
+                 variables.forEach( (string)=>{
+                let value = searchReport(dataset, string)
+                 console.log(value)
+                 if (value !== null){
+                     values[string] = value
+                 }else{
+                     console.log('value not found')
+                 }
+                 })
+                let keyFigure = math.evaluate(keyFigureString, values)
+
+                console.log('-----------')
+                console.log(keyFigure)
+                console.log('-----------')
 
                 result.customKeyFigure.push({
                     "period": dataset.period,
@@ -444,7 +465,6 @@ async function customKeyFigure(request, keyFigureString){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -466,6 +486,7 @@ async function printResults() {
     console.log(await roe({ company_id: "12345" }));
     console.log(await roa({ company_id: "12345" }));
     console.log(await profitMargin({ company_id: "12345" }));
+    console.log(await customKeyFigure({ company_id: "12345" }, "receivables/(stocks+cash)"));
 
 }
 
