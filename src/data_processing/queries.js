@@ -430,14 +430,15 @@ function searchReport(obj, keyString){
 async function customKeyFigure(request, keyFigureString){
      try {
         const query = {"company_id": request.company_id};
-        let data = await Report.find(query)
+        // lean: makes mongodb return pure JSON objects, which better enables recursive processing of the object
+        let data = await Report.find(query).lean()
 
          const result = {
              "company_id": request.company_id,
              "customKeyFigure": []
          };
 
-        await data.forEach((dataset) => {
+        for (const dataset of data) {
             if (dataset) {
                 let variables = new Set(keyFigureString.match(/[a-zA-Z_]\w*/g));
                  let values = {}
@@ -457,7 +458,7 @@ async function customKeyFigure(request, keyFigureString){
                     "key_figure": keyFigure
                 });
             }
-        });
+        }
         return result;
     } catch (e) {
         console.error(e);
@@ -483,4 +484,5 @@ async function printResults() {
 
 }
 
-printResults();
+
+module.exports = {customKeyFigure}
