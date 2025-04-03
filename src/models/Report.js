@@ -59,6 +59,7 @@ const passivesSchema = new mongoose.Schema({
 }, { _id: false });
 
 const expenseSchema = new mongoose.Schema({
+    // try again
     total: { type: Number, min: 0 },
     operating_expense: { type: Number, min: 0 },
     staff_expense: { type: Number, min: 0 },
