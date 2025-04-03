@@ -454,6 +454,12 @@ async function getCurrentKeyFigures(companyId) {
         profitMargin: await profitMargin({company_id: companyId})
     }
 
+    for (const [keyFigure, historicValueArray] of Object.entries(historicValues)) {
+        if (historicValueArray.length === 0) {
+            return null // Return null if no reports were found for this company
+        }
+    }
+
     let newestPeriod = undefined
 
     for (const [keyFigure, historicValueArray] of Object.entries(historicValues)) {
