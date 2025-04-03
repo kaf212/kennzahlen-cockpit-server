@@ -486,7 +486,27 @@ async function getCurrentKeyFigures(companyId) {
     return currentKeyFigures
 }
 
+async function getHistoricKeyFigures(companyId) {
+    const historicValues = {
+        equityRatio: await equityRatio({company_id: companyId}),
+        debtRatio: await debtRatio({company_id: companyId}),
+        selfFinancingRatio: await selfFinancingRatio({company_id: companyId}),
+        workingCapitalIntensity: await workingCapitalIntensity({company_id: companyId}),
+        fixedAssetIntensity: await fixedAssetIntensity({company_id: companyId}),
+        cashRatio: await cashRatio({company_id: companyId}),
+        quickCash: await quickCash({company_id: companyId}),
+        currentRatio: await currentRatio({company_id: companyId}),
+        fixedAssetCoverage1: await fixedAssetCoverage1({company_id: companyId}),
+        fixedAssetCoverage2: await fixedAssetCoverage2({company_id: companyId}),
+        roe: await roe({company_id: companyId}),
+        roa: await roa({company_id: companyId}),
+        profitMargin: await profitMargin({company_id: companyId})
+    }
+
+    return historicValues
+}
+
 
 module.exports = {
-    getCurrentKeyFigures
+    getCurrentKeyFigures, getHistoricKeyFigures
 }
