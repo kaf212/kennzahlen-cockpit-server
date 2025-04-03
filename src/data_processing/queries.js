@@ -24,7 +24,6 @@ async function equityRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
         return result;
 
     } catch (e) {
