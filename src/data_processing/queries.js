@@ -466,7 +466,7 @@ async function getCurrentKeyFigures(companyId) {
     :param: companyId (str): The ID of the company that should be queried
     :return: currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
     */
-    const historicValues = await getHistoricKeyFigures()
+    const historicValues = await getHistoricKeyFigures(companyId)
 
     if (historicValues === null) {
         return null
