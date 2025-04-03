@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken");
 
-const secretKey = process.env.SECRET_KEY
+const secretKey = process.env.SECRET_KEY || "secret";
 
 
 const dummyDB = [
     // source: https://chatgpt.com/share/67cd74aa-913c-8011-8973-e782152c79de
-    {name: "Admin", password: bcrypt.hashSync("admin", bcrypt.genSaltSync(10))},
-    {name: "Standard", password: bcrypt.hashSync("standard", bcrypt.genSaltSync(10))}
+    {name: "Admin", password: bcrypt.hashSync("admin123", bcrypt.genSaltSync(10))},
+    {name: "Standard", password: bcrypt.hashSync("user123", bcrypt.genSaltSync(10))}
     // Salt generation in async will cause error
 ]
 

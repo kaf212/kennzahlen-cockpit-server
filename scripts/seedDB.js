@@ -92,7 +92,7 @@ async function seedReportCollection() {
 async function seedRoleCollection() {
     const documentCount = await Role.countDocuments()
     if (documentCount !== 2) {
-        await Role.deleteMany({}) // delete all documents
+        await Role.deleteMany({})
 
         const adminRole = new Role({
             name: "Admin",
