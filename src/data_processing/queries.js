@@ -1,14 +1,11 @@
-const {MongoClient} = require('mongodb');
+const Report = require('../models/Report.js')
+const math = require('mathjs');
 
 async function equityRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
+        console.log(data);
 
         const result = {
             "company_id": request.company_id,
@@ -31,7 +28,6 @@ async function equityRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
         return result;
 
     } catch (e) {
@@ -42,13 +38,8 @@ async function equityRatio(request) {
 
 async function debtRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -72,7 +63,6 @@ async function debtRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
         return result;
 
     } catch (e) {
@@ -83,13 +73,8 @@ async function debtRatio(request) {
 
 async function selfFinancingRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -110,7 +95,6 @@ async function selfFinancingRatio(request) {
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -120,13 +104,8 @@ async function selfFinancingRatio(request) {
 
 async function workingCapitalIntensity(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -147,7 +126,6 @@ async function workingCapitalIntensity(request) {
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -157,13 +135,8 @@ async function workingCapitalIntensity(request) {
 
 async function fixedAssetIntensity(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -184,7 +157,6 @@ async function fixedAssetIntensity(request) {
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -194,13 +166,8 @@ async function fixedAssetIntensity(request) {
 
 async function cashRatio(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -220,7 +187,6 @@ async function cashRatio(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -230,13 +196,8 @@ async function cashRatio(request){
 
 async function quickCash(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -257,7 +218,6 @@ async function quickCash(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -267,13 +227,8 @@ async function quickCash(request){
 
 async function currentRatio(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -293,7 +248,6 @@ async function currentRatio(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -303,13 +257,8 @@ async function currentRatio(request){
 
 async function fixedAssetCoverage1(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -329,7 +278,6 @@ async function fixedAssetCoverage1(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -339,13 +287,8 @@ async function fixedAssetCoverage1(request){
 
 async function fixedAssetCoverage2(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -366,7 +309,6 @@ async function fixedAssetCoverage2(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -377,13 +319,8 @@ async function fixedAssetCoverage2(request){
 //return on equity
 async function roe(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -404,7 +341,6 @@ async function roe(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -415,13 +351,8 @@ async function roe(request){
 //return on assets
 async function roa(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -432,7 +363,7 @@ async function roa(request){
             if (dataset) {
                 const expenses = dataset.income_statement.expense.total;
                 const earnings = dataset.income_statement.earnings.total;
-                const financalExpense = dataset.income_statement.expense.financial;
+                const financalExpense = dataset.income_statement.expense.financial_expense;
                 const currentAssetsTotal = dataset.balance_sheet.actives.current_assets.total;
                 const fixedAssetsTotal = dataset.balance_sheet.actives.fixed_assets.total;
 
@@ -444,7 +375,6 @@ async function roa(request){
                 });
             }
         });
-        await client.close();
         return result;
     } catch (e) {
         console.error(e);
@@ -454,13 +384,8 @@ async function roa(request){
 
 async function profitMargin(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
         const result = {
             "company_id": request.company_id,
@@ -480,7 +405,68 @@ async function profitMargin(request){
                 });
             }
         });
-        await client.close();
+        return result;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}
+
+function searchReport(obj, keyString){
+    if (!obj || typeof obj !== 'object') return null
+    else{
+        if (obj.hasOwnProperty(keyString)) return obj[keyString];
+
+        for (let i in obj){
+            let value = searchReport(obj[i], keyString)
+            if (value !== null) return value;
+        }
+
+    }
+    return null
+}
+
+async function customKeyFigure(request, keyFigureString){
+     try {
+        const query = {"company_id": request.company_id};
+        // lean: makes mongodb return pure JSON objects, which better enables recursive processing of the object
+        let data = await Report.find(query).lean()
+
+         const result = {
+             "company_id": request.company_id,
+             "customKeyFigure": []
+         };
+
+        for (const dataset of data) {
+            if (dataset) {
+                let variables = new Set(keyFigureString.match(/[a-zA-Z_]\w*/g));
+                 let values = {}
+
+                 variables.forEach( (string)=>{
+                let value = searchReport(dataset, string)
+                 if (value !== null){
+                     values[string] = value
+                 }else{
+                     console.log('value not found')
+                 }
+                 })
+
+
+                for (const [accountName, accountValue] of Object.entries(values)) {
+                    if (typeof accountValue === 'object') {
+                        /* If the account is a group of subaccounts (for example current_assets),
+                        the total value of this group should be used instead of the entire object for evaluation. */
+                        values[accountName] = accountValue.total
+                    }
+                }
+                let keyFigure = math.evaluate(keyFigureString, values)
+
+                result.customKeyFigure.push({
+                    "period": dataset.period,
+                    "key_figure": keyFigure
+                });
+            }
+        }
         return result;
     } catch (e) {
         console.error(e);
@@ -502,7 +488,9 @@ async function printResults() {
     console.log(await roe({ company_id: "12345" }));
     console.log(await roa({ company_id: "12345" }));
     console.log(await profitMargin({ company_id: "12345" }));
+    console.log(await customKeyFigure({ company_id: "12345" }, "receivables/(stocks+cash)"));
 
 }
 
-printResults();
+
+module.exports = {customKeyFigure}

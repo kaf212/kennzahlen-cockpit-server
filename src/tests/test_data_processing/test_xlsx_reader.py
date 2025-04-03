@@ -5,7 +5,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data_processing')))
 
-import xlsx_reader
+import src.data_processing.xlsx_reader as xlsx_reader
 
 
 
