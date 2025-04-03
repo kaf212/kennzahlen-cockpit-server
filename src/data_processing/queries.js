@@ -429,15 +429,8 @@ async function printResults() {
 
 }
 
-async function getCurrentKeyFigures(companyId) {
-    /*
-    Calls all calculation functions for all key figures and filters out the newest data from the historic values.
-    The individual calculation functions return the respective key figure for all available periods. All data except
-    the figures of the most recent period is removed and the array of historic values is substituted by the single most
-    recent value for the respective key figure.
-    :param: companyId (str): The ID of the company that should be queried
-    :return: currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
-    */
+
+async function getHistoricKeyFigures(companyId) {
     const historicValues = {
         equityRatio: await equityRatio({company_id: companyId}),
         debtRatio: await debtRatio({company_id: companyId}),
@@ -458,6 +451,25 @@ async function getCurrentKeyFigures(companyId) {
         if (historicValueArray.length === 0) {
             return null // Return null if no reports were found for this company
         }
+    }
+
+    return historicValues
+}
+
+
+async function getCurrentKeyFigures(companyId) {
+    /*
+    Calls all calculation functions for all key figures and filters out the newest data from the historic values.
+    The individual calculation functions return the respective key figure for all available periods. All data except
+    the figures of the most recent period is removed and the array of historic values is substituted by the single most
+    recent value for the respective key figure.
+    :param: companyId (str): The ID of the company that should be queried
+    :return: currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
+    */
+    const historicValues = await getHistoricKeyFigures()
+
+    if (historicValues === null) {
+        return null
     }
 
     let newestPeriod = undefined
@@ -486,25 +498,7 @@ async function getCurrentKeyFigures(companyId) {
     return currentKeyFigures
 }
 
-async function getHistoricKeyFigures(companyId) {
-    const historicValues = {
-        equityRatio: await equityRatio({company_id: companyId}),
-        debtRatio: await debtRatio({company_id: companyId}),
-        selfFinancingRatio: await selfFinancingRatio({company_id: companyId}),
-        workingCapitalIntensity: await workingCapitalIntensity({company_id: companyId}),
-        fixedAssetIntensity: await fixedAssetIntensity({company_id: companyId}),
-        cashRatio: await cashRatio({company_id: companyId}),
-        quickCash: await quickCash({company_id: companyId}),
-        currentRatio: await currentRatio({company_id: companyId}),
-        fixedAssetCoverage1: await fixedAssetCoverage1({company_id: companyId}),
-        fixedAssetCoverage2: await fixedAssetCoverage2({company_id: companyId}),
-        roe: await roe({company_id: companyId}),
-        roa: await roa({company_id: companyId}),
-        profitMargin: await profitMargin({company_id: companyId})
-    }
 
-    return historicValues
-}
 
 
 module.exports = {
