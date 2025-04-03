@@ -439,14 +439,11 @@ async function customKeyFigure(request, keyFigureString){
 
         await data.forEach((dataset) => {
             if (dataset) {
-                // do the math and logic
                 let variables = new Set(keyFigureString.match(/[a-zA-Z_]\w*/g));
-                console.log(variables)
                  let values = {}
 
                  variables.forEach( (string)=>{
                 let value = searchReport(dataset, string)
-                 console.log(value)
                  if (value !== null){
                      values[string] = value
                  }else{
@@ -454,10 +451,6 @@ async function customKeyFigure(request, keyFigureString){
                  }
                  })
                 let keyFigure = math.evaluate(keyFigureString, values)
-
-                console.log('-----------')
-                console.log(keyFigure)
-                console.log('-----------')
 
                 result.customKeyFigure.push({
                     "period": dataset.period,
