@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes")
 const uploadRoutes = require("./routes/uploadRoutes")
 const companyRoutes = require("./routes/companyRoutes")
 const customKeyFigureRoutes = require("./routes/customKeyFigureRoutes")
+const keyFigureRoutes = require("./routes/keyFigureRoutes")
 const connectDB = require("../scripts/db")
 const seedDB = require("../scripts/seedDB")
 
@@ -17,6 +18,7 @@ app.use("/auth", authRoutes)
 app.use("/upload", uploadRoutes)
 app.use("/companies", companyRoutes)
 app.use("/customKeyFigures", customKeyFigureRoutes)
+app.use("/keyFigures", keyFigureRoutes)
 
 
 // Automatically respond with 500 when next(err) is called in an endpoint
