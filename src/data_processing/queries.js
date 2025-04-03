@@ -1,4 +1,3 @@
-const {MongoClient} = require('mongodb');
 const Report = require('../models/Report.js')
 const math = require('mathjs');
 
