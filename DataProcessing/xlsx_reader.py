@@ -93,7 +93,9 @@ def write_json(data, years_count, value_indexes):
                     },
                     "passives": {
                         "debt": {
+                            "total": values[9] + values[10] + values[11],
                             "short_term": {
+                                "total": values[9],
                                 "liabilities": values[9]
                             },
                             "long_term": {
