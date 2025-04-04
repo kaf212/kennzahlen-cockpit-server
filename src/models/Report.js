@@ -32,6 +32,7 @@ const activesSchema = new mongoose.Schema({
 }, { _id: false });
 
 const shortTermDebtSchema = new mongoose.Schema({
+    total: { type: Number, min: 0 },
     liabilities: { type: Number, min: 0 }
 }, { _id: false });
 
@@ -42,6 +43,7 @@ const longTermDebtSchema = new mongoose.Schema({
 }, { _id: false });
 
 const debtSchema = new mongoose.Schema({
+    total: { type: Number, min: 0 },
     short_term: shortTermDebtSchema,
     long_term: longTermDebtSchema
 }, { _id: false });
