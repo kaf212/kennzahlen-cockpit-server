@@ -62,21 +62,20 @@ const passivesSchema = new mongoose.Schema({
 
 const expenseSchema = new mongoose.Schema({
     total: { type: Number, min: 0 },
-    goods: { type: Number, min: 0 },
-    staff: { type: Number, min: 0 },
+    operating_expense: { type: Number, min: 0 },
+    staff_expense: { type: Number, min: 0 },
     other_expenses: { type: Number, min: 0 },
     depreciation: { type: Number, min: 0 },
-    financial: { type: Number, min: 0 },
-    real_estate: { type: Number, min: 0 }
+    financial_expense: { type: Number, min: 0 },
+    real_estate_expense: { type: Number, min: 0 }
 }, { _id: false });
 
 const earningsSchema = new mongoose.Schema({
     total: { type: Number, min: 0 },
     operating_income: { type: Number, min: 0 },
-    financial: { type: Number, min: 0 },
-    real_estate: { type: Number, min: 0 }
+    financial_income: { type: Number, min: 0 },
+    real_estate_income: { type: Number, min: 0 }
 }, { _id: false });
-
 
 const incomeStatementSchema = new mongoose.Schema({
     expense: expenseSchema,

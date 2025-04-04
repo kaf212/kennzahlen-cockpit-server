@@ -1,19 +1,12 @@
-const {MongoClient} = require('mongodb');
+const Report = require('../models/Report')
+const math = require('mathjs');
 
 async function equityRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "equity_ratios": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset){
@@ -23,7 +16,7 @@ async function equityRatio(request) {
 
                 const keyFigure = equity / (currentAssetsTotal + fixedAssetsTotal);
 
-                result.equity_ratios.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -31,7 +24,6 @@ async function equityRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
         return result;
 
     } catch (e) {
@@ -42,18 +34,10 @@ async function equityRatio(request) {
 
 async function debtRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "debt_ratios": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset){
@@ -64,7 +48,7 @@ async function debtRatio(request) {
 
                 const keyFigure = (stDebt + ltDebt) / (currentAssetsTotal + fixedAssetsTotal);
 
-                result.debt_ratios.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
@@ -72,7 +56,7 @@ async function debtRatio(request) {
                 console.log("empty dataset")
             }
         })
-        await client.close();
+
         return result;
 
     } catch (e) {
@@ -83,18 +67,10 @@ async function debtRatio(request) {
 
 async function selfFinancingRatio(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "self_financing_ratios": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -104,13 +80,13 @@ async function selfFinancingRatio(request) {
 
                 const keyFigure = (legalReserve + retainedEarnings) / equityShares;
 
-                result.self_financing_ratios.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -120,18 +96,10 @@ async function selfFinancingRatio(request) {
 
 async function workingCapitalIntensity(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "working_capital_intensity": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -141,13 +109,13 @@ async function workingCapitalIntensity(request) {
 
                 const keyFigure = liquidMoney / (currentAssetsTotal + fixedAssetsTotal);
 
-                result.working_capital_intensity.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -157,18 +125,10 @@ async function workingCapitalIntensity(request) {
 
 async function fixedAssetIntensity(request) {
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "fixed_asset_intensity": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -178,13 +138,13 @@ async function fixedAssetIntensity(request) {
 
                 const keyFigure = fixedAssets / (currentAssetsTotal + fixedAssetsTotal);
 
-                result.fixed_asset_intensity.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -194,18 +154,10 @@ async function fixedAssetIntensity(request) {
 
 async function cashRatio(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "cash_ratio": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -214,13 +166,13 @@ async function cashRatio(request){
 
                 const keyFigure = liquidMoney / stDebt
 
-                result.cash_ratio.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -230,18 +182,10 @@ async function cashRatio(request){
 
 async function quickCash(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "quick_cash": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -251,13 +195,13 @@ async function quickCash(request){
 
                 const keyFigure = (liquidMoney + receivables) / stDebt
 
-                result.quick_cash.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -267,18 +211,10 @@ async function quickCash(request){
 
 async function currentRatio(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "current_ratio": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -287,13 +223,13 @@ async function currentRatio(request){
 
                 const keyFigure = currentAssets / stDebt
 
-                result.current_ratio.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -303,18 +239,10 @@ async function currentRatio(request){
 
 async function fixedAssetCoverage1(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "fixed_Asset_Coverage1": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -323,13 +251,13 @@ async function fixedAssetCoverage1(request){
 
                 const keyFigure = shares / fixedAssets
 
-                result.fixed_Asset_Coverage1.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -339,18 +267,10 @@ async function fixedAssetCoverage1(request){
 
 async function fixedAssetCoverage2(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "fixed_Asset_Coverage2": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -360,13 +280,13 @@ async function fixedAssetCoverage2(request){
 
                 const keyFigure = (shares + ltDebt) / fixedAssets
 
-                result.fixed_Asset_Coverage2.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -377,18 +297,10 @@ async function fixedAssetCoverage2(request){
 //return on equity
 async function roe(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "roe": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -398,13 +310,13 @@ async function roe(request){
 
                 const keyFigure = (earnings - expenses) / shares
 
-                result.roe.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -415,36 +327,28 @@ async function roe(request){
 //return on assets
 async function roa(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "roa": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
                 const expenses = dataset.income_statement.expense.total;
                 const earnings = dataset.income_statement.earnings.total;
-                const financalExpense = dataset.income_statement.expense.financial;
+                const financalExpense = dataset.income_statement.expense.financial_expense;
                 const currentAssetsTotal = dataset.balance_sheet.actives.current_assets.total;
                 const fixedAssetsTotal = dataset.balance_sheet.actives.fixed_assets.total;
 
                 const keyFigure = (earnings + financalExpense - expenses) / (currentAssetsTotal + fixedAssetsTotal)
 
-                result.roa.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
         return result;
     } catch (e) {
         console.error(e);
@@ -454,18 +358,10 @@ async function roa(request){
 
 async function profitMargin(request){
     try {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
-        await client.connect();
-
-        const database = client.db("kennzahlen")
         const query = {"company_id": request.company_id};
-        let data = database.collection('report').find(query)
+        let data = await Report.find(query)
 
-        const result = {
-            "company_id": request.company_id,
-            "profitMargin": []
-        };
+        const result = []
 
         await data.forEach((dataset) => {
             if (dataset) {
@@ -474,13 +370,75 @@ async function profitMargin(request){
 
                 const keyFigure = (earnings - expenses) / earnings
 
-                result.profitMargin.push({
+                result.push({
                     "period": dataset.period,
                     "key_figure": keyFigure
                 });
             }
         });
-        await client.close();
+
+        return result;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}
+
+function searchReport(obj, keyString){
+    if (!obj || typeof obj !== 'object') return null
+    else{
+        if (obj.hasOwnProperty(keyString)) return obj[keyString];
+
+        for (let i in obj){
+            let value = searchReport(obj[i], keyString)
+            if (value !== null) return value;
+        }
+
+    }
+    return null
+}
+
+async function customKeyFigure(request, keyFigureString){
+     try {
+        const query = {"company_id": request.company_id};
+        // lean: makes mongodb return pure JSON objects, which better enables recursive processing of the object
+        let data = await Report.find(query).lean()
+
+         const result = {
+             "company_id": request.company_id,
+             "customKeyFigure": []
+         };
+
+        for (const dataset of data) {
+            if (dataset) {
+                let variables = new Set(keyFigureString.match(/[a-zA-Z_]\w*/g));
+                 let values = {}
+
+                 variables.forEach( (string)=>{
+                let value = searchReport(dataset, string)
+                 if (value !== null){
+                     values[string] = value
+                 }else{
+                     console.log('value not found')
+                 }
+                 })
+
+
+                for (const [accountName, accountValue] of Object.entries(values)) {
+                    if (typeof accountValue === 'object') {
+                        /* If the account is a group of subaccounts (for example current_assets),
+                        the total value of this group should be used instead of the entire object for evaluation. */
+                        values[accountName] = accountValue.total
+                    }
+                }
+                let keyFigure = math.evaluate(keyFigureString, values)
+
+                result.customKeyFigure.push({
+                    "period": dataset.period,
+                    "key_figure": keyFigure
+                });
+            }
+        }
         return result;
     } catch (e) {
         console.error(e);
@@ -502,7 +460,82 @@ async function printResults() {
     console.log(await roe({ company_id: "12345" }));
     console.log(await roa({ company_id: "12345" }));
     console.log(await profitMargin({ company_id: "12345" }));
+    console.log(await customKeyFigure({ company_id: "12345" }, "receivables/(stocks+cash)"));
 
 }
 
-printResults();
+
+async function getHistoricKeyFigures(companyId) {
+    const historicValues = {
+        equityRatio: await equityRatio({company_id: companyId}),
+        debtRatio: await debtRatio({company_id: companyId}),
+        selfFinancingRatio: await selfFinancingRatio({company_id: companyId}),
+        workingCapitalIntensity: await workingCapitalIntensity({company_id: companyId}),
+        fixedAssetIntensity: await fixedAssetIntensity({company_id: companyId}),
+        cashRatio: await cashRatio({company_id: companyId}),
+        quickCash: await quickCash({company_id: companyId}),
+        currentRatio: await currentRatio({company_id: companyId}),
+        fixedAssetCoverage1: await fixedAssetCoverage1({company_id: companyId}),
+        fixedAssetCoverage2: await fixedAssetCoverage2({company_id: companyId}),
+        roe: await roe({company_id: companyId}),
+        roa: await roa({company_id: companyId}),
+        profitMargin: await profitMargin({company_id: companyId})
+    }
+
+    for (const [keyFigure, historicValueArray] of Object.entries(historicValues)) {
+        if (historicValueArray.length === 0) {
+            return null // Return null if no reports were found for this company
+        }
+    }
+
+    return historicValues
+}
+
+
+async function getCurrentKeyFigures(companyId) {
+    /*
+    Calls all calculation functions for all key figures and filters out the newest data from the historic values.
+    The individual calculation functions return the respective key figure for all available periods. All data except
+    the figures of the most recent period is removed and the array of historic values is substituted by the single most
+    recent value for the respective key figure.
+    :param: companyId (str): The ID of the company that should be queried
+    :return: currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
+    */
+    const historicValues = await getHistoricKeyFigures(companyId)
+
+    if (historicValues === null) {
+        return null
+    }
+
+    let newestPeriod = undefined
+
+    for (const [keyFigure, historicValueArray] of Object.entries(historicValues)) {
+
+        let highestPeriodItem = historicValueArray[0]
+        Array.from(historicValueArray).forEach(item => {
+            if (item.period > highestPeriodItem.period) {
+                highestPeriodItem = item // Substitute the highest period item with current item if its period is newer
+            }
+        })
+
+        // Substitute the array of historic values with the most current key figure value:
+        historicValues[keyFigure] = highestPeriodItem.key_figure
+        // Set the highest period as period for all current key figure values:
+        newestPeriod = highestPeriodItem.period
+    }
+
+    /* Create a new object with the filtered historic values object (= the current key figures)
+    and the corresponding period: */
+    const currentKeyFigures = {
+        period: newestPeriod,
+        keyFigures: historicValues
+    }
+    return currentKeyFigures
+}
+
+
+
+
+module.exports = {
+    getCurrentKeyFigures, getHistoricKeyFigures, customKeyFigure
+}
