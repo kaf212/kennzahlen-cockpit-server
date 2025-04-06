@@ -5,6 +5,7 @@ const path = require("path")
 const fs = require("fs")
 const Report = require("../models/Report")
 const Company = require("../models/Company")
+const {re} = require("mathjs");
 
 const router = express.Router()
 router.use(express.json())
@@ -16,6 +17,14 @@ function saveReportToDb(jsonData) {
         const newReport = new Report(jsonReport)
         await newReport.save()
     })
+}
+
+async function checkReportExistence(jsonData) {
+    const foundReport = await Report.findOne({company_id: jsonData.company_id, period: jsonData.period})
+    if (foundReport) {
+        return true
+    }
+    return false
 }
 
 async function setCompanyIdForReports(jsonData) {
@@ -136,6 +145,19 @@ router.post("/", upload.single("file"), async (req, res)=>{
 
     if (!modifiedReportJson) {
         return res.status(404).json({message: `company not found`})
+    }
+
+    // check if reports with the same period and company already exist in the database or in the same file
+    const periods = []
+    for (let i = 0; i < modifiedReportJson.length; i++) {
+        const report = modifiedReportJson[i]
+        if (await checkReportExistence(report)) {
+            return res.status(400).json({message: `report for period ${report.period} already exists`})
+        }
+        if (periods.includes(report.period)) { // Check if a report with the same period exists in the uploaded file
+            return res.status(400).json({message: `file contains duplicate reports for period ${report.period}`})
+        }
+        periods.push(report.period) // Add the period of the current iteration to all periods for duplicate validation
     }
 
     saveReportToDb(modifiedReportJson)
