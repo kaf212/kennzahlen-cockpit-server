@@ -17,9 +17,9 @@ async function checkCustomKeyFigureExistenceByName(customKeyFigureName) {
     return false
 }
 
-async function checkCustomFigureExistenceById(customFigreId) {
+async function checkCustomFigureExistenceById(customFigureId) {
     try {
-        const found = await CustomKeyFigure.findById(customFigreId)
+        const found = await CustomKeyFigure.findById(customFigureId)
         if (found !== null) {
             return true
         }
