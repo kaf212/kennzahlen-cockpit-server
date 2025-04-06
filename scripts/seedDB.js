@@ -24,7 +24,7 @@ async function seedReportCollection() {
     const documentCount = await Report.countDocuments()
     if (documentCount === 0) {
         const testReport = new Report({
-            company_id: "12345",
+            company_id: "testReport",
             period: 2025,
             balance_sheet: {
                 actives: {
@@ -48,7 +48,9 @@ async function seedReportCollection() {
                 },
                 passives: {
                     debt: {
+                        total: 120000,
                         short_term: {
+                            total: 20000,
                             liabilities: 20000
                         },
                         long_term: {
@@ -68,18 +70,18 @@ async function seedReportCollection() {
             income_statement: {
                 expense: {
                     total: 50000,
-                    goods: 20000,
-                    staff: 10000,
+                    operating_expense: 20000,
+                    staff_expense: 10000,
                     other_expenses: 5000,
                     depreciation: 2000,
-                    financial: 3000,
-                    real_estate: 1000
+                    financial_expense: 3000,
+                    real_estate_expense: 1000
                 },
                 earnings: {
                     total: 100000,
                     operating_income: 70000,
-                    financial: 20000,
-                    real_estate: 10000
+                    financial_income: 20000,
+                    real_estate_income: 10000
                 }
             }
         })

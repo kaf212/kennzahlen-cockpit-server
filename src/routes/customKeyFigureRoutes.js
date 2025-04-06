@@ -1,7 +1,10 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const CustomKeyFigure = require("../models/customKeyFigure")
+const Report = require("../models/Report")
 const {authenticateAdmin} = require("../middleware/tokenValidation")
+const {customKeyFigure} = require("../data_processing/queries")
+const {number} = require("mathjs");
 
 const router = express.Router()
 
@@ -14,9 +17,9 @@ async function checkCustomKeyFigureExistenceByName(customKeyFigureName) {
     return false
 }
 
-async function checkCustomFigureExistenceById(customFigreId) {
+async function checkCustomFigureExistenceById(customFigureId) {
     try {
-        const found = await CustomKeyFigure.findById(customFigreId)
+        const found = await CustomKeyFigure.findById(customFigureId)
         if (found !== null) {
             return true
         }
@@ -24,6 +27,30 @@ async function checkCustomFigureExistenceById(customFigreId) {
     } catch (err) {}
     return false
 
+}
+
+async function validateFormula(formula) {
+    /**
+     * Validates a custom key figure formula string by parsing and calculating
+     * for the default test report in the database with customKeyFigure() from data_processing.
+     * If the calculation returns a valid result, the formula is valid, if the calculation fails, it is invalid.
+     *
+     * @param {string} formula - The formula string which needs to be validated
+     * @return {boolean} - Success of the validation process as a boolean
+     */
+    let result = null
+    try {
+        result = await customKeyFigure({company_id: "testReport"}, formula)
+    } catch (err) {
+        return false
+    }
+
+    if (result.hasOwnProperty("company_id") && result.hasOwnProperty("customKeyFigure")) {
+        return true
+    } else {
+        console.error("Invalid result from customKeyFigure calculation: ", result)
+        return false
+    }
 }
 
 router.get("/", async (req, res, next)=>{
@@ -54,10 +81,15 @@ router.get("/:id", async (req, res, next)=> {
 })
 
 
-router.post("/", authenticateAdmin, async (req, res, next)=> {
+router.post("/", async (req, res, next)=> {
     if (await checkCustomKeyFigureExistenceByName(req.body.name)) {
         return res.status(400).json({message: `custom key figure ${req.body.name} already exists`})
     }
+
+    if (await validateFormula(req.body.formula) === false) {
+        return res.status(400).json({message: "invalid formula"})
+    }
+
     try {
         const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula})
         await newCustomKeyFigure.save()
@@ -83,6 +115,10 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
 
     if (await checkCustomKeyFigureExistenceByName(customKeyFigureJson.name) === true) {
         return res.status(400).json({message: `custom key figure with name ${customKeyFigureJson.name} already exists`})
+    }
+
+    if (await validateFormula(customKeyFigureJson.formula) === false) {
+        return res.status(400).json({message: "invalid formula"})
     }
 
     /*
