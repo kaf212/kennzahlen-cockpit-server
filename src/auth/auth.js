@@ -33,7 +33,7 @@ function authenticateUser(res, role, password) {
         }
     }
     // For security reasons, error messages will not inform the user if the password or the role is incorrect.
-    return res.status(401).json({ error: 'Authentication failed: Incorrect password or role' })
+    return res.status(401).json({message: 'Authentication failed: Incorrect password or role' })
 }
 
 module.exports = authenticateUser

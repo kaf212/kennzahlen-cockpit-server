@@ -18,7 +18,7 @@ function validateToken(req, res) {
     let token = req.header('Authorization');
 
     if (!token || !token.startsWith("Bearer ")) {
-        return res.status(401).json({ error: 'Authentication token missing or malformed' });
+        return res.status(401).json({message: 'Authentication token missing or malformed' });
     }
     token = token.replace("Bearer ", "") // remove string "Bearer" from the token
 
@@ -30,7 +30,7 @@ function validateToken(req, res) {
     try {
         payload = jwt.verify(token, secretKey);
     } catch (err) {
-        return res.status(403).json({ error: 'Token is invalid' });
+        return res.status(403).json({message: 'Token is invalid' });
     }
     return payload
 }
@@ -68,7 +68,7 @@ function authenticateAdmin(req, res, next) {
         return null // exit the function if token validation has failed in order to prevent double response sending
     }
     if (jwtPayload.role !== "Admin") {
-        return res.status(401).json("Authentication failed: admin privileges required")
+        return res.status(401).json({message: "Authentication failed: admin privileges required"})
     }
     else {
         req.jwtPayload = jwtPayload
