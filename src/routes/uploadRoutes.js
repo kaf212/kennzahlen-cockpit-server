@@ -147,11 +147,16 @@ router.post("/", upload.single("file"), async (req, res)=>{
         return res.status(404).json({message: `company not found`})
     }
 
+    const periods = []
     for (let i = 0; i < modifiedReportJson.length; i++) {
         const report = modifiedReportJson[i]
         if (await checkReportExistence(report)) {
             return res.status(400).json({message: `report for period ${report.period} already exists`})
         }
+        if (periods.includes(report.period)) {
+            return res.status(400).json({message: `file contains duplicate reports for period ${report.period}`})
+        }
+        periods.push(report.period)
     }
 
     saveReportToDb(modifiedReportJson)
