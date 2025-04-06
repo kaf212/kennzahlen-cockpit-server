@@ -30,6 +30,14 @@ async function checkCustomFigureExistenceById(customFigureId) {
 }
 
 async function validateFormula(formula) {
+    /**
+     * Validates a custom key figure formula string by parsing and calculating
+     * for the default test report in the database with customKeyFigure() from data_processing.
+     * If the calculation returns a valid result, the formula is valid, if the calculation fails, it is invalid.
+     *
+     * @param {string} formula - The formula string which needs to be validated
+     * @return {boolean} - Success of the validation process as a boolean
+     */
     let result = null
     try {
         result = await customKeyFigure({company_id: "testReport"}, formula)
