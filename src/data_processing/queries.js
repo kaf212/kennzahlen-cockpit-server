@@ -45,8 +45,12 @@ async function debtRatio(request) {
                 const ltDebt = dataset.balance_sheet.passives.debt.long_term.total;
                 const fixedAssetsTotal = dataset.balance_sheet.actives.fixed_assets.total;
                 const currentAssetsTotal = dataset.balance_sheet.actives.current_assets.total;
+                const debtTotal = dataset.balance_sheet.passives.debt.total
+                const equityTotal = dataset.balance_sheet.passives.equity.total
 
-                const keyFigure = (stDebt + ltDebt) / (currentAssetsTotal + fixedAssetsTotal);
+                const totalCapital = currentAssetsTotal + fixedAssetsTotal + debtTotal + equityTotal
+
+                const keyFigure = (stDebt + ltDebt) / totalCapital
 
                 result.push({
                     "period": dataset.period,
