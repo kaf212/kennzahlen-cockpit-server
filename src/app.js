@@ -28,11 +28,15 @@ app.use((err, req, res, next) => {
     res.status(500).json({"message": "Internal Server Error"});
 });
 
-// Serve frontend static files (needs to come last)
+
+// Serve frontend static files (needs to after API routes)
 app.use(express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/public')))
 
+// Serve /src/styles
+app.use('/styles', express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/src/styles')))
 
-// Frontend fallback (needs to come last)
+
+// Frontend fallback
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../../kennzahlen-cockpit-client/public/index.html'))
 })
