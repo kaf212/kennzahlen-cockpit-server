@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors")
+const path = require("path")
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes")
 const uploadRoutes = require("./routes/uploadRoutes")
@@ -13,6 +14,14 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/public')))
+
+// Frontend fallback for React Router etc.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../kennzahlen-cockpit-client/public/index.html'))
+})
 
 app.use("/auth", authRoutes)
 app.use("/upload", uploadRoutes)
