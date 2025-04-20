@@ -15,10 +15,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// Serve frontend static files
-app.use(express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/public')))
-
-
 app.use("/auth", authRoutes)
 app.use("/upload", uploadRoutes)
 app.use("/companies", companyRoutes)
@@ -31,6 +27,10 @@ app.use((err, req, res, next) => {
     console.error("Server Error:", err);
     res.status(500).json({"message": "Internal Server Error"});
 });
+
+// Serve frontend static files (needs to come last)
+app.use(express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/public')))
+
 
 // Frontend fallback (needs to come last)
 app.get('*', (req, res) => {
