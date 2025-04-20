@@ -119,8 +119,8 @@ router.post("/", upload.single("file"), async (req, res)=>{
     const fileName = req.file.filename
     const filePath = `uploads/${fileName}`
 
-    const pythonProcess = await spawnSync('python', [
-        'src/data_processing/xlsx_reader.py',
+    const pythonProcess = await spawnSync('/usr/bin/python3', [
+        'data_processing/xlsx_reader.py',
         'main',
         filePath
     ]);
@@ -128,12 +128,12 @@ router.post("/", upload.single("file"), async (req, res)=>{
     const result = pythonProcess.stdout?.toString()?.trim();
     const error = pythonProcess.stderr?.toString()?.trim();
 
-    const reportJson = JSON.parse(result)
-
     if (error) {
         console.error(error)
         return res.status(500).json({message: "internal server error"})
     }
+
+    const reportJson = JSON.parse(result)
 
     const errorMessage = validatePythonResult(result)
     if (errorMessage) {
