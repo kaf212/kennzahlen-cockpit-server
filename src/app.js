@@ -32,9 +32,11 @@ app.use((err, req, res, next) => {
 // Serve frontend static files (needs to after API routes)
 app.use(express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/public')))
 
-// Serve /src/styles
+// Serve styles
 app.use('/styles', express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/src/styles')))
 
+// Serve JS
+app.use('/js', express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/src/js')))
 
 // Frontend fallback
 app.get('*', (req, res) => {
