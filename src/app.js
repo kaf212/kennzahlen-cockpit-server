@@ -15,11 +15,11 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.use("/auth", authRoutes)
-app.use("/upload", uploadRoutes)
-app.use("/companies", companyRoutes)
-app.use("/customKeyFigures", customKeyFigureRoutes)
-app.use("/keyFigures", keyFigureRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/upload", uploadRoutes)
+app.use("/api/companies", companyRoutes)
+app.use("/api/customKeyFigures", customKeyFigureRoutes)
+app.use("/api/keyFigures", keyFigureRoutes)
 
 
 // Automatically respond with 500 when next(err) is called in an endpoint
