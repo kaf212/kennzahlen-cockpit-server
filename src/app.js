@@ -18,10 +18,6 @@ app.use(express.json())
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, '../../kennzahlen-cockpit-client/public')))
 
-// Frontend fallback for React Router etc.
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../kennzahlen-cockpit-client/public/index.html'))
-})
 
 app.use("/auth", authRoutes)
 app.use("/upload", uploadRoutes)
@@ -35,6 +31,11 @@ app.use((err, req, res, next) => {
     console.error("Server Error:", err);
     res.status(500).json({"message": "Internal Server Error"});
 });
+
+// Frontend fallback (needs to come last)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../kennzahlen-cockpit-client/public/index.html'))
+})
 
 
 connectDB().then(r => {
