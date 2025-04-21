@@ -74,7 +74,7 @@ function validatePythonResult(result) {
 
 function cleanUploadDirectory() {
     // Source: https://hayageek.com/remove-all-files-from-directory-in-nodejs/
-    const uploadDir = "uploads"
+    const uploadDir = path.join(__dirname, "../../uploads")
     const files = fs.readdirSync(uploadDir);
 
     for (const file of files) {
@@ -117,7 +117,7 @@ router.post("/", upload.single("file"), async (req, res)=>{
     }
 
     const fileName = req.file.filename
-    const filePath = path.join(__dirname, '../uploads', fileName);
+    const filePath = path.join(__dirname, '../../uploads', fileName);
     const scriptPath = path.resolve(__dirname, '../data_processing/xlsx_reader.py');
 
     const pythonProcess = await spawnSync('/usr/bin/python3', [
