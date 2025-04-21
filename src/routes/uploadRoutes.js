@@ -3,6 +3,7 @@ const multer = require("multer")
 const { spawnSync } = require('child_process');
 const path = require("path")
 const fs = require("fs")
+const mongoose = require("mongoose")
 const Report = require("../models/Report")
 const Company = require("../models/Company")
 const {re} = require("mathjs");
@@ -22,7 +23,7 @@ function saveReportToDb(jsonData) {
 async function checkReportExistence(jsonData) {
     const foundReport = await Report.findOne({company_id: jsonData.company_id, period: jsonData.period})
     if (foundReport) {
-        return true
+        return foundReport._id
     }
     return false
 }
@@ -152,8 +153,10 @@ router.post("/", upload.single("file"), async (req, res)=>{
     const periods = []
     for (let i = 0; i < modifiedReportJson.length; i++) {
         const report = modifiedReportJson[i]
-        if (await checkReportExistence(report)) {
-            return res.status(400).json({message: `report for period ${report.period} already exists`})
+        const foundReportId = await checkReportExistence(report)
+        if (foundReportId !== false) {
+            // Delete an already existing report for this period so that it can be substituted
+            await Report.deleteOne({_id: new mongoose.Types.ObjectId(foundReportId)})
         }
         if (periods.includes(report.period)) { // Check if a report with the same period exists in the uploaded file
             return res.status(400).json({message: `file contains duplicate reports for period ${report.period}`})
