@@ -43,7 +43,7 @@ async function seedReportCollection() {
                         total: 150000,
                         machines: 50000,
                         movables: 30000,
-                        real_estate: 70000
+                        active_real_estate: 70000
                     }
                 },
                 passives: {

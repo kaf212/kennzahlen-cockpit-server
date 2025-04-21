@@ -23,7 +23,7 @@ const fixedAssetsSchema = new mongoose.Schema({
     total: { type: Number, min: 0 },
     machines: { type: Number, min: 0 },
     movables: { type: Number, min: 0 },
-    real_estate: { type: Number, min: 0 }
+    active_real_estate: { type: Number, min: 0 }
 }, { _id: false });
 
 const activesSchema = new mongoose.Schema({
