@@ -507,23 +507,15 @@ async function getHistoricCustomKeyFigures(companyId) {
     return historicValues
 }
 
-
-async function getCurrentKeyFigures(companyId) {
-    /*
-    Calls all calculation functions for all key figures and filters out the newest data from the historic values.
+function extractCurrentKeyFigures(historicValues) {
+    /**
+    Filters out the newest data from the historic key figure values.
     The individual calculation functions return the respective key figure for all available periods. All data except
     the figures of the most recent period is removed and the array of historic values is substituted by the single most
     recent value for the respective key figure.
-    :param: companyId (str): The ID of the company that should be queried
-    :return: currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
-    */
-    await getHistoricCustomKeyFigures(companyId)
-    const historicValues = await getHistoricKeyFigures(companyId)
-
-    if (historicValues === null) {
-        return null
-    }
-
+     @param historicValues (object): An object with the historic values for multiple key figures
+     @return currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
+     */
     let newestPeriod = undefined
 
     for (const [keyFigure, historicValueArray] of Object.entries(historicValues)) {
@@ -548,6 +540,23 @@ async function getCurrentKeyFigures(companyId) {
         keyFigures: historicValues
     }
     return currentKeyFigures
+}
+
+
+async function getCurrentKeyFigures(companyId) {
+    /**
+    Calls all calculation functions for all key figures and returns the most current values.
+    @param companyId (str): The ID of the company that should be queried
+    @return currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
+    */
+    const historicValues = await getHistoricKeyFigures(companyId)
+
+    if (historicValues === null) {
+        return null
+    }
+
+    return extractCurrentKeyFigures(historicValues)
+
 }
 
 
