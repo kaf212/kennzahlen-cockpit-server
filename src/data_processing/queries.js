@@ -1,4 +1,5 @@
 const Report = require('../models/Report')
+const CustomKeyFigure = require('../models/customKeyFigure')
 const math = require('mathjs');
 
 async function equityRatio(request) {
@@ -488,25 +489,42 @@ async function getHistoricKeyFigures(companyId) {
         }
     }
 
+    const historicCustomKeyFigureValues = await getHistoricCustomKeyFigures(companyId)
+
+    if (historicCustomKeyFigureValues !== null) {
+        for (const [customKeyFigure, historicValueArray] of Object.entries(historicCustomKeyFigureValues)) {
+            historicValues[customKeyFigure] = historicValueArray
+        }
+    }
+
+
     return historicValues
 }
 
-
-async function getCurrentKeyFigures(companyId) {
-    /*
-    Calls all calculation functions for all key figures and filters out the newest data from the historic values.
-    The individual calculation functions return the respective key figure for all available periods. All data except
-    the figures of the most recent period is removed and the array of historic values is substituted by the single most
-    recent value for the respective key figure.
-    :param: companyId (str): The ID of the company that should be queried
-    :return: currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
-    */
-    const historicValues = await getHistoricKeyFigures(companyId)
-
-    if (historicValues === null) {
+async function getHistoricCustomKeyFigures(companyId) {
+    const historicValues = {}
+    const customKeyFigures = await CustomKeyFigure.find()
+    if (customKeyFigures.length === 0) {
         return null
     }
 
+    for (const keyFigure of customKeyFigures) {
+        const result = await customKeyFigure({ company_id: companyId }, keyFigure.formula)
+        historicValues[keyFigure.name] = result.customKeyFigure
+    }
+
+    return historicValues
+}
+
+function extractCurrentKeyFigures(historicValues) {
+    /**
+    Filters out the newest data from the historic key figure values.
+    The individual calculation functions return the respective key figure for all available periods. All data except
+    the figures of the most recent period is removed and the array of historic values is substituted by the single most
+    recent value for the respective key figure.
+     @param historicValues (object): An object with the historic values for multiple key figures
+     @return currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
+     */
     let newestPeriod = undefined
 
     for (const [keyFigure, historicValueArray] of Object.entries(historicValues)) {
@@ -531,6 +549,32 @@ async function getCurrentKeyFigures(companyId) {
         keyFigures: historicValues
     }
     return currentKeyFigures
+}
+
+
+async function getCurrentKeyFigures(companyId) {
+    /**
+    Calls all calculation functions for all key figures and returns the most current values.
+    @param companyId (str): The ID of the company that should be queried
+    @return currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
+    */
+    const historicValues = await getHistoricKeyFigures(companyId)
+    const historicCustomKeyFigureValues = await getHistoricCustomKeyFigures(companyId)
+
+    if (historicValues === null) {
+        return null
+    }
+    const currentValues = extractCurrentKeyFigures(historicValues)
+    if (historicCustomKeyFigureValues !== null) {
+        const currentCustomKeyFigureValues = extractCurrentKeyFigures(historicCustomKeyFigureValues)
+
+        for (const [customKeyFigure, value] of Object.entries(currentCustomKeyFigureValues.keyFigures)) {
+            currentValues.keyFigures[customKeyFigure] = value
+        }
+    }
+
+    return currentValues
+
 }
 
 
