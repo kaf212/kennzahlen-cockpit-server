@@ -489,6 +489,15 @@ async function getHistoricKeyFigures(companyId) {
         }
     }
 
+    const historicCustomKeyFigureValues = await getHistoricCustomKeyFigures(companyId)
+
+    if (historicCustomKeyFigureValues !== null) {
+        for (const [customKeyFigure, historicValueArray] of Object.entries(historicCustomKeyFigureValues)) {
+            historicValues[customKeyFigure] = historicValueArray
+        }
+    }
+
+
     return historicValues
 }
 
