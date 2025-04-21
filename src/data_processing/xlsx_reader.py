@@ -91,7 +91,7 @@ def write_json(data, years_count, value_indexes):
                             "total": values[6] + values[7] + values[8],
                             "machines": values[6],
                             "movables": values[7],
-                            "real_estate": values[8]
+                            "active_real_estate": values[8]
                         }
                     },
                     "passives": {
