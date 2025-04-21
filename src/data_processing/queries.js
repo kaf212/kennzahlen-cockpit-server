@@ -550,12 +550,21 @@ async function getCurrentKeyFigures(companyId) {
     @return currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
     */
     const historicValues = await getHistoricKeyFigures(companyId)
+    const historicCustomKeyFigureValues = await getHistoricCustomKeyFigures(companyId)
 
     if (historicValues === null) {
         return null
     }
+    const currentValues = extractCurrentKeyFigures(historicValues)
+    if (historicCustomKeyFigureValues !== null) {
+        const currentCustomKeyFigureValues = extractCurrentKeyFigures(historicCustomKeyFigureValues)
 
-    return extractCurrentKeyFigures(historicValues)
+        for (const [customKeyFigure, value] of Object.entries(currentCustomKeyFigureValues.keyFigures)) {
+            currentValues.keyFigures[customKeyFigure] = value
+        }
+    }
+
+    return currentValues
 
 }
 
