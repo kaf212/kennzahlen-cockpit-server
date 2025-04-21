@@ -1,4 +1,5 @@
 const Report = require('../models/Report')
+const CustomKeyFigure = require('../models/customKeyFigure')
 const math = require('mathjs');
 
 async function equityRatio(request) {
@@ -491,6 +492,21 @@ async function getHistoricKeyFigures(companyId) {
     return historicValues
 }
 
+async function getHistoricCustomKeyFigures(companyId) {
+    const historicValues = {}
+    const customKeyFigures = await CustomKeyFigure.find()
+    if (customKeyFigures.length === 0) {
+        return null
+    }
+
+    for (const keyFigure of customKeyFigures) {
+        const result = await customKeyFigure({ company_id: companyId }, keyFigure.formula)
+        historicValues[keyFigure.name] = result.customKeyFigure
+    }
+
+    return historicValues
+}
+
 
 async function getCurrentKeyFigures(companyId) {
     /*
@@ -501,6 +517,7 @@ async function getCurrentKeyFigures(companyId) {
     :param: companyId (str): The ID of the company that should be queried
     :return: currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
     */
+    await getHistoricCustomKeyFigures(companyId)
     const historicValues = await getHistoricKeyFigures(companyId)
 
     if (historicValues === null) {
