@@ -91,7 +91,7 @@ router.post("/", async (req, res, next)=> {
     }
 
     try {
-        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula})
+        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type})
         await newCustomKeyFigure.save()
         return res.status(201).json({message: "custom key figure created successfully"})
     } catch (err) { // If mongoose model validation fails
