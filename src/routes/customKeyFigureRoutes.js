@@ -90,6 +90,10 @@ router.post("/", async (req, res, next)=> {
         return res.status(400).json({message: "invalid formula"})
     }
 
+    if (req.body.name.length > 30) {
+        return res.status(400).json({message: "name must be shorter than 30 characters"})
+    }
+
     try {
         const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type})
         await newCustomKeyFigure.save()
@@ -115,6 +119,10 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
 
     if (await checkCustomKeyFigureExistenceByName(customKeyFigureJson.name) === true) {
         return res.status(400).json({message: `custom key figure with name ${customKeyFigureJson.name} already exists`})
+    }
+
+    if (req.body.name.length > 30) {
+        return res.status(400).json({message: "name must be shorter than 30 characters"})
     }
 
     if (customKeyFigureJson.hasOwnProperty("formula")) {
