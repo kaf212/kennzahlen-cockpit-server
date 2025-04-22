@@ -59,6 +59,11 @@ router.post("/", authenticateAdmin,async (req, res, next)=> {
     if (await checkCompanyExistenceByName(req.body.name)) {
         return res.status(400).json({message: `company ${req.body.name} already exists`})
     }
+
+    if (req.body.name.length > 30) {
+        return res.status(400).json({message: "name must be shorter than 30 characters"})
+    }
+
     const newCompany = new Company({name: req.body.name})
     await newCompany.save()
     res.status(201).json({message: "company created successfully"})
@@ -76,6 +81,10 @@ router.patch("/:id", authenticateAdmin,async (req, res, next)=>{
     }
     if (await checkCompanyExistenceByName(companyJson.name) === true) {
         return res.status(400).json({message: `company with name ${req.body.name} already exists`})
+    }
+
+    if (req.body.name.length > 30) {
+        return res.status(400).json({message: "name must be shorter than 30 characters"})
     }
 
     await Company.findByIdAndUpdate(companyId, {$set: companyJson}, {runValidators: true})
