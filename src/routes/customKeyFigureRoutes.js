@@ -117,8 +117,11 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
         return res.status(400).json({message: `custom key figure with name ${customKeyFigureJson.name} already exists`})
     }
 
-    if (await validateFormula(customKeyFigureJson.formula) === false) {
-        return res.status(400).json({message: "invalid formula"})
+    if (customKeyFigureJson.hasOwnProperty("formula")) {
+        // Only validate formula if it has been updated
+        if (await validateFormula(customKeyFigureJson.formula) === false) {
+            return res.status(400).json({message: "invalid formula"})
+        }
     }
 
     /*
