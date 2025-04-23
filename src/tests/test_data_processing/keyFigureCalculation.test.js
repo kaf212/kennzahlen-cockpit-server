@@ -119,16 +119,16 @@ describe("Test key figure calculation", () => {
 
     it("Test working capital intensity", async () => {
         const workingCapital = testReport.balance_sheet.actives.current_assets.total
-        const totalCapital = testReport.balance_sheet.actives.fixed_assets.total + workingCapital
-        const expectedResult = workingCapital / totalCapital
+        const totalAssets = testReport.balance_sheet.actives.fixed_assets.total + workingCapital
+        const expectedResult = workingCapital / totalAssets
 
         expect(calculationResults["workingCapitalIntensity"]).toEqual(expectedResult)
     })
 
     it("Test fixed asset intensity", async () => {
         const fixedAssets = testReport.balance_sheet.actives.fixed_assets.total
-        const totalCapital = testReport.balance_sheet.actives.current_assets.total + fixedAssets
-        const expectedResult = fixedAssets / totalCapital
+        const totalAssets = testReport.balance_sheet.actives.current_assets.total + fixedAssets
+        const expectedResult = fixedAssets / totalAssets
 
         expect(calculationResults["fixedAssetIntensity"]).toEqual(expectedResult)
     })
@@ -187,6 +187,18 @@ describe("Test key figure calculation", () => {
         const expectedResult = profit / equity
 
         expect(calculationResults["roe"]).toEqual(expectedResult)
+    })
+
+    it("Test return on assets (ROA)", async () => {
+        const workingCapital = testReport.balance_sheet.actives.current_assets.total
+        const totalAssets = testReport.balance_sheet.actives.fixed_assets.total + workingCapital
+        const financialExpense = testReport.income_statement.expense.financial_expense
+        const totalExpense = testReport.income_statement.expense.total
+        const totalEarnings = testReport.income_statement.earnings.total
+        const profit = totalEarnings - totalExpense
+        const expectedResult = (profit + financialExpense) / totalAssets
+
+        expect(calculationResults["roa"]).toEqual(expectedResult)
     })
 
 })
