@@ -81,7 +81,7 @@ The used test report is partly based on the balance sheet and income statement f
  */
 
 
-describe("Custom key figure tests", () => {
+describe("Test key figure calculation", () => {
     it("Test equity ratio", async () => {
         const equity = testReport.balance_sheet.passives.equity.total
         const totalCapital = testReport.balance_sheet.passives.debt.total + equity
@@ -89,6 +89,16 @@ describe("Custom key figure tests", () => {
 
         const calculationResults = await getCurrentKeyFigures(testReport.company_id)
         expect(calculationResults.keyFigures["equityRatio"]).toEqual(expectedResult)
+
+    })
+
+    it("Test debt ratio", async () => {
+        const debt = testReport.balance_sheet.passives.debt.total
+        const totalCapital = testReport.balance_sheet.passives.equity.total + debt
+        const expectedResult = debt / totalCapital
+
+        const calculationResults = await getCurrentKeyFigures(testReport.company_id)
+        expect(calculationResults.keyFigures["debtRatio"]).toEqual(expectedResult)
 
     })
 })
