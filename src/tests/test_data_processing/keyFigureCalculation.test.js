@@ -122,7 +122,14 @@ describe("Test key figure calculation", () => {
         const totalCapital = testReport.balance_sheet.actives.fixed_assets.total + workingCapital
         const expectedResult = workingCapital / totalCapital
 
-        const calculationResults = await getCurrentKeyFigures(testReport.company_id)
-        expect(calculationResults.keyFigures["selfFinancingRatio"]).toEqual(expectedResult)
+        expect(calculationResults["workingCapitalIntensity"]).toEqual(expectedResult)
+    })
+
+    it("Test fixed asset intensity", async () => {
+        const fixedAssets = testReport.balance_sheet.actives.fixed_assets.total
+        const totalCapital = testReport.balance_sheet.actives.current_assets.total + fixedAssets
+        const expectedResult = fixedAssets / totalCapital
+
+        expect(calculationResults["fixedAssetIntensity"]).toEqual(expectedResult)
     })
 })
