@@ -1,7 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const Company = require("../models/Company")
-const {authenticateAdmin} = require("../middleware/tokenValidation")
+const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
 
 const router = express.Router()
 
@@ -25,7 +25,7 @@ async function checkCompanyExistenceById(companyId) {
 
 }
 
-router.get("/", async (req, res, next)=>{
+router.get("/", authenticateToken, async (req, res, next)=>{
     try {
         const companies = await Company.find({})
         return res.json(companies)
@@ -35,7 +35,7 @@ router.get("/", async (req, res, next)=>{
 
 })
 
-router.get("/:id", async (req, res, next)=> {
+router.get("/:id", authenticateToken, async (req, res, next)=> {
     try {
         // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
