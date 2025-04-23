@@ -201,4 +201,13 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["roa"]).toEqual(expectedResult)
     })
 
+    it("Test profit margin", async () => {
+        const totalExpense = testReport.income_statement.expense.total
+        const totalEarnings = testReport.income_statement.earnings.total
+        const profit = totalEarnings - totalExpense
+        const expectedResult = profit / totalEarnings
+
+        expect(calculationResults["profitMargin"]).toEqual(expectedResult)
+    })
+
 })
