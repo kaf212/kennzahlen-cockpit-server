@@ -179,4 +179,14 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["fixedAssetCoverage1"]).toEqual(expectedResult)
     })
 
+    it("Test return on equity (ROE)", async () => {
+        const equity = testReport.balance_sheet.passives.equity.total
+        const totalExpense = testReport.income_statement.expense.total
+        const totalEarnings = testReport.income_statement.earnings.total
+        const profit = totalEarnings - totalExpense
+        const expectedResult = profit / equity
+
+        expect(calculationResults["roe"]).toEqual(expectedResult)
+    })
+
 })
