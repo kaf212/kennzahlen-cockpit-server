@@ -101,4 +101,16 @@ describe("Test key figure calculation", () => {
         expect(calculationResults.keyFigures["debtRatio"]).toEqual(expectedResult)
 
     })
+
+    it("Test self financing ratio", async () => {
+        const legal_reserve = testReport.balance_sheet.passives.equity.legal_reserve
+        const retained_earnings = testReport.balance_sheet.passives.equity.retained_earnings
+        const growthCapital = legal_reserve + retained_earnings
+        const shares = testReport.balance_sheet.passives.equity.shares
+        const expectedResult = growthCapital / shares
+
+        const calculationResults = await getCurrentKeyFigures(testReport.company_id)
+        expect(calculationResults.keyFigures["selfFinancingRatio"]).toEqual(expectedResult)
+
+    })
 })
