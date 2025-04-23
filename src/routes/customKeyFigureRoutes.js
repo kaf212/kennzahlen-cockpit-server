@@ -2,7 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const CustomKeyFigure = require("../models/customKeyFigure")
 const Report = require("../models/Report")
-const {authenticateAdmin} = require("../middleware/tokenValidation")
+const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
 const {customKeyFigure} = require("../data_processing/queries")
 const {number} = require("mathjs");
 
@@ -53,7 +53,7 @@ async function validateFormula(formula) {
     }
 }
 
-router.get("/", async (req, res, next)=>{
+router.get("/", authenticateToken, async (req, res, next)=>{
     try {
         const keyFigures = await CustomKeyFigure.find({})
         return res.json(keyFigures)
@@ -63,7 +63,7 @@ router.get("/", async (req, res, next)=>{
 
 })
 
-router.get("/:id", async (req, res, next)=> {
+router.get("/:id", authenticateToken, async (req, res, next)=> {
     try {
         // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
@@ -81,7 +81,7 @@ router.get("/:id", async (req, res, next)=> {
 })
 
 
-router.post("/", async (req, res, next)=> {
+router.post("/", authenticateToken, async (req, res, next)=> {
     if (await checkCustomKeyFigureExistenceByName(req.body.name)) {
         return res.status(400).json({message: `custom key figure ${req.body.name} already exists`})
     }
