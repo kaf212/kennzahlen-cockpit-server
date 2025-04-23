@@ -88,7 +88,7 @@ describe("Test key figure calculation", () => {
         await mongoose.disconnect()
     })
 
-    it("Test equity ratio", async () => {
+    it("01_test_equity_ratio", async () => {
         const equity = testReport.balance_sheet.passives.equity.total
         const totalCapital = testReport.balance_sheet.passives.debt.total + equity
         const expectedResult = equity / totalCapital
@@ -97,7 +97,7 @@ describe("Test key figure calculation", () => {
 
     })
 
-    it("Test debt ratio", async () => {
+    it("02_test_debt_ratio", async () => {
         const debt = testReport.balance_sheet.passives.debt.total
         const totalCapital = testReport.balance_sheet.passives.equity.total + debt
         const expectedResult = debt / totalCapital
@@ -106,7 +106,7 @@ describe("Test key figure calculation", () => {
 
     })
 
-    it("Test self financing ratio", async () => {
+    it("03_test_self_financing_ratio", async () => {
         const legalReserve = testReport.balance_sheet.passives.equity.legal_reserve
         const retainedEarnings = testReport.balance_sheet.passives.equity.retained_earnings
         const growthCapital = legalReserve + retainedEarnings
@@ -117,7 +117,7 @@ describe("Test key figure calculation", () => {
 
     })
 
-    it("Test working capital intensity", async () => {
+    it("04_test_working_capital_intensity", async () => {
         const workingCapital = testReport.balance_sheet.actives.current_assets.total
         const totalAssets = testReport.balance_sheet.actives.fixed_assets.total + workingCapital
         const expectedResult = workingCapital / totalAssets
@@ -125,7 +125,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["workingCapitalIntensity"]).toEqual(expectedResult)
     })
 
-    it("Test fixed asset intensity", async () => {
+    it("05_test_fixed_asset_intensity", async () => {
         const fixedAssets = testReport.balance_sheet.actives.fixed_assets.total
         const totalAssets = testReport.balance_sheet.actives.current_assets.total + fixedAssets
         const expectedResult = fixedAssets / totalAssets
@@ -133,7 +133,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["fixedAssetIntensity"]).toEqual(expectedResult)
     })
 
-    it("Test cash ratio", async () => {
+    it("06_test_cash_ratio", async () => {
         const liquidAssets = testReport.balance_sheet.actives.current_assets.liquid_assets.total
         const shortTermDebt = testReport.balance_sheet.passives.debt.short_term.total
         const expectedResult = liquidAssets / shortTermDebt
@@ -141,7 +141,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["cashRatio"]).toEqual(expectedResult)
     })
 
-    it("Test quick ratio", async () => {
+    it("07_test_quick_cash", async () => {
         const liquidAssets = testReport.balance_sheet.actives.current_assets.liquid_assets.total
         const receivables = testReport.balance_sheet.actives.current_assets.receivables
         const shortTermDebt = testReport.balance_sheet.passives.debt.short_term.total
@@ -150,7 +150,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["quickCash"]).toEqual(expectedResult)
     })
 
-    it("Test current ratio", async () => {
+    it("08_test_current_ratio", async () => {
         const liquidAssets = testReport.balance_sheet.actives.current_assets.liquid_assets.total
         const receivables = testReport.balance_sheet.actives.current_assets.receivables
         const stocks = testReport.balance_sheet.actives.current_assets.stocks
@@ -160,7 +160,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["currentRatio"]).toEqual(expectedResult)
     })
 
-    it("Test fixed asset coverage 1", async () => {
+    it("09_test_fixed_asset_coverage_1", async () => {
         const equity = testReport.balance_sheet.passives.equity.total
         const fixedAssets = testReport.balance_sheet.actives.fixed_assets.total
 
@@ -169,7 +169,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["fixedAssetCoverage1"]).toEqual(expectedResult)
     })
 
-    it("Test fixed asset coverage 2", async () => {
+    it("10_test_fixed_asset_coverage_2", async () => {
         const equity = testReport.balance_sheet.passives.equity.total
         const longTermDebt = testReport.balance_sheet.passives.debt.long_term.total
         const fixedAssets = testReport.balance_sheet.actives.fixed_assets.total
@@ -179,7 +179,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["fixedAssetCoverage1"]).toEqual(expectedResult)
     })
 
-    it("Test return on equity (ROE)", async () => {
+    it("11_test_roe", async () => {
         const equity = testReport.balance_sheet.passives.equity.total
         const totalExpense = testReport.income_statement.expense.total
         const totalEarnings = testReport.income_statement.earnings.total
@@ -189,7 +189,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["roe"]).toEqual(expectedResult)
     })
 
-    it("Test return on assets (ROA)", async () => {
+    it("12_test_roa", async () => {
         const workingCapital = testReport.balance_sheet.actives.current_assets.total
         const totalAssets = testReport.balance_sheet.actives.fixed_assets.total + workingCapital
         const financialExpense = testReport.income_statement.expense.financial_expense
@@ -201,7 +201,7 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["roa"]).toEqual(expectedResult)
     })
 
-    it("Test profit margin", async () => {
+    it("13_test_profit_margin", async () => {
         const totalExpense = testReport.income_statement.expense.total
         const totalEarnings = testReport.income_statement.earnings.total
         const profit = totalEarnings - totalExpense
