@@ -7,6 +7,7 @@ const mongoose = require("mongoose")
 const Report = require("../models/Report")
 const Company = require("../models/Company")
 const {re} = require("mathjs");
+const {authenticateToken} = require("../middleware/tokenValidation");
 
 const router = express.Router()
 router.use(express.json())
@@ -105,7 +106,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-router.post("/", upload.single("file"), async (req, res)=>{
+router.post("/", authenticateToken, upload.single("file"), async (req, res)=>{
     // File must be sent using multipart/form-data with the key "file" in the form
 
     if (!req.file) {

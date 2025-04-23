@@ -1,7 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const Company = require("../models/Company")
-const {authenticateAdmin} = require("../middleware/tokenValidation")
+const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
 
 const router = express.Router()
 
@@ -25,7 +25,7 @@ async function checkCompanyExistenceById(companyId) {
 
 }
 
-router.get("/", async (req, res, next)=>{
+router.get("/", authenticateToken, async (req, res, next)=>{
     try {
         const companies = await Company.find({})
         return res.json(companies)
@@ -35,7 +35,7 @@ router.get("/", async (req, res, next)=>{
 
 })
 
-router.get("/:id", async (req, res, next)=> {
+router.get("/:id", authenticateToken, async (req, res, next)=> {
     try {
         // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
@@ -83,8 +83,10 @@ router.patch("/:id", authenticateAdmin,async (req, res, next)=>{
         return res.status(400).json({message: `company with name ${req.body.name} already exists`})
     }
 
-    if (req.body.name.length > 30) {
-        return res.status(400).json({message: "name must be shorter than 30 characters"})
+    if (req.body.hasOwnProperty("name")) {
+        if (req.body.name.length > 30) {
+            return res.status(400).json({message: "name must be shorter than 30 characters"})
+        }
     }
 
     await Company.findByIdAndUpdate(companyId, {$set: companyJson}, {runValidators: true})

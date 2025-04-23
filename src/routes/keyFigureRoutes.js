@@ -1,10 +1,11 @@
 const express = require("express")
 const {getCurrentKeyFigures, getHistoricKeyFigures} = require("../data_processing/queries")
+const {authenticateToken} = require("../middleware/tokenValidation");
 
 const router = express.Router()
 
 
-router.get("/current/:companyId", async (req, res) => {
+router.get("/current/:companyId", authenticateToken, async (req, res) => {
     const companyId = req.params.companyId
     const result = await getCurrentKeyFigures(companyId)
 
@@ -15,7 +16,7 @@ router.get("/current/:companyId", async (req, res) => {
     return res.json(result)
 })
 
-router.get("/historic/:companyId", async (req, res, next)=>{
+router.get("/historic/:companyId", authenticateToken, async (req, res, next)=>{
     const companyId = req.params.companyId
     const result = await getHistoricKeyFigures(companyId)
 
