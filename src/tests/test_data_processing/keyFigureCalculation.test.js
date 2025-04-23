@@ -132,4 +132,32 @@ describe("Test key figure calculation", () => {
 
         expect(calculationResults["fixedAssetIntensity"]).toEqual(expectedResult)
     })
+
+    it("Test cash ratio", async () => {
+        const liquidAssets = testReport.balance_sheet.actives.current_assets.liquid_assets.total
+        const shortTermDebt = testReport.balance_sheet.passives.debt.short_term.total
+        const expectedResult = liquidAssets / shortTermDebt
+
+        expect(calculationResults["cashRatio"]).toEqual(expectedResult)
+    })
+
+    it("Test quick ratio", async () => {
+        const liquidAssets = testReport.balance_sheet.actives.current_assets.liquid_assets.total
+        const receivables = testReport.balance_sheet.actives.current_assets.receivables
+        const shortTermDebt = testReport.balance_sheet.passives.debt.short_term.total
+        const expectedResult = (liquidAssets + receivables) / shortTermDebt
+
+        expect(calculationResults["quickCash"]).toEqual(expectedResult)
+    })
+
+    it("Test current ratio", async () => {
+        const liquidAssets = testReport.balance_sheet.actives.current_assets.liquid_assets.total
+        const receivables = testReport.balance_sheet.actives.current_assets.receivables
+        const stocks = testReport.balance_sheet.actives.current_assets.stocks
+        const shortTermDebt = testReport.balance_sheet.passives.debt.short_term.total
+        const expectedResult = (liquidAssets + receivables + stocks) / shortTermDebt
+
+        expect(calculationResults["currentRatio"]).toEqual(expectedResult)
+    })
+
 })
