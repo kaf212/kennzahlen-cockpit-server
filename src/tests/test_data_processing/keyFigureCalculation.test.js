@@ -160,4 +160,23 @@ describe("Test key figure calculation", () => {
         expect(calculationResults["currentRatio"]).toEqual(expectedResult)
     })
 
+    it("Test fixed asset coverage 1", async () => {
+        const equity = testReport.balance_sheet.passives.equity.total
+        const fixedAssets = testReport.balance_sheet.actives.fixed_assets.total
+
+        const expectedResult = equity / fixedAssets
+
+        expect(calculationResults["fixedAssetCoverage1"]).toEqual(expectedResult)
+    })
+
+    it("Test fixed asset coverage 2", async () => {
+        const equity = testReport.balance_sheet.passives.equity.total
+        const longTermDebt = testReport.balance_sheet.passives.debt.long_term.total
+        const fixedAssets = testReport.balance_sheet.actives.fixed_assets.total
+
+        const expectedResult = (equity + longTermDebt) / fixedAssets
+
+        expect(calculationResults["fixedAssetCoverage1"]).toEqual(expectedResult)
+    })
+
 })
