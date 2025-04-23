@@ -83,8 +83,10 @@ router.patch("/:id", authenticateAdmin,async (req, res, next)=>{
         return res.status(400).json({message: `company with name ${req.body.name} already exists`})
     }
 
-    if (req.body.name.length > 30) {
-        return res.status(400).json({message: "name must be shorter than 30 characters"})
+    if (req.body.hasOwnProperty("name")) {
+        if (req.body.name.length > 30) {
+            return res.status(400).json({message: "name must be shorter than 30 characters"})
+        }
     }
 
     await Company.findByIdAndUpdate(companyId, {$set: companyJson}, {runValidators: true})
