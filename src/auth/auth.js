@@ -1,26 +1,19 @@
 const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken");
+const Role = require("../models/Role")
 
 const secretKey = process.env.SECRET_KEY
 
-
-const dummyDB = [
-    // source: https://chatgpt.com/share/67cd74aa-913c-8011-8973-e782152c79de
-    {name: "Admin", password: bcrypt.hashSync("admin", bcrypt.genSaltSync(10))},
-    {name: "Standard", password: bcrypt.hashSync("standard", bcrypt.genSaltSync(10))}
-    // Salt generation in async will cause error
-]
-
-function authenticateUser(res, role, password) {
+async function authenticateUser(res, requestRole, password) {
     /*
     * Gets called for each login request and returns a JWT upon successful verification of the credentials
-    * :param: res (object):     http-response
-    * :param: role (str):       Name of the role
-    * :param: password (str):   Password for the role
+    * :param: res (object):         http-response
+    * :param: requestRole (str):    Name of the role
+    * :param: password (str):       Password for the role
     *
     * :return: http-response
     */
-    const foundRole = dummyDB.find((r) => r.name === role);
+    const foundRole = await Role.findOne({name: requestRole})
 
     if (foundRole) {
         // Hash and compare the provided password with the hash value in the database
