@@ -1,6 +1,7 @@
 const Company = require("../src/models/Company")
 const Report = require("../src/models/Report")
 const Role = require("../src/models/Role")
+const bcrypt = require("bcrypt");
 
 
 function seedDB() {
@@ -96,13 +97,19 @@ async function seedRoleCollection() {
     if (documentCount !== 2) {
         await Role.deleteMany({}) // delete all documents
 
+        const standardPassword = process.env.STANDARD_PASSWORD
+        const adminPassword = process.env.ADMIN_PASSWORD
+
+        const standardPwHash = bcrypt.hashSync(standardPassword, bcrypt.genSaltSync(10))
+        const adminPwHash = bcrypt.hashSync(adminPassword, bcrypt.genSaltSync(10))
+
         const adminRole = new Role({
             name: "Admin",
-            password: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
+            password: adminPwHash,
         })
         const standardRole = new Role({
             name: "Standard",
-            password: "fe6d3468cf5c74d8ec2a95b40f2e05338c37a4202f8fad692d2b64a9cf9b468a"
+            password: standardPwHash
         })
         await adminRole.save()
         await standardRole.save()
