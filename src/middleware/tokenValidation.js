@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const express = require("express")
 
-const secretKey = process.env.SECRET_KEY
+
 
 
 function validateToken(req, res) {
@@ -14,6 +14,7 @@ function validateToken(req, res) {
     * :return: http-response (object)
     */
 
+    const secretKey = process.env.SECRET_KEY
 
     let token = req.header('Authorization');
 

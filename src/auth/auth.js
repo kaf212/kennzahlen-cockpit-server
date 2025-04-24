@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken");
 const Role = require("../models/Role")
 
-const secretKey = process.env.SECRET_KEY
+
 
 async function authenticateUser(res, requestRole, password) {
     /*
@@ -13,6 +13,9 @@ async function authenticateUser(res, requestRole, password) {
     *
     * :return: http-response
     */
+
+    const secretKey = process.env.SECRET_KEY
+
     const foundRole = await Role.findOne({name: requestRole})
 
     if (foundRole) {
