@@ -467,6 +467,16 @@ async function printResults() {
 
 
 async function getHistoricKeyFigures(companyId) {
+    /**
+     * Calls all the query functions of the regular key figures which all return
+     * an array of key figure data for each available accounting year. These historical arrays are then
+     * stored in the historicalValues object that maps the name of the key figure to its corresponding
+     * historical data. If any of the historical arrays are empty, null is returned. Else, the historical
+     * data of the custom key figures is also retrieved and saved into historicalValues.
+     *
+     * @param {String} companyId - The ID of the company that is being queried
+     * @returns {Object} An object that maps the key figures to their historical data
+     */
     const historicValues = {
         equityRatio: await equityRatio({company_id: companyId}),
         debtRatio: await debtRatio({company_id: companyId}),
@@ -493,15 +503,23 @@ async function getHistoricKeyFigures(companyId) {
 
     if (historicCustomKeyFigureValues !== null) {
         for (const [customKeyFigure, historicValueArray] of Object.entries(historicCustomKeyFigureValues)) {
+            // Create a new entry for the custom key figure in the historicalValues object
             historicValues[customKeyFigure] = historicValueArray
         }
     }
-
 
     return historicValues
 }
 
 async function getHistoricCustomKeyFigures(companyId) {
+    /**
+     * Gets all custom key figures from the database and iteratively retrieves their historical data by calling
+     * the customKeyFigure() query function. Similarly to getHistoricKeyFigures(), the historical arrays
+     * are then mapped to the name of the custom key figure inside the historicValues object.
+     *
+     * @param {String} companyId - The ID of the company that is being queried
+     * @returns {Object} An object that maps the custom key figures to their historical data
+     */
     const historicValues = {}
     const customKeyFigures = await CustomKeyFigure.find()
     if (customKeyFigures.length === 0) {
@@ -518,13 +536,16 @@ async function getHistoricCustomKeyFigures(companyId) {
 
 function extractCurrentKeyFigures(historicValues) {
     /**
-    Filters out the newest data from the historic key figure values.
-    The individual calculation functions return the respective key figure for all available periods. All data except
-    the figures of the most recent period is removed and the array of historic values is substituted by the single most
-    recent value for the respective key figure.
-     @param historicValues (object): An object with the historic values for multiple key figures
-     @return currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
+     * Filters out the newest data from the historic key figure values.
+     * The individual calculation functions return the respective key figure for all available periods.
+     * All data except the figures of the most recent period is removed and the array of historic values
+     * is substituted by the single most recent value for the respective key figure.
+     *
+     * @param {Object} historicValues - An object with the historic values for multiple key figures
+     * @return {Object} currentKeyFigures - An object with the most recent period
+     *                                      and the corresponding key figure values
      */
+
     let newestPeriod = undefined
 
     for (const [keyFigure, historicValueArray] of Object.entries(historicValues)) {
@@ -554,10 +575,11 @@ function extractCurrentKeyFigures(historicValues) {
 
 async function getCurrentKeyFigures(companyId) {
     /**
-    Calls all calculation functions for all key figures and returns the most current values.
-    @param companyId (str): The ID of the company that should be queried
-    @return currentKeyFigures (object): An object with the most recent period and the corresponding key figure values
-    */
+     * Calls all calculation functions for all key figures and returns the most current values.
+     * @param companyId (str): The ID of the company that should be queried
+     * @return currentKeyFigures (object): An object with the most recent period
+     *                                     and the corresponding key figure values
+     */
     const historicValues = await getHistoricKeyFigures(companyId)
     const historicCustomKeyFigureValues = await getHistoricCustomKeyFigures(companyId)
 
