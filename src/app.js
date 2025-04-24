@@ -1,7 +1,6 @@
 const express = require("express")
 const cors = require("cors")
 const path = require("path")
-require("dotenv").config();
 const authRoutes = require("./routes/authRoutes")
 const uploadRoutes = require("./routes/uploadRoutes")
 const companyRoutes = require("./routes/companyRoutes")
@@ -9,6 +8,8 @@ const customKeyFigureRoutes = require("./routes/customKeyFigureRoutes")
 const keyFigureRoutes = require("./routes/keyFigureRoutes")
 const connectDB = require("../scripts/db")
 const seedDB = require("../scripts/seedDB")
+
+require('dotenv').config();
 
 const app = express()
 
