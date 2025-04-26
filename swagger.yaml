@@ -743,7 +743,7 @@ paths:
                   value:
                     message: name must be shorter than 30 characters
         404:
-          description: "Nicht gefunden: Das Unternehmen existiert nicht."
+          description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
             application/json:
               schema:
@@ -753,4 +753,35 @@ paths:
                     type: string
               example:
                 message: company figure not found
+    delete:
+      summary: Lösche ein ein Unternehmen
+      tags:
+        - Custom-Kennzahlen
+      parameters:
+        - name: id
+          in: path
+          description: ID des Unternehmens
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Unternehmen wurde gelöscht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company deleted successfully
+        404:
+          description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company not found
 
