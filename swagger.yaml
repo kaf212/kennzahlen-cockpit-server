@@ -613,5 +613,32 @@ paths:
                 - _id: "680b877372e7191c1b28a66c"
                   name: "Armin Bäckerei GmbH"
                   __v: 0
-
+  /api/companies/:id:
+    get:
+      tags:
+        - Unternehmen
+      summary: Liefert ein ausgewähltes Unternehmen
+      parameters:
+        - name: id
+          in: path
+          description: ID des Unternehmens
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert das gesuchte Unternehmen"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  name:
+                    type: string
+                  __v:
+                    type: integer
+                    example: 0
+              example:
+                _id: "6809f2626f468128112190e2"
+                name: "SBB CFF FFS AG"
+                __v: 0
 
