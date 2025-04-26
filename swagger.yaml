@@ -386,7 +386,7 @@ paths:
               type: "numeric"
       responses:
         201:
-          description: "Anfrage erfolgreich: Liefert die gesuchte Custom-Kennzahl"
+          description: "Anfrage erfolgreich: Custom-Kennzahl wurde erstellt."
           content:
             application/json:
               schema:
@@ -484,13 +484,15 @@ paths:
                     type: string
               example:
                 message: invalid ID format
-
     patch:
       summary: Bearbeite eine Custom-Kennzahl
       tags:
         - Custom-Kennzahlen
+      parameters:
+        - name: id
+          in: path
+          description: ID der Custom-Kennzahl
       requestBody:
-        # Source: https://chatgpt.com/share/680cd84d-5918-8011-90d4-3a334a87d3c8
         required: true
         content:
           application/json:
@@ -505,12 +507,10 @@ paths:
                   type: string
                   enum: [ numeric, percentage ]
             example:
-              name: "Cashflow"
-              formula: "liquid_assets+depreciation"
-              type: "numeric"
+              name: "Geldfluss"
       responses:
         201:
-          description: "Anfrage erfolgreich: Liefert die gesuchte Custom-Kennzahl"
+          description: "Anfrage erfolgreich: Custom-Kennzahl wurde bearbeitet."
           content:
             application/json:
               schema:
@@ -519,7 +519,7 @@ paths:
                   message:
                     type: string
                 example:
-                  message: custom key figure created successfully
+                  message: custom key figure updated successfully
         400:
           description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
           content:
@@ -529,6 +529,10 @@ paths:
                   summary: Eine Custom-Kennzahl mit dem gegebenen Namen existiert bereits.
                   value:
                     message: custom key figure [name] already exists
+                "Custom-Kennzahl existiert nicht":
+                  summary: Die gesuchte Custom-Kennzahl existiert nicht
+                  value:
+                    message: custom key figure not found
                 "Ungültige Formel":
                   summary: Die gegebene Formel kann nicht interpretiert werden.
                   value:
@@ -536,7 +540,11 @@ paths:
                 "Ungültiges JSON-Format":
                   summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
                   value:
-                    message: Invalid JSON format
+                    message: invalid attributes in JSON object
+                "Leere Anfrage":
+                  summary: Die Anfrage ist leer
+                  value:
+                    message: no JSON provided
                 "Zu langer Name":
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
