@@ -5,13 +5,15 @@ info:
   version: 1.0.0
 tags:
   - name: Kennzahlen
-    description: Endpunkte für das Abrufen von aktuellen und historischen Kennzahlen
+    description: Endpunkte für das Abrufen von aktuellen und historischen Kennzahl-Werten
+  - name: Custom-Kennzahlen
+    description: Endpunkte für das erstellen, bearbeiten und abrufen von Custom-Kennzahlen
 paths:
   /api/keyFigures/current/:id:
     get:
       tags:
         - Kennzahlen
-      summary: Aktuelle Kennzahlen
+      summary: Aktuelle Werte
       parameters:
         - name: id
           description: ID des Unternehmens
@@ -63,7 +65,7 @@ paths:
     get:
       tags:
         - Kennzahlen
-      summary: Historische Kennzahlen
+      summary: Historische Werte
       parameters:
         - name: id
           description: ID des Unternehmens
@@ -315,3 +317,43 @@ paths:
                     type: string
                 example:
                   message: no reports were found for company [name]
+  /api/customKeyFigures:
+    get:
+      tags:
+        - Custom-Kennzahlen
+      summary: Alle gespeicherten Custom-Kennzahlen
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    formula:
+                      type: string
+                    type:
+                      type: string
+                      enum:
+                        - numeric
+                        - percentage
+                    __v:
+                      type: integer
+                      example: 0
+              example:
+                - _id: "6807759eb81cadc3ac9893d2"
+                  name: "Cashflow"
+                  formula: "liquid_assets+depreciation"
+                  type: "numeric"
+                  __v: 0
+                - _id: "680b838372e7191c1b28a474"
+                  name: "Vorratsanteil"
+                  formula: "stocks/current_assets"
+                  type: "percentage"
+                  __v: 0
