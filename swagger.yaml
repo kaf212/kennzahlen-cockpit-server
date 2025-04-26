@@ -10,6 +10,8 @@ tags:
     description: Endpunkte für das Erstellen, Bearbeiten und Abrufen von Custom-Kennzahlen
   - name: Unternehmen
     description: Endpunkte für das Erstellen, Bearbeiten und Abrufen von Unternehmen
+  - name: Upload
+    description: Endpunkt für das Hochladen von XLSX-Dateien
 paths:
   /api/keyFigures/current/:id:
     get:
@@ -756,7 +758,7 @@ paths:
     delete:
       summary: Lösche ein ein Unternehmen
       tags:
-        - Custom-Kennzahlen
+        - Unternehmen
       parameters:
         - name: id
           in: path
@@ -784,4 +786,81 @@ paths:
                     type: string
                 example:
                   message: company not found
+
+  /api/upload:
+    summary: Upload von XLSX-Dateien mit Abschlussberichten
+    description: Testtesttesttesttest
+    post:
+      tags:
+        - Upload
+      requestBody:
+        # Source: https://chatgpt.com/share/680cd84d-5918-8011-90d4-3a334a87d3c8
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+                - file
+            example:
+              file: (binary file)
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Abschlussberichte wurden gespeichert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: successfully saved [quantity] reports
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Keine Datei vorhanden":
+                  summary: Keine Datei wurde mitgesendet.
+                  value:
+                    message: no file provided
+                "Ungültiger Dateityp":
+                  summary: Die gesendete Datei ist nicht vom Typ XLSX.
+                  value:
+                    message: files must be be of type .xlsx
+                "Ungültige Daten in den Abschlussberichten":
+                  summary: Die Abschlussberichte enthalten ungültige Werte
+                  value:
+                    message: "[position] report contains invalid data."
+                "Datei enthält Duplikate":
+                  summary: Die Datei enthält mehrere Abschlussberichte für dasselbe Jahr
+                  value:
+                    message: file contains duplicate reports for period [period]
+        404:
+          description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company not found
+        500:
+          description: "Interner Fehler: Bei der Datenverarbeitung ist ein Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: internal server error
 
