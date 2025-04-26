@@ -3,10 +3,34 @@ info:
   title: Kennzahlen-Cockpit-API
   version: 1.0.0
 paths:
-  /api/companies:
+  /api/keyFigures/current/:id:
     get:
-      summary: Get all companies
+      summary: Liefert die aktuellsten Kennzahlen einer gegebenen Unernehmung
       responses:
-        "200":
-          description: An array with all companies
-
+        200:
+          description: Ein Objekt welches das neuste Rechnungsjahr und die zugehörigen Kennzahlen enthält.
+          content: # Response body
+            application/json: # Media type
+              schema: # Must-have
+                type: object # Data type
+                properties:
+                  period:
+                    type: integer
+                  keyFigures:
+                    type: object
+                example: # Sample data
+                  period: 2025
+                  keyFigures:
+                    equityRatio: 0.1
+                    debtRatio: 0.3296296296296296
+                    selfFinancingRatio: 0.9567567567567568
+                    workingCapitalIntensity: 0.8962962962962963
+                    fixedAssetIntensity: 0.1037037037037037
+                    cashRatio: 2.151898734177215
+                    quickCash: 3.0253164556962027
+                    currentRatio: 6.1265822784810124
+                    fixedAssetCoverage1: 3.3035714285714284
+                    fixedAssetCoverage2: 5.071428571428571
+                    roe: 0.7081081081081081
+                    roa: 0.24444444444444444
+                    profitMargin: 0.4337748344370861
