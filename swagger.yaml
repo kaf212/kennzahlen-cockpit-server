@@ -1,3 +1,4 @@
+# Source: https://swagger.io/docs/specification/v3_0/basic-structure/
 openapi: 3.0.0
 info:
   title: Kennzahlen-Cockpit-API
@@ -6,9 +7,16 @@ paths:
   /api/keyFigures/current/:id:
     get:
       summary: Liefert die aktuellsten Kennzahlen einer gegebenen Unernehmung
+      parameters:
+        - name: id
+          description: ID des Unternehmens
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         200:
-          description: Ein Objekt welches das neuste Rechnungsjahr und die zugehörigen Kennzahlen enthält.
+          description: Aktuelle Kennzahlen der gesuchten Unternehmung
           content: # Response body
             application/json: # Media type
               schema: # Must-have
@@ -34,3 +42,14 @@ paths:
                     roe: 0.7081081081081081
                     roa: 0.24444444444444444
                     profitMargin: 0.4337748344370861
+        404:
+          description: Keine Abschlussberichte gefunden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: no reports were found for company [name]
