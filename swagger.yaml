@@ -527,10 +527,6 @@ paths:
                   summary: Eine Custom-Kennzahl mit dem gegebenen Namen existiert bereits.
                   value:
                     message: custom key figure [name] already exists
-                "Custom-Kennzahl existiert nicht":
-                  summary: Die gesuchte Custom-Kennzahl existiert nicht
-                  value:
-                    message: custom key figure not found
                 "Ungültige Formel":
                   summary: Die gegebene Formel kann nicht interpretiert werden.
                   value:
@@ -547,6 +543,17 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+        404:
+          description: "Nicht gefunden: Die Custom-Kennzahl existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: custom key figure not found
     delete:
       summary: Lösche eine Custom-Kennzahl
       tags:
@@ -687,4 +694,63 @@ paths:
                 _id: "6809f2626f468128112190e2"
                 name: "SBB CFF FFS AG"
                 __v: 0
+    patch:
+      summary: Bearbeite ein Unternehmen
+      tags:
+        - Unternehmen
+      parameters:
+        - name: id
+          in: path
+          description: ID des Unternehmens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+            example:
+              name: "Beispiel GmbH"
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Unternehmen wurde bearbeitet."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company updated successfully
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Unternehmen existiert bereits":
+                  summary: Ein Unternehmen mit dem gegebenen Namen existiert bereits.
+                  value:
+                    message: company [name] already exists
+                "Ungültiges JSON-Format":
+                  summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
+                  value:
+                    message: invalid attributes in JSON object
+                "Zu langer Name":
+                  summary: Der Name der Custom-Kennzahl ist zu lang
+                  value:
+                    message: name must be shorter than 30 characters
+        404:
+          description: "Nicht gefunden: Das Unternehmen existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: company figure not found
 
