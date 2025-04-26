@@ -10,6 +10,12 @@ const router = express.Router()
 
 
 async function checkCustomKeyFigureExistenceByName(customKeyFigureName) {
+    /**
+     * Searches the database for a custom key figure with the provided name and returns a boolean based on the result.
+     *
+     * @param {String} customKeyFigureName - The name of the custom key figure
+     * @returns {Boolean} True, if the custom key figure exists, false otherwise
+     */
     const found = await CustomKeyFigure.find({name: customKeyFigureName})
     if (found.length > 0) {
         return true
@@ -18,6 +24,12 @@ async function checkCustomKeyFigureExistenceByName(customKeyFigureName) {
 }
 
 async function checkCustomFigureExistenceById(customFigureId) {
+    /**
+     * Searches the database for a custom key figure with the provided ID and returns a boolean based on the result.
+     *
+     * @param {String} customFigureId - The ID of the custom key figure
+     * @returns {Boolean} True, if the custom key figure exists, false otherwise
+     */
     try {
         const found = await CustomKeyFigure.findById(customFigureId)
         if (found !== null) {
