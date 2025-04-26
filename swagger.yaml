@@ -613,6 +613,52 @@ paths:
                 - _id: "680b877372e7191c1b28a66c"
                   name: "Armin Bäckerei GmbH"
                   __v: 0
+    post:
+      summary: Erstelle ein neues Unternehmen
+      tags:
+        - Unternehmen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+            example:
+              name: "Beispiel AG"
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Unternehmen wurde erstellt."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company created successfully
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Unternehmen existiert bereits":
+                  summary: Ein Unternehmen mit dem gegebenen Namen existiert bereits.
+                  value:
+                    message: company [name] already exists
+                "Ungültiges JSON-Format":
+                  summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
+                  value:
+                    message: Invalid JSON format
+                "Zu langer Name":
+                  summary: Der Name der Custom-Kennzahl ist zu lang
+                  value:
+                    message: name must be shorter than 30 characters
   /api/companies/:id:
     get:
       tags:
