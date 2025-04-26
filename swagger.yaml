@@ -549,6 +549,37 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+    delete:
+      summary: Lösche eine Custom-Kennzahl
+      tags:
+        - Custom-Kennzahlen
+      parameters:
+        - name: id
+          in: path
+          description: ID der Custom-Kennzahl
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Custom-Kennzahl wurde gelöscht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: custom key figure deleted successfully
+        404:
+          description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: custom key figure not found
 
 
 
