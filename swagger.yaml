@@ -63,7 +63,7 @@ paths:
                   message:
                     type: string
                 example:
-                  message: no reports were found for company [name]
+                  message: no reports were found for company Beispiel AG
 
   /api/keyFigures/historic/:id:
     get:
@@ -320,7 +320,7 @@ paths:
                   message:
                     type: string
                 example:
-                  message: no reports were found for company [name]
+                  message: no reports were found for company Beispiel AG
   /api/customKeyFigures:
     get:
       tags:
@@ -408,7 +408,7 @@ paths:
                 "Custom-Kennzahl existiert bereits":
                   summary: Eine Custom-Kennzahl mit dem gegebenen Namen existiert bereits.
                   value:
-                    message: custom key figure [name] already exists
+                    message: custom key figure Cashflow already exists
                 "Ungültige Formel":
                   summary: Die gegebene Formel kann nicht interpretiert werden.
                   value:
@@ -528,7 +528,7 @@ paths:
                 "Custom-Kennzahl existiert bereits":
                   summary: Eine Custom-Kennzahl mit dem gegebenen Namen existiert bereits.
                   value:
-                    message: custom key figure [name] already exists
+                    message: custom key figure Cashflow already exists
                 "Ungültige Formel":
                   summary: Die gegebene Formel kann nicht interpretiert werden.
                   value:
@@ -659,7 +659,7 @@ paths:
                 "Unternehmen existiert bereits":
                   summary: Ein Unternehmen mit dem gegebenen Namen existiert bereits.
                   value:
-                    message: company [name] already exists
+                    message: company Beispiel AG already exists
                 "Ungültiges JSON-Format":
                   summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
                   value:
@@ -735,7 +735,7 @@ paths:
                 "Unternehmen existiert bereits":
                   summary: Ein Unternehmen mit dem gegebenen Namen existiert bereits.
                   value:
-                    message: company [name] already exists
+                    message: company Beispiel AG already exists
                 "Ungültiges JSON-Format":
                   summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
                   value:
@@ -819,7 +819,7 @@ paths:
                   message:
                     type: string
                 example:
-                  message: successfully saved [quantity] reports
+                  message: successfully saved 3 reports
         400:
           description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
           content:
@@ -836,11 +836,11 @@ paths:
                 "Ungültige Daten in den Abschlussberichten":
                   summary: Die Abschlussberichte enthalten ungültige Werte
                   value:
-                    message: "[position] report contains invalid data."
+                    message: 2. report contains invalid data.
                 "Datei enthält Duplikate":
                   summary: Die Datei enthält mehrere Abschlussberichte für dasselbe Jahr
                   value:
-                    message: file contains duplicate reports for period [period]
+                    message: file contains duplicate reports for period 2024
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
