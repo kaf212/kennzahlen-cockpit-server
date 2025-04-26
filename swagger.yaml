@@ -357,6 +357,66 @@ paths:
                   formula: "stocks/current_assets"
                   type: "percentage"
                   __v: 0
+    post:
+      summary: Erstelle eine neue Custom-Kennzahl
+      tags:
+        - Custom-Kennzahlen
+      requestBody:
+        # Source: https://chatgpt.com/share/680cd84d-5918-8011-90d4-3a334a87d3c8
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                formula:
+                  type: string
+                type:
+                  type: string
+                  enum: [ numeric, percentage ]
+              required:
+                - name
+                - formula
+                - type
+            example:
+              name: "Cashflow"
+              formula: "liquid_assets+depreciation"
+              type: "numeric"
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Liefert die gesuchte Custom-Kennzahl"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: custom key figure created successfully
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Custom-Kennzahl existiert bereits":
+                  summary: Eine Custom-Kennzahl mit dem gegebenen Namen existiert bereits.
+                  value:
+                    message: custom key figure [name] already exists
+                "Ungültige Formel":
+                  summary: Die gegebene Formel kann nicht interpretiert werden.
+                  value:
+                    message: invalid formula
+                "Ungültiges JSON-Format":
+                  summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
+                  value:
+                    message: Invalid JSON format
+                "Zu langer Name":
+                  summary: Der Name der Custom-Kennzahl ist zu lang
+                  value:
+                    message: name must be shorter than 30 characters
 
   /api/customKeyFigures:id:
     get:
@@ -424,10 +484,11 @@ paths:
                     type: string
               example:
                 message: invalid ID format
-    post:
-      summary: Create a new financial formula
+
+    patch:
+      summary: Bearbeite eine Custom-Kennzahl
       tags:
-        - FinancialRatios
+        - Custom-Kennzahlen
       requestBody:
         # Source: https://chatgpt.com/share/680cd84d-5918-8011-90d4-3a334a87d3c8
         required: true
@@ -443,10 +504,6 @@ paths:
                 type:
                   type: string
                   enum: [ numeric, percentage ]
-              required:
-                - name
-                - formula
-                - type
             example:
               name: "Cashflow"
               formula: "liquid_assets+depreciation"
@@ -484,6 +541,7 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+
 
 
 
