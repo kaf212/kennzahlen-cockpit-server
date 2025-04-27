@@ -864,3 +864,48 @@ paths:
                 example:
                   message: internal server error
 
+  /api/auth/login:
+    post:
+      description: Authentifiziert einen Nutzer
+      tags:
+        - Authentifizierung
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                password:
+                  type: string
+              required:
+                - role
+                - password
+            example:
+              role: standard
+              password: password1234
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert ein JSON-Web-Token."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                example:
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NDU2OTc3MTUsImV4cCI6MTc0NTcwMTMxNX0.IQN2_wfKAXYuKtINfQCnaiXNsNctOCcH1IGQ4CR0zjk
+        401:
+          description: "Unautorisiert: Die gesendeten Login-Daten sind inkorrekt."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Authentication failed: Incorrect password or role"
