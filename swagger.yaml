@@ -17,7 +17,7 @@ paths:
     get:
       tags:
         - Kennzahlen
-      summary: Aktuelle Werte
+      summary: Liefert aktuelle Kennzahl-Werte
       parameters:
         - name: id
           description: ID des Unternehmens
@@ -75,7 +75,7 @@ paths:
     get:
       tags:
         - Kennzahlen
-      summary: Historische Werte
+      summary: Liefert historische Kennzahl-Werte
       parameters:
         - name: id
           description: ID des Unternehmens
@@ -337,7 +337,7 @@ paths:
     get:
       tags:
         - Custom-Kennzahlen
-      summary: Alle gespeicherten Custom-Kennzahlen
+      summary: Liefert alle gespeicherten Custom-Kennzahlen
       parameters:
         - name: Authorization
           in: header
@@ -381,7 +381,7 @@ paths:
                   type: "percentage"
                   __v: 0
     post:
-      summary: Erstelle eine neue Custom-Kennzahl
+      summary: Erstellt eine neue Custom-Kennzahl
       tags:
         - Custom-Kennzahlen
       parameters:
@@ -452,7 +452,7 @@ paths:
     get:
       tags:
         - Custom-Kennzahlen
-      summary: Eine ausgewählte Custom-Kennzahlen
+      summary: Liefert eine ausgewählte Custom-Kennzahlen
       parameters:
         - name: id
           in: path
@@ -518,7 +518,7 @@ paths:
               example:
                 message: invalid ID format
     patch:
-      summary: Bearbeite eine Custom-Kennzahl
+      summary: Bearbeitet eine Custom-Kennzahl
       tags:
         - Custom-Kennzahlen
       parameters:
@@ -597,7 +597,7 @@ paths:
               example:
                 message: custom key figure not found
     delete:
-      summary: Lösche eine Custom-Kennzahl
+      summary: Löscht eine Custom-Kennzahl
       tags:
         - Custom-Kennzahlen
       parameters:
@@ -639,7 +639,7 @@ paths:
     get:
       tags:
         - Unternehmen
-      summary: Alle gespeicherten Unternehmen
+      summary: Liefert alle gespeicherten Unternehmen
       parameters:
         - name: Authorization
           in: header
@@ -677,7 +677,7 @@ paths:
                   name: "Armin Bäckerei GmbH"
                   __v: 0
     post:
-      summary: Erstelle ein neues Unternehmen
+      summary: Erstellt ein neues Unternehmen
       tags:
         - Unternehmen
       parameters:
@@ -765,7 +765,7 @@ paths:
                 name: "SBB CFF FFS AG"
                 __v: 0
     patch:
-      summary: Bearbeite ein Unternehmen
+      summary: Bearbeitet ein Unternehmen
       tags:
         - Unternehmen
       parameters:
@@ -831,7 +831,7 @@ paths:
               example:
                 message: company figure not found
     delete:
-      summary: Lösche ein ein Unternehmen
+      summary: Löscht ein ein Unternehmen
       tags:
         - Unternehmen
       parameters:
@@ -871,8 +871,8 @@ paths:
 
   /api/upload:
     summary: Upload von XLSX-Dateien mit Abschlussberichten
-    description: Testtesttesttesttest
     post:
+      summary: Liest und verarbeitet eine XLSX-Datei
       tags:
         - Upload
       parameters:
@@ -955,7 +955,7 @@ paths:
 
   /api/auth/login:
     post:
-      description: Authentifiziert einen Nutzer
+      summary: Authentifiziert einen Nutzer
       tags:
         - Authentifizierung
       requestBody:
@@ -1001,6 +1001,7 @@ paths:
 
   /api/auth/protected:
     get:
+      summary: Überprüft ein Standard- oder Admin-Token
       tags:
         - Authentifizierung
       parameters:
@@ -1041,6 +1042,7 @@ paths:
 
   /api/auth/admin:
     get:
+      summary: Überprüft ein Admin-Token
       tags:
         - Authentifizierung
       parameters:
