@@ -1,0 +1,1063 @@
+# Source: https://swagger.io/docs/specification/v3_0/basic-structure/
+openapi: 3.0.0
+info:
+  title: Kennzahlen-Cockpit-API
+  version: 1.0.0
+tags:
+  - name: Kennzahlen
+    description: Endpunkte für das Abrufen von aktuellen und historischen Kennzahl-Werten
+  - name: Custom-Kennzahlen
+    description: Endpunkte für das Erstellen, Bearbeiten und Abrufen von Custom-Kennzahlen
+  - name: Unternehmen
+    description: Endpunkte für das Erstellen, Bearbeiten und Abrufen von Unternehmen
+  - name: Upload
+    description: Endpunkt für das Hochladen von XLSX-Dateien
+paths:
+  /api/keyFigures/current/:id:
+    get:
+      tags:
+        - Kennzahlen
+      summary: Liefert aktuelle Kennzahl-Werte
+      parameters:
+        - name: id
+          description: ID des Unternehmens
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert die aktuellen Kennzahlen der gesuchten Unternehmung"
+          content: # Response body
+            application/json: # Media type
+              schema: # Must-have
+                type: object # Data type
+                properties:
+                  period:
+                    type: integer
+                  keyFigures:
+                    type: object
+                example: # Sample data
+                  period: 2025
+                  keyFigures:
+                    equityRatio: 0.1
+                    debtRatio: 0.3296296296296296
+                    selfFinancingRatio: 0.9567567567567568
+                    workingCapitalIntensity: 0.8962962962962963
+                    fixedAssetIntensity: 0.1037037037037037
+                    cashRatio: 2.151898734177215
+                    quickCash: 3.0253164556962027
+                    currentRatio: 6.1265822784810124
+                    fixedAssetCoverage1: 3.3035714285714284
+                    fixedAssetCoverage2: 5.071428571428571
+                    roe: 0.7081081081081081
+                    roa: 0.24444444444444444
+                    profitMargin: 0.4337748344370861
+        404:
+          description: "Nicht gefunden: Für dieses Unternehmen existieren keine Abschlussberichte"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: no reports were found for company Beispiel AG
+
+  /api/keyFigures/historic/:id:
+    get:
+      tags:
+        - Kennzahlen
+      summary: Liefert historische Kennzahl-Werte
+      parameters:
+        - name: id
+          description: ID des Unternehmens
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert historische Kennzahlen der gesuchten Unternehmung"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  equityRatio:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  debtRatio:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  selfFinancingRatio:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  workingCapitalIntensity:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  fixedAssetIntensity:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  cashRatio:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  quickCash:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  currentRatio:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  fixedAssetCoverage1:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  fixedAssetCoverage2:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  roe:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  roa:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                  profitMargin:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: integer
+                        key_figure:
+                          type: number
+                example:
+                  # Example response generated by ChatGPT
+                  # Source: https://chatgpt.com/share/680cd84d-5918-8011-90d4-3a334a87d3c8
+                  equityRatio:
+                    - period: 2024
+                      key_figure: 0.43272727272727274
+                    - period: 2023
+                      key_figure: 0.3933649289099526
+                    - period: 2022
+                      key_figure: 0.44
+                  debtRatio:
+                    - period: 2024
+                      key_figure: 0.5672727272727273
+                    - period: 2023
+                      key_figure: 0.6066350710900474
+                    - period: 2022
+                      key_figure: 0.56
+                  selfFinancingRatio:
+                    - period: 2024
+                      key_figure: 0.36
+                    - period: 2023
+                      key_figure: 0.18571428571428572
+                    - period: 2022
+                      key_figure: 0.17857142857142858
+                  workingCapitalIntensity:
+                    - period: 2024
+                      key_figure: 0.27045454545454545
+                    - period: 2023
+                      key_figure: 0.35545023696682465
+                    - period: 2022
+                      key_figure: 0.27466666666666667
+                  fixedAssetIntensity:
+                    - period: 2024
+                      key_figure: 0.7295454545454545
+                    - period: 2023
+                      key_figure: 0.6445497630331753
+                    - period: 2022
+                      key_figure: 0.7253333333333334
+                  cashRatio:
+                    - period: 2024
+                      key_figure: 0.20114942528735633
+                    - period: 2023
+                      key_figure: 0.30303030303030304
+                    - period: 2022
+                      key_figure: 0.175
+                  quickCash:
+                    - period: 2024
+                      key_figure: 1.0632183908045978
+                    - period: 2023
+                      key_figure: 1.5151515151515151
+                    - period: 2022
+                      key_figure: 1.425
+                  currentRatio:
+                    - period: 2024
+                      key_figure: 1.7097701149425288
+                    - period: 2023
+                      key_figure: 2.272727272727273
+                    - period: 2022
+                      key_figure: 2.575
+                  fixedAssetCoverage1:
+                    - period: 2024
+                      key_figure: 0.43613707165109034
+                    - period: 2023
+                      key_figure: 0.5147058823529411
+                    - period: 2022
+                      key_figure: 0.5147058823529411
+                  fixedAssetCoverage2:
+                    - period: 2024
+                      key_figure: 0.9968847352024922
+                    - period: 2023
+                      key_figure: 1.213235294117647
+                    - period: 2022
+                      key_figure: 1.1397058823529411
+                  roe:
+                    - period: 2024
+                      key_figure: 0.31142857142857144
+                    - period: 2023
+                      key_figure: 1.0857142857142856
+                    - period: 2022
+                      key_figure: 0.014285714285714285
+                  roa:
+                    - period: 2024
+                      key_figure: 0.12590909090909091
+                    - period: 2023
+                      key_figure: 0.3744075829383886
+                    - period: 2022
+                      key_figure: 0.048
+                  profitMargin:
+                    - period: 2024
+                      key_figure: 0.04839067702552719
+                    - period: 2023
+                      key_figure: 0.1688888888888889
+                    - period: 2022
+                      key_figure: 0.002197802197802198
+                  Custom-Kennzahl-1:
+                    - period: 2024
+                      key_figure: 280
+                    - period: 2023
+                      key_figure: 250
+                    - period: 2022
+                      key_figure: 335
+                  Custom-Kennzahl-2:
+                    - period: 2024
+                      key_figure: 0.37815126050420167
+                    - period: 2023
+                      key_figure: 0.3333333333333333
+                    - period: 2022
+                      key_figure: 0.44660194174757284
+        404:
+          description: "Nicht gefunden: Für dieses Unternehmen existieren keine Abschlussberichte"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: no reports were found for company Beispiel AG
+  /api/customKeyFigures:
+    get:
+      tags:
+        - Custom-Kennzahlen
+      summary: Liefert alle gespeicherten Custom-Kennzahlen
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert alle Custom-Kennzahlen"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    formula:
+                      type: string
+                    type:
+                      type: string
+                      enum:
+                        - numeric
+                        - percentage
+                    __v:
+                      type: integer
+                      example: 0
+              example:
+                - _id: "6807759eb81cadc3ac9893d2"
+                  name: "Cashflow"
+                  formula: "liquid_assets+depreciation"
+                  type: "numeric"
+                  __v: 0
+                - _id: "680b838372e7191c1b28a474"
+                  name: "Vorratsanteil"
+                  formula: "stocks/current_assets"
+                  type: "percentage"
+                  __v: 0
+    post:
+      summary: Erstellt eine neue Custom-Kennzahl
+      tags:
+        - Custom-Kennzahlen
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Admin-Rolle
+          schema:
+            type: string
+      requestBody:
+        # Source: https://chatgpt.com/share/680cd84d-5918-8011-90d4-3a334a87d3c8
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                formula:
+                  type: string
+                type:
+                  type: string
+                  enum: [ numeric, percentage ]
+              required:
+                - name
+                - formula
+                - type
+            example:
+              name: "Cashflow"
+              formula: "liquid_assets+depreciation"
+              type: "numeric"
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Custom-Kennzahl wurde erstellt."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: custom key figure created successfully
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Custom-Kennzahl existiert bereits":
+                  summary: Eine Custom-Kennzahl mit dem gegebenen Namen existiert bereits.
+                  value:
+                    message: custom key figure Cashflow already exists
+                "Ungültige Formel":
+                  summary: Die gegebene Formel kann nicht interpretiert werden.
+                  value:
+                    message: invalid formula
+                "Ungültiges JSON-Format":
+                  summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
+                  value:
+                    message: Invalid JSON format
+                "Zu langer Name":
+                  summary: Der Name der Custom-Kennzahl ist zu lang
+                  value:
+                    message: name must be shorter than 30 characters
+
+  /api/customKeyFigures/:id:
+    get:
+      tags:
+        - Custom-Kennzahlen
+      summary: Liefert eine ausgewählte Custom-Kennzahlen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID der Custom-Kennzahl
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert die gesuchte Custom-Kennzahl"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    formula:
+                      type: string
+                    type:
+                      type: string
+                      enum:
+                        - numeric
+                        - percentage
+                    __v:
+                      type: integer
+                      example: 0
+              example:
+                _id: "6807759eb81cadc3ac9893d2"
+                name: "Cashflow"
+                formula: "liquid_assets+depreciation"
+                type: "numeric"
+                __v: 0
+
+        404:
+          description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: custom key figure not found
+        400:
+          description: "Ungültige Anfrage: Das Format der gesuchten ID ist ungültig."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: invalid ID format
+    patch:
+      summary: Bearbeitet eine Custom-Kennzahl
+      tags:
+        - Custom-Kennzahlen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID der Custom-Kennzahl
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Admin-Rolle
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                formula:
+                  type: string
+                type:
+                  type: string
+                  enum: [ numeric, percentage ]
+            example:
+              name: "Geldfluss"
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Custom-Kennzahl wurde bearbeitet."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: custom key figure updated successfully
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Custom-Kennzahl existiert bereits":
+                  summary: Eine Custom-Kennzahl mit dem gegebenen Namen existiert bereits.
+                  value:
+                    message: custom key figure Cashflow already exists
+                "Ungültige Formel":
+                  summary: Die gegebene Formel kann nicht interpretiert werden.
+                  value:
+                    message: invalid formula
+                "Ungültiges JSON-Format":
+                  summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
+                  value:
+                    message: invalid attributes in JSON object
+                "Leere Anfrage":
+                  summary: Die Anfrage ist leer
+                  value:
+                    message: no JSON provided
+                "Zu langer Name":
+                  summary: Der Name der Custom-Kennzahl ist zu lang
+                  value:
+                    message: name must be shorter than 30 characters
+        404:
+          description: "Nicht gefunden: Die Custom-Kennzahl existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: custom key figure not found
+    delete:
+      summary: Löscht eine Custom-Kennzahl
+      tags:
+        - Custom-Kennzahlen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID der Custom-Kennzahl
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Custom-Kennzahl wurde gelöscht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: custom key figure deleted successfully
+        404:
+          description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: custom key figure not found
+
+  /api/compananies:
+    get:
+      tags:
+        - Unternehmen
+      summary: Liefert alle gespeicherten Unternehmen
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert alle Unternehmen"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    __v:
+                      type: integer
+                      example: 0
+              example:
+                # Example generated by ChatGPT
+                # Source: https://chatgpt.com/share/680cd84d-5918-8011-90d4-3a334a87d3c8
+                - _id: "680663ecfbe8bb942d143173"
+                  name: "Beispiel AG"
+                  __v: 0
+                - _id: "6809f2626f468128112190e2"
+                  name: "SBB CFF FFS AG"
+                  __v: 0
+                - _id: "680b877372e7191c1b28a66c"
+                  name: "Armin Bäckerei GmbH"
+                  __v: 0
+    post:
+      summary: Erstellt ein neues Unternehmen
+      tags:
+        - Unternehmen
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Admin-Rolle
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+            example:
+              name: "Beispiel AG"
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Unternehmen wurde erstellt."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company created successfully
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Unternehmen existiert bereits":
+                  summary: Ein Unternehmen mit dem gegebenen Namen existiert bereits.
+                  value:
+                    message: company Beispiel AG already exists
+                "Ungültiges JSON-Format":
+                  summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
+                  value:
+                    message: Invalid JSON format
+                "Zu langer Name":
+                  summary: Der Name der Custom-Kennzahl ist zu lang
+                  value:
+                    message: name must be shorter than 30 characters
+  /api/companies/:id:
+    get:
+      tags:
+        - Unternehmen
+      summary: Liefert ein ausgewähltes Unternehmen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID des Unternehmens
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert das gesuchte Unternehmen"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  name:
+                    type: string
+                  __v:
+                    type: integer
+                    example: 0
+              example:
+                _id: "6809f2626f468128112190e2"
+                name: "SBB CFF FFS AG"
+                __v: 0
+    patch:
+      summary: Bearbeitet ein Unternehmen
+      tags:
+        - Unternehmen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID des Unternehmens
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Admin-Rolle
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+            example:
+              name: "Beispiel GmbH"
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Unternehmen wurde bearbeitet."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company updated successfully
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Unternehmen existiert bereits":
+                  summary: Ein Unternehmen mit dem gegebenen Namen existiert bereits.
+                  value:
+                    message: company Beispiel AG already exists
+                "Ungültiges JSON-Format":
+                  summary: Das JSON-Objekt aus der Anfrage hat ungültige oder fehlende Attribute.
+                  value:
+                    message: invalid attributes in JSON object
+                "Zu langer Name":
+                  summary: Der Name der Custom-Kennzahl ist zu lang
+                  value:
+                    message: name must be shorter than 30 characters
+        404:
+          description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: company figure not found
+    delete:
+      summary: Löscht ein ein Unternehmen
+      tags:
+        - Unternehmen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID des Unternehmens
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Unternehmen wurde gelöscht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company deleted successfully
+        404:
+          description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company not found
+
+  /api/upload:
+    summary: Upload von XLSX-Dateien mit Abschlussberichten
+    post:
+      summary: Liest und verarbeitet eine XLSX-Datei
+      tags:
+        - Upload
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      requestBody:
+        # Source: https://chatgpt.com/share/680cd84d-5918-8011-90d4-3a334a87d3c8
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+                - file
+            example:
+              file: (binary file)
+      responses:
+        201:
+          description: "Anfrage erfolgreich: Abschlussberichte wurden gespeichert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: successfully saved 3 reports
+        400:
+          description: "Ungültige Anfrage: Die Anfrage enthält ungültige Daten."
+          content:
+            application/json:
+              examples:
+                "Keine Datei vorhanden":
+                  summary: Keine Datei wurde mitgesendet.
+                  value:
+                    message: no file provided
+                "Ungültiger Dateityp":
+                  summary: Die gesendete Datei ist nicht vom Typ XLSX.
+                  value:
+                    message: files must be be of type .xlsx
+                "Ungültige Daten in den Abschlussberichten":
+                  summary: Die Abschlussberichte enthalten ungültige Werte
+                  value:
+                    message: 2. report contains invalid data.
+                "Datei enthält Duplikate":
+                  summary: Die Datei enthält mehrere Abschlussberichte für dasselbe Jahr
+                  value:
+                    message: file contains duplicate reports for period 2024
+        404:
+          description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: company not found
+        500:
+          description: "Interner Fehler: Bei der Datenverarbeitung ist ein Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: internal server error
+
+  /api/auth/login:
+    post:
+      summary: Authentifiziert einen Nutzer
+      tags:
+        - Authentifizierung
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                password:
+                  type: string
+              required:
+                - role
+                - password
+            example:
+              role: standard
+              password: password1234
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Liefert ein JSON-Web-Token."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                example:
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NDU2OTc3MTUsImV4cCI6MTc0NTcwMTMxNX0.IQN2_wfKAXYuKtINfQCnaiXNsNctOCcH1IGQ4CR0zjk
+        401:
+          description: "Unautorisiert: Die gesendeten Login-Daten sind inkorrekt."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Authentication failed: Incorrect password or role"
+
+  /api/auth/protected:
+    get:
+      summary: Überprüft ein Standard- oder Admin-Token
+      tags:
+        - Authentifizierung
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Token ist gültig"
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Access granted to protected route Standard
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Token ist ungültig."
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
+
+  /api/auth/admin:
+    get:
+      summary: Überprüft ein Admin-Token
+      tags:
+        - Authentifizierung
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Token ist gültig"
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Access granted to protected route Admin
+

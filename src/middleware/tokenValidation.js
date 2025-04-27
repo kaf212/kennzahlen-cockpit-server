@@ -5,16 +5,17 @@ const express = require("express")
 
 
 function validateToken(req, res) {
-    /*
-    * Reads a JWT from the header of a provided http-request and validates the token.
-    * Source: https://dev.to/jaimaldullat/a-step-by-step-guide-to-creating-a-restful-api-using-nodejs-and-express-including-crud-operations-and-authentication-2mo2
-    * :param: req (object): http-request
-    *
-    * :return: jwtPayload (object): the payload of the JWT as an object.
-    * :return: http-response (object)
-    */
+    /**
+     * Reads a JWT from the header of a provided http-request and validates the token.
+     * Source: https://dev.to/jaimaldullat/a-step-by-step-guide-to-creating-a-restful-api-using-nodejs-and-express-including-crud-operations-and-authentication-2mo2
+     *
+     * @param {Request} req - Http-request
+     * @param {Response} res - Http-response
+     * @returns {Object} The JWT payload
+     */
 
     const secretKey = process.env.SECRET_KEY
+
 
     let token = req.header('Authorization');
 
@@ -37,15 +38,14 @@ function validateToken(req, res) {
 }
 
 function authenticateToken(req, res, next) {
-    /*
-    * Authenticates JWT for both standard and admin roles.
-    * :param: req (object):     http-request
-    * :param: res (object):     http-response
-    * :param: next (function):  API route
-    *
-    * :return: void
-    */
-
+    /**
+     * Authenticates a JWT for both standard and admin roles.
+     *
+     * @param {Request} req - Http-request
+     * @param {Response} res - Http-response
+     * @param {Function} next - API route to be called next
+     * @returns {void}
+     */
 
     const payload = validateToken(req, res);
     if (!payload.role) return; // Stops execution if token is invalid
@@ -56,14 +56,15 @@ function authenticateToken(req, res, next) {
 }
 
 function authenticateAdmin(req, res, next) {
-    /*
-    * Authenticates JWT for admin-only API endpoints.
-    * :param: req (object):     http-request
-    * :param: res (object):     http-response
-    * :param: next (function):  API route
-    *
-    * :return: void
-    */
+    /**
+     * Authenticates JWT for admin-only API endpoints.
+     *
+     * @param {Object} req - HTTP request
+     * @param {Object} res - HTTP response
+     * @param {Function} next - API route
+     * @returns {Void}
+     */
+
     const jwtPayload = validateToken(req, res)
     if (jwtPayload.role === undefined) {
         return null // exit the function if token validation has failed in order to prevent double response sending

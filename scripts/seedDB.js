@@ -11,17 +11,25 @@ function seedDB() {
 }
 
 async function seedCompanyCollection() {
+    /**
+     * Checks if the company collection in the database is empty and inserts a test document if that is the case.
+     * @return {Promise} A promise without a return value
+     */
     const documentCount = await Company.countDocuments()
     if (documentCount === 0) {
         const testCompany = new Company({
             name: "TestCompany"
         })
         await testCompany.save()
-        console.log('seeded collection "company"')
+        console.log('Seeded collection "company"')
     }
 }
 
 async function seedReportCollection() {
+    /**
+     * Checks if the report collection in the database is empty and inserts a test document if that is the case.
+     * @return {Promise} A promise without a return value
+     */
     const documentCount = await Report.countDocuments()
     if (documentCount === 0) {
         const testReport = new Report({
@@ -87,12 +95,18 @@ async function seedReportCollection() {
             }
         })
         await testReport.save()
-        console.log('seeded collection "report"')
+        console.log('Seeded collection "report"')
     }
 
 }
 
 async function seedRoleCollection() {
+    /**
+     * Checks if the role collection in the database contains more or fewer than two documents.
+     * If that is the case, it deletes all existing roles, reads the role passwords from the environment
+     * variables, hashes them and inserts them into the role collection
+     * @return {Promise} A promise without a return value
+     */
     const documentCount = await Role.countDocuments()
     if (documentCount !== 2) {
         await Role.deleteMany({}) // delete all documents
@@ -100,6 +114,7 @@ async function seedRoleCollection() {
         const standardPassword = process.env.STANDARD_PASSWORD
         const adminPassword = process.env.ADMIN_PASSWORD
 
+        // Hash the standard and admin passwords
         const standardPwHash = bcrypt.hashSync(standardPassword, bcrypt.genSaltSync(10))
         const adminPwHash = bcrypt.hashSync(adminPassword, bcrypt.genSaltSync(10))
 
@@ -111,9 +126,12 @@ async function seedRoleCollection() {
             name: "Standard",
             password: standardPwHash
         })
+
+        // Insert the roles into the database
         await adminRole.save()
         await standardRole.save()
-        console.log('seeded collection "role"')
+
+        console.log('Seeded collection "role"')
     }
 
 }
