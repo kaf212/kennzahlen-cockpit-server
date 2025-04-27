@@ -909,3 +909,66 @@ paths:
                     type: string
                 example:
                   message: "Authentication failed: Incorrect password or role"
+
+  /api/auth/protected:
+    post:
+      tags:
+        - Authentifizierung
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Standard- oder Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Token ist gültig"
+          content:
+            application/json:
+              schema:
+                type: string
+              example:
+                Access granted to protected route Standard
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Token ist ungültig."
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
+
+  /api/auth/admin:
+    post:
+      tags:
+        - Authentifizierung
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Gültiges Token für die Admin-Rolle
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Anfrage erfolgreich: Token ist gültig"
+          content:
+            application/json:
+              schema:
+                type: string
+              example:
+                Access granted to protected route Admin
+
