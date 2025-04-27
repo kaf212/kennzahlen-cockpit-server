@@ -6,6 +6,12 @@ const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValid
 const router = express.Router()
 
 async function checkCompanyExistenceByName(companyName) {
+    /**
+     * Searches the database for a company with the provided name and returns a boolean based on the result.
+     *
+     * @param {String} companyName - The name of the company
+     * @returns {Boolean} True, if the company exists, false otherwise
+     */
     const found = await Company.find({name: companyName})
     if (found.length > 0) { // Company.find() returns an array, which would always evaluate as true
         return true
@@ -14,18 +20,25 @@ async function checkCompanyExistenceByName(companyName) {
 }
 
 async function checkCompanyExistenceById(companyId) {
+    /**
+     * Searches the database for a company with the provided ID and returns a boolean based on the result.
+     *
+     * @param {String} companyId - The ID of the company
+     * @returns {Boolean} True, if the company exists, false otherwise
+     */
     try {
         const found = await Company.findById(companyId)
         if (found !== null) {
             return true
         }
         return false
-    } catch (err) {}
+    } catch (err) {
+    }
     return false
 
 }
 
-router.get("/", authenticateToken, async (req, res, next)=>{
+router.get("/", authenticateToken, async (req, res, next) => {
     try {
         const companies = await Company.find({})
         return res.json(companies)
@@ -35,7 +48,7 @@ router.get("/", authenticateToken, async (req, res, next)=>{
 
 })
 
-router.get("/:id", authenticateToken, async (req, res, next)=> {
+router.get("/:id", authenticateToken, async (req, res, next) => {
     try {
         // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
@@ -52,7 +65,7 @@ router.get("/:id", authenticateToken, async (req, res, next)=> {
     }
 })
 
-router.post("/", authenticateAdmin,async (req, res, next)=> {
+router.post("/", authenticateAdmin, async (req, res, next) => {
     if (!req.body.hasOwnProperty("name")) {
         return res.status(400).json({message: "invalid json format"})
     }
@@ -70,15 +83,18 @@ router.post("/", authenticateAdmin,async (req, res, next)=> {
 })
 
 
-router.patch("/:id", authenticateAdmin,async (req, res, next)=>{
+router.patch("/:id", authenticateAdmin, async (req, res, next) => {
     const companyJson = req.body
     const companyId = req.params.id
+
     if (!(await checkCompanyExistenceById(companyId))) {
         return res.status(404).json({message: "company not found"})
     }
+
     if (!companyJson.hasOwnProperty("name")) {
         return res.status(400).json({message: "invalid json format"})
     }
+
     if (await checkCompanyExistenceByName(companyJson.name) === true) {
         return res.status(400).json({message: `company with name ${req.body.name} already exists`})
     }
@@ -93,7 +109,7 @@ router.patch("/:id", authenticateAdmin,async (req, res, next)=>{
     return res.status(201).json({message: "company updated successfully"})
 })
 
-router.delete("/:id", authenticateAdmin, async (req, res, next)=>{
+router.delete("/:id", authenticateAdmin, async (req, res, next) => {
     const companyId = req.params.id
 
     if (!(await checkCompanyExistenceById(companyId))) {

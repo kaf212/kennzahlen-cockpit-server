@@ -5,14 +5,12 @@ const Role = require("../models/Role")
 const secretKey = process.env.SECRET_KEY
 
 async function authenticateUser(res, requestRole, password) {
-    /*
-    * Gets called for each login request and returns a JWT upon successful verification of the credentials
-    * :param: res (object):         http-response
-    * :param: requestRole (str):    Name of the role
-    * :param: password (str):       Password for the role
-    *
-    * :return: http-response
-    */
+    /**
+     * Gets called for each login request and returns a JWT upon successful verification of the credentials.
+     * @param {Response} res - Http-response
+     * @param {String} requestRole - Name of the requested role
+     * @param {String} passwort - Password for the requested role
+     */
     const foundRole = await Role.findOne({name: requestRole})
 
     if (foundRole) {
