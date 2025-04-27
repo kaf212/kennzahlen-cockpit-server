@@ -7,6 +7,7 @@ const path = require('path');
 const getTokens = require('./supportFunctions').getTokens;
 const isValidJson = require('./supportFunctions').isValidJson;
 const companyName = 'ApiTestCompany'
+const companyName2 = 'Api-TestCompany'
 
 describe('Company Routes Testing', () => {
     it('Testfall 8: Aufruf einer Liste aller Firmen', async () => {
@@ -80,7 +81,7 @@ describe('Company Routes Testing', () => {
             if (i <= 4) {
                 console.log(i)
                 const form = new FormData();
-                const filePath = path.join(__dirname, `testdata/bad_excel${i}.xlsx`);
+                const filePath = path.join(__dirname, `testdata_bad/bad_excel${i}.xlsx`);
 
                 form.append('file', fs.createReadStream(filePath));
                 try {
@@ -92,7 +93,6 @@ describe('Company Routes Testing', () => {
                     });
                     throw new Error('it should not reach here')
                 } catch (error) {
-                    console.log(error)
                     expect(error.response.status).toBe(400);
                 }
             } else {
@@ -216,18 +216,18 @@ describe('Company Routes Testing', () => {
         const fakeID = "5f47ac8b3e2f4d1b9c0a1234FAKE"
 
         try {
-            let res = await axios.get(`${process.env.URL}api/companies/${fakeID}`, {
+            await axios.get(`${process.env.URL}api/companies/${fakeID}`, {
                 headers: {Authorization: `Bearer ${tokens.standard}`}
             });
             throw new Error('It should not get this far')
 
         } catch (error) {
             expect(error.response.status).toBe(400);
-            expect(error.response.data).toBe('invalid ID format');
+            expect(error.response.data.message).toBe('invalid ID format');
         }
 
         try {
-            let res = await axios.get(`${process.env.URL}api/companies/${fakeID}`, {
+            await axios.get(`${process.env.URL}api/companies/${fakeID}`, {
                 headers: {Authorization: `Bearer ${tokens.admin}`}
             });
             throw new Error('It should not get this far')
@@ -238,5 +238,126 @@ describe('Company Routes Testing', () => {
         }
     });
 
+    it('Testfall 16: Bearbeitung des Namens eines Unternehmens (Standartnutzer)', async () => {
+        let tokens = await getTokens();
+        let all_companies;
+
+        try {
+            let res = await axios.get(`${process.env.URL}api/companies`, {
+                headers: {Authorization: `Bearer ${tokens.standard}`}
+            });
+            expect(isValidJson(res.data, ['name', '_id'], true)).toBeTruthy()
+            all_companies = res.data
+
+            for (i in all_companies){
+                if (all_companies[i].name === companyName){
+                    let res2 = await axios.patch(`${process.env.URL}api/companies/${all_companies[i]._id}`, {
+                      name: companyName2
+                    }, {
+                        headers: {Authorization: `Bearer ${tokens.standard}`}
+                    });
+                    throw new Error('it should not come this far')
+
+                }
+            }
+        } catch (error) {
+            expect(error.response.status).toBe(403)
+        }
+
+    });
+
+    it('Testfall 17: Bearbeitung des Namens eines Unternehmens (Admin)', async () => {
+        let tokens = await getTokens();
+        let all_companies;
+
+        try {
+            let res = await axios.get(`${process.env.URL}api/companies`, {
+                headers: {Authorization: `Bearer ${tokens.admin}`}
+            });
+            expect(isValidJson(res.data, ['name', '_id'], true)).toBeTruthy()
+            all_companies = res.data
+
+            for (i in all_companies){
+                if (all_companies[i].name === companyName){
+                    let res2 = await axios.patch(`${process.env.URL}api/companies/${all_companies[i]._id}`, {
+                      name: companyName2
+                    }, {
+                        headers: {Authorization: `Bearer ${tokens.admin}`}
+                    });
+                    expect(res2.status).toBe(201);
+
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    })
+
+    it('Testfall 18: Löschen eines Unternehmens', async () => {
+        let tokens = await getTokens();
+        let all_companies;
+
+        try {
+             let res = await axios.get(`${process.env.URL}api/companies`, {
+                headers: {Authorization: `Bearer ${tokens.admin}`}
+            });
+
+            expect(isValidJson(res.data, ['name', '_id'], true)).toBeTruthy()
+
+            all_companies = res.data
+
+            for (i in all_companies){
+                if (all_companies[i].name === companyName2){
+                    let res2 = await axios.patch(`${process.env.URL}api/companies/${all_companies[i]._id}`, {
+                        headers: {Authorization: `Bearer ${tokens.standard}`}
+                    });
+                    throw new Error('it should not come this far')
+
+                }
+            }
+        } catch (error) {
+            expect(error.response.status).toBe(401)
+
+        }
+
+        try {
+             let res = await axios.get(`${process.env.URL}api/companies`, {
+                headers: {Authorization: `Bearer ${tokens.admin}`}
+            });
+
+            expect(isValidJson(res.data, ['name', '_id'], true)).toBeTruthy()
+
+            all_companies = res.data
+            for (i in all_companies){
+                if (all_companies[i].name === companyName2){
+                    let res2 = await axios.delete(`${process.env.URL}api/companies/${all_companies[i]._id}`, {
+                        headers: {Authorization: `Bearer ${tokens.admin}`}
+                    });
+                    expect(res2.status).toBe(200);
+
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    });
+
+    it('Testfall 19: Löschen eines nichtexistenten Unternehmens', async () => {
+        let tokens = await getTokens();
+        const fakeID = "5f47ac8b3e2f4d1b9c0a1234FAKE"
+
+        try {
+
+            await axios.delete(`${process.env.URL}api/companies/${fakeID}`, {
+                headers: {Authorization: `Bearer ${tokens.admin}`}
+            });
+
+            throw new Error('it should not come this far')
+        } catch (error) {
+            expect(error.response.status).toBe(404);
+        }
+    });
 
 });
