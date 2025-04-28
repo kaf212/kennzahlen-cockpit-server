@@ -10,6 +10,7 @@ function checkLoginAttempts(ip) {
     /**
      * Checks the loginAttempts object if the given IP address has reached the login attempt limit
      * or if this client has to wait for the login lock time to pass.
+     * Source: https://chatgpt.com/share/680f9ff3-0f40-8011-888b-1991d1da8890
      *
      * @param {String} ip - The IP address from the login request.
      * @returns {Boolean} True if the user is allowed to attempt a login, false otherwise
@@ -40,6 +41,7 @@ function checkLoginAttempts(ip) {
 function logFailedLoginAttempt(ip) {
     /**
      * Logs a failed login attempt inside the loginAttempts object.
+     * Source: https://chatgpt.com/share/680f9ff3-0f40-8011-888b-1991d1da8890
      */
     if (!loginAttempts[ip]) {
         // Create a new entry for this IP if it hasn't tried logging in yet
