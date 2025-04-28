@@ -123,7 +123,7 @@ async function seedRoleCollection() {
 
     // Raise an error if one of the passwords is undefined
     if (!standardPassword || !adminPassword) {
-        throw Error("standard or admin password could not be found in environment variables.")
+        throw new Error("standard or admin password could not be found in environment variables.")
     }
 
     // Hash the standard and admin passwords
