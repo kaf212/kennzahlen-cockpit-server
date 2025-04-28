@@ -7,6 +7,13 @@ const secretKey = process.env.SECRET_KEY
 const loginAttempts = {}
 
 function checkLoginAttempts(ip) {
+    /**
+     * Checks the loginAttempts object if the given IP address has reached the login attempt limit
+     * or if this client has to wait for the login lock time to pass.
+     *
+     * @param {String} ip - The IP address from the login request.
+     * @returns {Boolean} True if the user is allowed to attempt a login, false otherwise
+     */
     const now = Date.now()
     if (!loginAttempts[ip]) {
         loginAttempts[ip] = { count: 0, lastAttempt: now }
@@ -21,17 +28,24 @@ function checkLoginAttempts(ip) {
 
     ipData.lastAttempt = now
 
+    // If the login attempt limit has been reached return false
     if (ipData.count >= process.env.MAX_LOGIN_ATTEMPTS) {
         return false
     }
 
+    // Return true if the login attempt limit hasn't been reached and the lock time isn't active
     return true
 }
 
 function logFailedLoginAttempt(ip) {
+    /**
+     * Logs a failed login attempt inside the loginAttempts object.
+     */
     if (!loginAttempts[ip]) {
+        // Create a new entry for this IP if it hasn't tried logging in yet
         loginAttempts[ip] = { count: 1, lastAttempt: Date.now() }
     } else {
+        // If the IP is already present inside the loginAttempts object, update its entry
         loginAttempts[ip].count += 1
         loginAttempts[ip].lastAttempt = Date.now()
     }
