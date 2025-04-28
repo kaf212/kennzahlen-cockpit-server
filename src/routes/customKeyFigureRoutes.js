@@ -5,6 +5,7 @@ const Report = require("../models/Report")
 const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
 const {customKeyFigure} = require("../data_processing/queries")
 const {number} = require("mathjs");
+const sanitizeHtml = require("sanitize-html");
 
 const router = express.Router()
 
@@ -97,6 +98,7 @@ router.post("/", authenticateToken, async (req, res, next)=> {
     if (await checkCustomKeyFigureExistenceByName(req.body.name)) {
         return res.status(400).json({message: `custom key figure ${req.body.name} already exists`})
     }
+    console.log(await validateFormula(req.body.formula))
 
     if (await validateFormula(req.body.formula) === false) {
         return res.status(400).json({message: "invalid formula"})
@@ -106,8 +108,18 @@ router.post("/", authenticateToken, async (req, res, next)=> {
         return res.status(400).json({message: "name must be shorter than 30 characters"})
     }
 
+    const sanitizedCustomKeyFigureName = sanitizeHtml(req.body.name, {
+        allowedTags: [], // no HTML tags allowed
+        allowedAttributes: {}
+    })
+
+    const sanitizedFormula = sanitizeHtml(req.body.formula, {
+        allowedTags: [], // no HTML tags allowed
+        allowedAttributes: {}
+    })
+
     try {
-        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type})
+        const newCustomKeyFigure = new CustomKeyFigure({name: sanitizedCustomKeyFigureName, formula: sanitizedFormula, type: req.body.type})
         await newCustomKeyFigure.save()
         return res.status(201).json({message: "custom key figure created successfully"})
     } catch (err) { // If mongoose model validation fails
@@ -137,6 +149,11 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
         if (req.body.name.length > 30) {
             return res.status(400).json({message: "name must be shorter than 30 characters"})
         }
+
+        customKeyFigureJson.name = sanitizeHtml(req.body.name, {
+            allowedTags: [], // no HTML tags allowed
+            allowedAttributes: {}
+        })
     }
 
     if (customKeyFigureJson.hasOwnProperty("formula")) {
@@ -144,6 +161,11 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
         if (await validateFormula(customKeyFigureJson.formula) === false) {
             return res.status(400).json({message: "invalid formula"})
         }
+
+        customKeyFigureJson.formula = sanitizeHtml(req.body.formula, {
+            allowedTags: [], // no HTML tags allowed
+            allowedAttributes: {}
+        })
     }
 
     /*

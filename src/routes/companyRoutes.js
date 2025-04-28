@@ -1,5 +1,6 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const sanitizeHtml = require("sanitize-html")
 const Company = require("../models/Company")
 const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
 
@@ -77,7 +78,12 @@ router.post("/", authenticateAdmin, async (req, res, next) => {
         return res.status(400).json({message: "name must be shorter than 30 characters"})
     }
 
-    const newCompany = new Company({name: req.body.name})
+    const sanitizedCompanyName = sanitizeHtml(req.body.name, {
+        allowedTags: [],
+        allowedAttributes: {}
+    })
+
+    const newCompany = new Company({name: sanitizedCompanyName})
     await newCompany.save()
     res.status(201).json({message: "company created successfully"})
 })
@@ -103,6 +109,11 @@ router.patch("/:id", authenticateAdmin, async (req, res, next) => {
         if (req.body.name.length > 30) {
             return res.status(400).json({message: "name must be shorter than 30 characters"})
         }
+
+        companyJson.name = sanitizeHtml(companyJson, {
+            allowedTags: [],
+            allowedAttributes: {}
+        })
     }
 
     await Company.findByIdAndUpdate(companyId, {$set: companyJson}, {runValidators: true})
