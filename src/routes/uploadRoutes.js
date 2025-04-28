@@ -162,9 +162,16 @@ router.post("/", authenticateToken, upload.single("file"), async (req, res)=>{
     const error = pythonProcess.stderr?.toString()?.trim();
 
     if (error) {
-        // If the python script has encountered an error, log it to the console and send status 500
-        console.error(error)
-        return res.status(500).json({message: "internal server error"})
+        // If the python script has encountered an error that was caused by an invalid file format
+        if (error.includes("TypeError")) {
+            return res.status(400).json(
+                {message: "The provided file could not be processed. Please verify its integrity."})
+        }
+
+        // If the python script has encountered an error that wasn't caused by a faulty input:
+        console.error("The Python process has encountered an error: ", error)
+        return res.status(500).json(
+            {message: "An error has occurred during processing of the file."})
     }
 
     const reportJson = JSON.parse(result)
