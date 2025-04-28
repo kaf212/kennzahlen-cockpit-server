@@ -9,7 +9,10 @@ router.use(express.json())
 
 
 router.post("/login", (req, res)=>{
-    console.log(req.ip)
+    if (!req.body.hasOwnProperty("role") || !req.body.hasOwnProperty("password")) {
+        return res.status(400).json({message: "Invalid JSON format"})
+    }
+
     const {role, password} = req.body
     authenticateUser(req, res, role, password)
 })
