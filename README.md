@@ -4,6 +4,7 @@
 Die `.env`-Datei muss im root-directory des Projekts abgespeichert werden.
 Folgende Variablen kommen darin vor:
 - `SECRET_KEY`: Für JWT-Signierung
+- `MONGO_URI`: URI der MongoDB-Datenbank
 - `ADMIN_PASSWORD`: Passwort für die Admin-Rolle
 - `STANDARD_PASSWORD`: Passwort für die Standard-Rolle
 - `MAX_LOGIN_ATTEMPTS`: Die maximale Anzahl Login-Versuche pro IP-Adresse
