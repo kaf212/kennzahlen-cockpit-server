@@ -9,8 +9,9 @@ router.use(express.json())
 
 
 router.post("/login", (req, res)=>{
+    console.log(req.ip)
     const {role, password} = req.body
-    authenticateUser(res, role, password)
+    authenticateUser(req, res, role, password)
 })
 
 router.get("/protected", authenticateToken, (req, res)=>{
