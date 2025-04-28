@@ -1,8 +1,8 @@
 const express = require("express")
 const mongoose = require("mongoose")
-const sanitizeHtml = require("sanitize-html")
 const Company = require("../models/Company")
 const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
+const {validateInput} = require("../utils/validateUserInput");
 
 const router = express.Router()
 
@@ -78,10 +78,9 @@ router.post("/", authenticateAdmin, async (req, res, next) => {
         return res.status(400).json({message: "name must be shorter than 30 characters"})
     }
 
-    const sanitizedCompanyName = sanitizeHtml(req.body.name, {
-        allowedTags: [],
-        allowedAttributes: {}
-    })
+    if (!validateInput(req.body.name)) {
+        return res.status(400).json({message: "company name contains illegal characters"})
+    }
 
     const newCompany = new Company({name: sanitizedCompanyName})
     await newCompany.save()
@@ -110,10 +109,9 @@ router.patch("/:id", authenticateAdmin, async (req, res, next) => {
             return res.status(400).json({message: "name must be shorter than 30 characters"})
         }
 
-        companyJson.name = sanitizeHtml(companyJson, {
-            allowedTags: [],
-            allowedAttributes: {}
-        })
+        if (!validateInput(req.body.name)) {
+            return res.status(400).json({message: "company name contains illegal characters"})
+        }
     }
 
     await Company.findByIdAndUpdate(companyId, {$set: companyJson}, {runValidators: true})
