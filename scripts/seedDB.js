@@ -5,6 +5,11 @@ const bcrypt = require("bcrypt");
 
 
 function seedDB() {
+    /**
+     * Executes all three database seeding functions.
+     *
+     * @returns {void}
+     */
     seedCompanyCollection()
     seedReportCollection()
     seedRoleCollection()
@@ -102,37 +107,40 @@ async function seedReportCollection() {
 
 async function seedRoleCollection() {
     /**
-     * Checks if the role collection in the database contains more or fewer than two documents.
-     * If that is the case, it deletes all existing roles, reads the role passwords from the environment
-     * variables, hashes them and inserts them into the role collection
+     * Deletes both roles inside the role collection upon server start and saves new ones with
+     * fresh password hashes so that password changes in the .env file are always applied if the
+     * server is restarted.
      * @return {Promise} A promise without a return value
      */
-    const documentCount = await Role.countDocuments()
-    if (documentCount !== 2) {
-        await Role.deleteMany({}) // delete all documents
 
-        const standardPassword = process.env.STANDARD_PASSWORD
-        const adminPassword = process.env.ADMIN_PASSWORD
+    await Role.deleteMany({}) // delete all documents
 
-        // Hash the standard and admin passwords
-        const standardPwHash = bcrypt.hashSync(standardPassword, bcrypt.genSaltSync(10))
-        const adminPwHash = bcrypt.hashSync(adminPassword, bcrypt.genSaltSync(10))
+    const standardPassword = process.env.STANDARD_PASSWORD
+    const adminPassword = process.env.ADMIN_PASSWORD
 
-        const adminRole = new Role({
-            name: "Admin",
-            password: adminPwHash,
-        })
-        const standardRole = new Role({
-            name: "Standard",
-            password: standardPwHash
-        })
-
-        // Insert the roles into the database
-        await adminRole.save()
-        await standardRole.save()
-
-        console.log('Seeded collection "role"')
+    // Raise an error if one of the passwords is undefined
+    if (!standardPassword || !adminPassword) {
+        throw Error("standard or admin password could not be found in environment variables.")
     }
+
+    // Hash the standard and admin passwords
+    const standardPwHash = bcrypt.hashSync(standardPassword, bcrypt.genSaltSync(10))
+    const adminPwHash = bcrypt.hashSync(adminPassword, bcrypt.genSaltSync(10))
+
+    const adminRole = new Role({
+        name: "Admin",
+        password: adminPwHash,
+    })
+    const standardRole = new Role({
+        name: "Standard",
+        password: standardPwHash
+    })
+
+    // Insert the roles into the database
+    await adminRole.save()
+    await standardRole.save()
+
+    console.log('Seeded collection "role"')
 
 }
 
