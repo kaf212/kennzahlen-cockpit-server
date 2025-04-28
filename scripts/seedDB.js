@@ -32,11 +32,14 @@ async function seedCompanyCollection() {
 
 async function seedReportCollection() {
     /**
-     * Checks if the report collection in the database is empty and inserts a test document if that is the case.
+     * Checks if the test report is present in the report collection and inserts it if that isn't the case.
+     * The testreport is used to validate custom key figure formulas. Its existence in the db is guaranteed
+     * by this function.
+     *
      * @return {Promise} A promise without a return value
      */
-    const documentCount = await Report.countDocuments()
-    if (documentCount === 0) {
+    const testReport = await Report.find({company_id: "testReport"})
+    if (!testReport) {
         const testReport = new Report({
             company_id: "testReport",
             period: 2025,
