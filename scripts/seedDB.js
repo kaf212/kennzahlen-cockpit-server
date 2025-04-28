@@ -38,7 +38,7 @@ async function seedReportCollection() {
      *
      * @return {Promise} A promise without a return value
      */
-    const testReport = await Report.find({company_id: "testReport"})
+    const testReport = await Report.findOne({company_id: "testReport"})
     if (!testReport) {
         const testReport = new Report({
             company_id: "testReport",
