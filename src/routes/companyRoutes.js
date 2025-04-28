@@ -2,6 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const Company = require("../models/Company")
 const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
+const {validateInput} = require("../utils/validateUserInput");
 
 const router = express.Router()
 
@@ -77,7 +78,11 @@ router.post("/", authenticateAdmin, async (req, res, next) => {
         return res.status(400).json({message: "name must be shorter than 30 characters"})
     }
 
-    const newCompany = new Company({name: req.body.name})
+    if (!validateInput(req.body.name)) {
+        return res.status(400).json({message: "company name contains illegal characters"})
+    }
+
+    const newCompany = new Company({name: sanitizedCompanyName})
     await newCompany.save()
     res.status(201).json({message: "company created successfully"})
 })
@@ -102,6 +107,10 @@ router.patch("/:id", authenticateAdmin, async (req, res, next) => {
     if (req.body.hasOwnProperty("name")) {
         if (req.body.name.length > 30) {
             return res.status(400).json({message: "name must be shorter than 30 characters"})
+        }
+
+        if (!validateInput(req.body.name)) {
+            return res.status(400).json({message: "company name contains illegal characters"})
         }
     }
 
