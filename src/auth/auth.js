@@ -51,7 +51,7 @@ function logFailedLoginAttempt(ip) {
     }
 }
 
-async function authenticateUser(res, requestRole, password) {
+async function authenticateUser(req, res, requestRole, password) {
     /**
      * Gets called for each login request and returns a JWT upon successful verification of the credentials.
      * @param {Response} res - Http-response
