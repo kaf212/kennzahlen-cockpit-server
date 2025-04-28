@@ -158,17 +158,16 @@ router.post("/", authenticateToken, upload.single("file"), async (req, res)=>{
         filePath
     ]);
 
-    // The result or error message from the python script is passed via the console output
     const result = pythonProcess.stdout?.toString()?.trim();
     const error = pythonProcess.stderr?.toString()?.trim();
-
-    const reportJson = JSON.parse(result)
 
     if (error) {
         // If the python script has encountered an error, log it to the console and send status 500
         console.error(error)
         return res.status(500).json({message: "internal server error"})
     }
+
+    const reportJson = JSON.parse(result)
 
     // The python result is searched for error messages about invalid data inside the xlsx files
     const errorMessage = validatePythonResult(result)
