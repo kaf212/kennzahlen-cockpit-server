@@ -5,6 +5,7 @@ const Report = require("../models/Report")
 const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
 const {customKeyFigure} = require("../data_processing/queries")
 const {number} = require("mathjs");
+const {validateInput} = require("../utils/validateUserInput");
 
 const router = express.Router()
 
@@ -106,6 +107,15 @@ router.post("/", authenticateToken, async (req, res, next)=> {
         return res.status(400).json({message: "name must be shorter than 30 characters"})
     }
 
+    if (!validateInput(req.body.name)) {
+        return res.status(400).json({message: "custom key figure name contains illegal characters"})
+    }
+
+    // If the formula validation has for some reason allowed illegal characters:
+    if (!validateInput(req.body.formula)) {
+        return res.status(400).json({message: "formula contains illegal characters"})
+    }
+
     try {
         const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type})
         await newCustomKeyFigure.save()
@@ -137,12 +147,21 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
         if (req.body.name.length > 30) {
             return res.status(400).json({message: "name must be shorter than 30 characters"})
         }
+
+        customKeyFigureJson.name = sanitizeHtml(req.body.name, {
+            allowedTags: [], // no HTML tags allowed
+            allowedAttributes: {}
+        })
     }
 
     if (customKeyFigureJson.hasOwnProperty("formula")) {
         // Only validate formula if it has been updated
         if (await validateFormula(customKeyFigureJson.formula) === false) {
             return res.status(400).json({message: "invalid formula"})
+        }
+
+        if (!validateInput(req.body.name)) {
+            return res.status(400).json({message: "custom key figure name contains illegal characters"})
         }
     }
 
