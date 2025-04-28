@@ -5,6 +5,11 @@ const bcrypt = require("bcrypt");
 
 
 function seedDB() {
+    /**
+     * Executes all three database seeding functions.
+     *
+     * @returns {void}
+     */
     seedCompanyCollection()
     seedReportCollection()
     seedRoleCollection()
