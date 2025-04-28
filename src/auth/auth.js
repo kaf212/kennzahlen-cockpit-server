@@ -21,7 +21,7 @@ function checkLoginAttempts(ip) {
 
     ipData.lastAttempt = now
 
-    if (ipData.count > process.env.MAX_LOGIN_ATTEMPTS) {
+    if (ipData.count >= process.env.MAX_LOGIN_ATTEMPTS) {
         return false
     }
 
