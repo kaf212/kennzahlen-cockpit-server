@@ -11,7 +11,8 @@ const keyFigureRoutes = require("./routes/keyFigureRoutes")
 const connectDB = require("../scripts/db")
 const seedDB = require("../scripts/seedDB")
 
-require('dotenv').config();
+const dotenvPath = path.resolve(__dirname, "../.env")
+require('dotenv').config({path: dotenvPath})
 
 const swaggerPath = path.join(__dirname, "../swagger.yaml")
 const swaggerDocument = YAML.load(swaggerPath)
