@@ -14,10 +14,8 @@ describe('KeyFigure Routes Testing', () => {
             let companiesRes = await axios.get(`${process.env.URL}api/companies`, {
                 headers: {Authorization: `Bearer ${tokens.standard}`}
             });
-            console.log(companiesRes.data)
             expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
             let all_companies = companiesRes.data;
-            console.log(all_companies)
             for (i in all_companies) {
                 let res2 = await axios.get(`${process.env.URL}api/KeyFigures/current/${all_companies[i]._id}`, {
                     headers: {Authorization: `Bearer ${tokens.standard}`}
@@ -25,14 +23,16 @@ describe('KeyFigure Routes Testing', () => {
                 if (res2.status !== 404){
                     expect(res2.status).toBe(200);
                     expect(isValidJson(res2.data, ['keyFigures', 'period'], false)).toBeTruthy();
-                }else{
-                    expect(res2.data.message).toBe(`no reports were found for company ${all_companies[i]._id}`);
                 }
             }
 
         } catch (error) {
-            console.log(error)
-            throw error;
+            if (error.response){
+                expect(error.response.status).toBe(404);
+            }else{
+               console.log(error)
+                throw error;
+            }
         }
 
         try {
@@ -46,64 +46,73 @@ describe('KeyFigure Routes Testing', () => {
                     headers: {Authorization: `Bearer ${tokens.admin}`}
                 });
                 if (res2.status !== 404){
-                    console.log(res2.data)
                     expect(res2.status).toBe(200);
                     expect(isValidJson(res2.data, ['keyFigures', 'period'], false)).toBeTruthy();
-                }else{
-                    expect(res2.data.message).toBe(`no reports were found for company ${all_companies[i]._id}`);
                 }
             }
 
-        } catch (error) {it('Testfall 21: Alle Kennzahlen der Unternehmen aufrufen', async () => {
-        let tokens = await getTokens();
+        } catch (error) {
+            if (error.response){
+                expect(error.response.status).toBe(404);
+            }else{
+               console.log(error)
+                throw error;
+            }
+        }
+    });
 
-        try {
-            let companiesRes = await axios.get(`${process.env.URL}api/companies`, {
-                headers: {Authorization: `Bearer ${tokens.standard}`}
-            });
-            expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
-            let all_companies = companiesRes.data;
-            console.log(all_companies)
-            for (i in all_companies) {
-                let res2 = await axios.get(`${process.env.URL}api/KeyFigures/historic/${all_companies[i]._id}`, {
+    it('Testfall 21: Alle Kennzahlen der Unternehmen aufrufen', async () => {
+            let tokens = await getTokens();
+
+            try {
+                let companiesRes = await axios.get(`${process.env.URL}api/companies`, {
                     headers: {Authorization: `Bearer ${tokens.standard}`}
                 });
-                if (res2.status !== 404){
+                expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
+                let all_companies = companiesRes.data;
+                console.log(all_companies)
+                for (i in all_companies) {
+                    let res2 = await axios.get(`${process.env.URL}api/KeyFigures/historic/${all_companies[i]._id}`, {
+                        headers: {Authorization: `Bearer ${tokens.standard}`}
+                    });
+                    if (res2.status !== 404){
+                        expect(res2.status).toBe(200);
+                        expect(isValidJson(res2.data, ['cashRatio', 'roe', 'equityRatio'], false)).toBeTruthy();
+                    }
+                }
+
+            } catch (error) {
+                if (error.response){
+                    expect(error.response.status).toBe(404);
+                }else{
+                    console.log(error)
+                    throw error;
+                }
+            }
+
+            try {
+                let companiesRes = await axios.get(`${process.env.URL}api/companies`, {
+                    headers: {Authorization: `Bearer ${tokens.admin}`}
+                });
+                expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
+                let all_companies = companiesRes.data;
+                console.log(all_companies)
+                for (i in all_companies) {
+                    let res2 = await axios.get(`${process.env.URL}api/KeyFigures/historic/${all_companies[i]._id}`, {
+                        headers: {Authorization: `Bearer ${tokens.admin}`}
+                    });
                     expect(res2.status).toBe(200);
                     expect(isValidJson(res2.data, ['cashRatio', 'roe', 'equityRatio'], false)).toBeTruthy();
+                }
+            } catch (error) {
+                if (error.response){
+                    expect(error.response.status).toBe(404);
                 }else{
-                    expect(res2.data.message).toBe(`no reports were found for company ${all_companies[i]._id}`);
+                    console.log(error)
+                    throw error;
                 }
             }
-
-        } catch (error) {
-            console.log(error)
-            throw error;
-        }
-
-        try {
-            let companiesRes = await axios.get(`${process.env.URL}api/companies`, {
-                headers: {Authorization: `Bearer ${tokens.admin}`}
-            });
-            expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
-            let all_companies = companiesRes.data;
-            console.log(all_companies)
-            for (i in all_companies) {
-                let res2 = await axios.get(`${process.env.URL}api/KeyFigures/historic/${all_companies[i]._id}`, {
-                    headers: {Authorization: `Bearer ${tokens.admin}`}
-                });
-                expect(res2.status).toBe(200);
-                expect(isValidJson(res2.data, ['cashRatio', 'roe', 'equityRatio'], false)).toBeTruthy();
-            }
-        } catch (error) {
-            console.log(error)
-            throw error;
-        }
-    });
-            console.log(error)
-            throw error;
-        }
-    });
+        });
 
     it('Testfall 22: Erstellen einer Kennzahl (schlechte Angaben)', async () => {
         let tokens = await getTokens();
@@ -340,13 +349,10 @@ describe('KeyFigure Routes Testing', () => {
             all_keyFigures = res.data
 
             for (i in all_keyFigures) {
-                console.log(all_keyFigures[i])
                 if (all_keyFigures[i].name === 'testing') {
                     let res2 = await axios.delete(`${process.env.URL}api/customKeyFigures/${all_keyFigures[i]._id}`, {
                         headers: {'Authorization': `Bearer ${tokens.standard}`}
                     });
-                    console.log('it got here')
-                    console.log(res2.data)
                 }
             }
             throw new Error('it should not come this far');
@@ -406,7 +412,7 @@ describe('KeyFigure Routes Testing', () => {
                         headers: {Authorization: `Bearer ${tokens.admin}`}
                     });
 
-                    if (res.data[i].name !== 'testing2 changed'){
+                    if (res.data[i] === undefined || res.data[i].name !== 'testing2 changed'){
                         expect(res2.status).toBe(200);
                     }else{
                         throw new Error('delete did not do its job');

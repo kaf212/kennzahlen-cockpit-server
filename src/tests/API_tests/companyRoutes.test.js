@@ -77,9 +77,8 @@ describe('Company Routes Testing', () => {
     it('Testfall 12: Excel Upload (schlechtes format)', async () => {
         let tokens = await getTokens();
 
-        for (let i = 1; i++; i <= 5) {
+        for (let i = 1; i <= 5; i++ ) {
             if (i <= 4) {
-                console.log(i)
                 const form = new FormData();
                 const filePath = path.join(__dirname, `testdata_bad/bad_excel${i}.xlsx`);
 
@@ -234,7 +233,7 @@ describe('Company Routes Testing', () => {
 
         } catch (error) {
             expect(error.response.status).toBe(400);
-            expect(error.response.data).toBe('invalid ID format');
+            expect(error.response.data.message).toBe('invalid ID format');
         }
     });
 
