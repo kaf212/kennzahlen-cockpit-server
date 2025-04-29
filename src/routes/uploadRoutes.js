@@ -8,6 +8,7 @@ const Report = require("../models/Report")
 const Company = require("../models/Company")
 const {re} = require("mathjs");
 const {authenticateToken} = require("../middleware/tokenValidation");
+const {catchAsync} = require("../middleware/errorHandling");
 
 const router = express.Router()
 router.use(express.json())
