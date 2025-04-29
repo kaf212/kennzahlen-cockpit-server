@@ -111,13 +111,12 @@ router.post("/", authenticateToken, async (req, res, next)=> {
         return res.status(400).json({message: "custom key figure name contains illegal characters"})
     }
 
-    // If the formula validation has for some reason allowed illegal characters:
-    if (!validateInput(req.body.formula)) {
-        return res.status(400).json({message: "formula contains illegal characters"})
+    if (!validateInput(req.body.referenceValue)) {
+        return res.status(400).json({message: "reference value contains illegal characters"})
     }
 
     try {
-        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type})
+        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type, reference_value: req.body.referenceValue})
         await newCustomKeyFigure.save()
         return res.status(201).json({message: "custom key figure created successfully"})
     } catch (err) { // If mongoose model validation fails
@@ -148,20 +147,25 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
             return res.status(400).json({message: "name must be shorter than 30 characters"})
         }
 
-        customKeyFigureJson.name = sanitizeHtml(req.body.name, {
-            allowedTags: [], // no HTML tags allowed
-            allowedAttributes: {}
-        })
+        if (!validateInput(req.body.name)) {
+            return res.status(400).json({message: "custom key figure name contains illegal characters"})
+        }
+    }
+
+    if (req.body.hasOwnProperty("reference_value")) {
+        if (req.body.reference_value.length > 15) {
+            return res.status(400).json({message: "reference value must be shorter than 15 characters"})
+        }
+
+        if (!validateInput(req.body.reference_value)) {
+            return res.status(400).json({message: "reference value contains illegal characters"})
+        }
     }
 
     if (customKeyFigureJson.hasOwnProperty("formula")) {
         // Only validate formula if it has been updated
         if (await validateFormula(customKeyFigureJson.formula) === false) {
             return res.status(400).json({message: "invalid formula"})
-        }
-
-        if (!validateInput(req.body.name)) {
-            return res.status(400).json({message: "custom key figure name contains illegal characters"})
         }
     }
 
