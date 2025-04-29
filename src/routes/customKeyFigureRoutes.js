@@ -111,12 +111,12 @@ router.post("/", authenticateToken, async (req, res, next)=> {
         return res.status(400).json({message: "custom key figure name contains illegal characters"})
     }
 
-    if (!validateInput(req.body.referenceValue)) {
+    if (!validateInput(req.body.reference_value)) {
         return res.status(400).json({message: "reference value contains illegal characters"})
     }
 
     try {
-        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type, reference_value: req.body.referenceValue})
+        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type, reference_value: req.body.reference_value})
         await newCustomKeyFigure.save()
         return res.status(201).json({message: "custom key figure created successfully"})
     } catch (err) { // If mongoose model validation fails
