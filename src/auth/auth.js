@@ -60,8 +60,9 @@ async function authenticateUser(req, res, requestRole, password) {
      * @param {String} requestRole - Name of the requested role
      * @param {String} passwort - Password for the requested role
      */
+    const localhostIP = process.env.LOCALHOST_IP
 
-    if (!checkLoginAttempts(req.ip) && req.ip !== "::1") {
+    if (!checkLoginAttempts(req.ip) && req.ip !== localhostIP) {
         return res.status(429).json({message: "Authentication failed: Too many login attempts"})
     }
 
@@ -78,7 +79,7 @@ async function authenticateUser(req, res, requestRole, password) {
         }
     }
 
-    if (req.ip === "::1" && !checkLoginAttempts("::1")) {
+    if (req.ip === localhostIP && !checkLoginAttempts(localhostIP)) {
         return res.status(429).json({message: "Authentication failed: Too many login attempts"})
     }
 
