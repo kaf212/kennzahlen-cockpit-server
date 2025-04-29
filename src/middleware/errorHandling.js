@@ -4,7 +4,6 @@ function catchAsync(asyncFunction) {
      * This middleware function catches any uncaught errors in the API endpoints it's used in.
      * It takes the provided endpoint function, wraps it in a try/catch statement with .catch that calls
      * the global error handler with next(err) if an error is caught, and returns it back.
-     * (It also works for synchronous endpoints)
      *
      * @param {Function} asyncFunction - The asynchronous endpoint function which is to be called
      * @returns {Function} The endpoint function wrapped in a try/catch

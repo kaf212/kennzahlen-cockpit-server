@@ -18,11 +18,11 @@ router.post("/login", catchAsync(async (req, res)=>{
     await authenticateUser(req, res, role, password)
 }))
 
-router.get("/protected", authenticateToken, catchAsync((req, res)=>{
+router.get("/protected", authenticateToken, ((req, res)=>{
     res.json(`Access granted to protected route ${req.jwtPayload.role}`)
 }))
 
-router.get("/admin", authenticateAdmin, catchAsync((req, res)=>{
+router.get("/admin", authenticateAdmin, ((req, res)=>{
     res.json(`Access granted to protected route ${req.jwtPayload.role}`)
 }))
 
