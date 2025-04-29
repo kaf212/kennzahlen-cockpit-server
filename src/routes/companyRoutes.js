@@ -76,7 +76,7 @@ router.post("/", authenticateAdmin, catchAsync(async (req, res, next) => {
         return res.status(400).json({message: "company name contains illegal characters"})
     }
 
-    const newCompany = new Company({name: sanitizedCompanyName})
+    const newCompany = new Company({name: req.body.name})
     await newCompany.save()
     res.status(201).json({message: "company created successfully"})
 }))
