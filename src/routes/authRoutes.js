@@ -15,7 +15,7 @@ router.post("/login", catchAsync(async (req, res)=>{
     }
 
     const {role, password} = req.body
-    await authenticateUser(req, res, role, password)
+    return await authenticateUser(req, res, role, password)
 }))
 
 router.get("/protected", authenticateToken, ((req, res)=>{
