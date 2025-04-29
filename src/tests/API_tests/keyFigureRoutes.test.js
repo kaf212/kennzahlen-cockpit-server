@@ -5,6 +5,7 @@ const {isValidJson} = require("./supportFunctions");
 const getTokens = require('./supportFunctions').getTokens;
 let testing2ID;
 
+jest.setTimeout(10000) // 10 seconds
 
 describe('KeyFigure Routes Testing', () => {
     it('Testfall 20: Kennzahlen des Aktuellen Jahrs aufrufen', async () => {

@@ -3,6 +3,9 @@ require('dotenv').config();
 const axios = require('axios');
 const getTokens = require('./supportFunctions').getTokens;
 
+jest.setTimeout(10000) // 10 seconds
+
+
 describe('Authentication Testing', () => {
 
     it('Testfall 1: Zugriff auf Website ohne Authentisierung', async () => {

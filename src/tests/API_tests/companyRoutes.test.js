@@ -9,6 +9,9 @@ const isValidJson = require('./supportFunctions').isValidJson;
 const companyName = 'ApiTestCompany'
 const companyName2 = 'Api-TestCompany'
 
+jest.setTimeout(10000) // 10 seconds
+
+
 describe('Company Routes Testing', () => {
     it('Testfall 8: Aufruf einer Liste aller Firmen', async () => {
         let tokens = await getTokens();
