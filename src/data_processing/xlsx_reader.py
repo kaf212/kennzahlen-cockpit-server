@@ -146,5 +146,5 @@ def write_json(data, years_count, value_indexes):
     return results
 
 
-if sys.argv[1] == 'main':
+if len(sys.argv) > 1 and sys.argv[1] == 'main':
     main(sys.argv[2])
