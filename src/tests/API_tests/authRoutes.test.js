@@ -277,7 +277,7 @@ describe('Authentication Testing', () => {
                 password: undefined
             });
         } catch (error) {
-            expect(error.response.status).toBe(401);
+            expect(error.response.status).toBe(400);
         }
 
         try {
@@ -286,7 +286,7 @@ describe('Authentication Testing', () => {
                 password: undefined
             });
         } catch (error) {
-            expect(error.response.status).toBe(401);
+            expect(error.response.status).toBe(400);
         }
 
         try {

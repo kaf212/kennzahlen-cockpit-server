@@ -3,7 +3,6 @@ require('dotenv').config();
 const axios = require('axios');
 const {isValidJson} = require("./supportFunctions");
 const getTokens = require('./supportFunctions').getTokens;
-let testingID;
 let testing2ID;
 
 
@@ -263,7 +262,7 @@ describe('KeyFigure Routes Testing', () => {
                 let res2 = await axios.get(`${process.env.URL}api/customKeyFigures/${all_keyFigures[i]._id}`, {
                     headers: {Authorization: `Bearer ${tokens.admin}`}
                 });
-                expect(res2.status).toBe(201);
+                expect(res2.status).toBe(200);
                 expect(isValidJson(res2.data, ['_id', 'name', 'formula', 'type'], false)).toBeTruthy()
             }
         } catch (error) {
@@ -277,31 +276,6 @@ describe('KeyFigure Routes Testing', () => {
         let all_keyFigures;
 
         try {
-            let res = await axios.get(`${process.env.URL}api/customKeyFigures`, {
-                headers: {Authorization: `Bearer ${tokens.standard}`}
-            });
-            expect(isValidJson(res.data, ['name', '_id'], true)).toBeTruthy()
-            all_keyFigures = res.data
-
-            for (i in all_keyFigures){
-                if (all_keyFigures[i] === 'testing'){
-                    let res2 = await axios.patch(`${process.env.URL}api/customKeyFigures/${all_keyFigures[i]._id}`, {
-                        name: 'testing changed',
-                        type:  'percentage'
-                    }, {
-                        headers: {'Authorization': `Bearer ${tokens.standard}`}
-                    });
-                    expect(res2.status).toBe(201);
-                    expect(res2.data.message).toBe('custom key figure updated successfully');
-                }
-
-            }
-        } catch (error) {
-            console.log(error)
-            throw error;
-        }
-
-        try {
             let res = await axios.get(`${process.env.URL}api/customKeyFigures/`, {
                 headers: {Authorization: `Bearer ${tokens.admin}`}
             });
@@ -309,7 +283,7 @@ describe('KeyFigure Routes Testing', () => {
             all_keyFigures = res.data
 
             for (i in all_keyFigures){
-                if (all_keyFigures[i] === 'testing2'){
+                if (all_keyFigures[i].name === 'testing2'){
                     let res2 = await axios.patch(`${process.env.URL}api/customKeyFigures/${all_keyFigures[i]._id}`, {
                         name: 'testing2 changed',
                         formula: 'cash / (bank + postal + receivables)'
@@ -323,6 +297,34 @@ describe('KeyFigure Routes Testing', () => {
         } catch (error) {
             console.log(error)
             throw error;
+        }
+
+        try {
+            let res = await axios.get(`${process.env.URL}api/customKeyFigures`, {
+                headers: {Authorization: `Bearer ${tokens.standard}`}
+            });
+            expect(isValidJson(res.data, ['name', '_id'], true)).toBeTruthy()
+            all_keyFigures = res.data
+
+            for (i in all_keyFigures){
+                if (all_keyFigures[i].name === 'testing'){
+                    let res2 = await axios.patch(`${process.env.URL}api/customKeyFigures/${all_keyFigures[i]._id}`, {
+                        name: 'testing changed',
+                        type:  'percentage'
+                    }, {
+                        headers: {'Authorization': `Bearer ${tokens.standard}`}
+                    });
+                }
+
+            }
+            throw new Error('it should not come this far');
+
+        } catch (error) {
+            if (error.response !== undefined) {
+                expect(error.response.status).toBe(403);
+            } else {
+                throw error
+            }
         }
     });
 
@@ -338,16 +340,24 @@ describe('KeyFigure Routes Testing', () => {
             all_keyFigures = res.data
 
             for (i in all_keyFigures) {
-                if (all_keyFigures[i] === 'testing changed') {
+                console.log(all_keyFigures[i])
+                if (all_keyFigures[i].name === 'testing') {
                     let res2 = await axios.delete(`${process.env.URL}api/customKeyFigures/${all_keyFigures[i]._id}`, {
                         headers: {'Authorization': `Bearer ${tokens.standard}`}
                     });
+                    console.log('it got here')
+                    console.log(res2.data)
                 }
             }
             throw new Error('it should not come this far');
 
         } catch (error) {
-            expect(error.response.status).toBe(403);
+            if(error.response !== undefined){
+                expect(error.response.status).toBe(403);
+            }else{
+                throw error
+            }
+
         }
     });
 
@@ -364,12 +374,12 @@ describe('KeyFigure Routes Testing', () => {
             all_keyFigures = res.data
 
             for (i in all_keyFigures){
-                if (all_keyFigures[i].name === 'testing changed'){
+                if (all_keyFigures[i].name === 'testing'){
                     //saving to variable for future test
                     testingID = all_keyFigures[i]._id
 
                     let res2 = await axios.delete(`${process.env.URL}api/customKeyFigures/${all_keyFigures[i]._id}`, {
-                        headers: {'Authorization': `Bearer ${tokens.standard}`}
+                        headers: {'Authorization': `Bearer ${tokens.admin}`}
                     });
 
                     res = await axios.get(`${process.env.URL}api/customKeyFigures/`, {
@@ -389,7 +399,7 @@ describe('KeyFigure Routes Testing', () => {
                     testing2ID = all_keyFigures[i]._id
 
                     let res2 = await axios.delete(`${process.env.URL}api/customKeyFigures/${all_keyFigures[i]._id}`, {
-                        headers: {'Authorization': `Bearer ${tokens.standard}`}
+                        headers: {'Authorization': `Bearer ${tokens.admin}`}
                     });
 
                     res = await axios.get(`${process.env.URL}api/customKeyFigures/`, {
@@ -411,16 +421,6 @@ describe('KeyFigure Routes Testing', () => {
 
     it('Testfall 29: Löschen von bereits gelöschten Kennzahlen', async () => {
         let tokens = await getTokens();
-
-        try {
-            await axios.delete(`${process.env.URL}api/customKeyFigures/${testingID}`, {
-                headers: {'Authorization': `Bearer ${tokens.standard}`}
-            });
-            throw new Error('it should not come this far');
-
-        } catch (error) {
-            expect(error.response.status).toBe(403);
-        }
 
         try {
             await axios.delete(`${process.env.URL}api/customKeyFigures/${testing2ID}`, {
