@@ -61,7 +61,7 @@ async function authenticateUser(req, res, requestRole, password) {
      * @param {String} passwort - Password for the requested role
      */
 
-    if (!checkLoginAttempts(req.ip)) {
+    if (!checkLoginAttempts(req.ip) && req.ip !== "::1") {
         return res.status(429).json({message: "Authentication failed: Too many login attempts"})
     }
 
@@ -76,6 +76,10 @@ async function authenticateUser(req, res, requestRole, password) {
             });
             return res.json({"token": token})
         }
+    }
+
+    if (req.ip === "::1" && !checkLoginAttempts("::1")) {
+        return res.status(429).json({message: "Authentication failed: Too many login attempts"})
     }
 
     logFailedLoginAttempt(req.ip)
