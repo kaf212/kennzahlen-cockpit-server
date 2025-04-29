@@ -66,6 +66,11 @@ async function authenticateUser(req, res, requestRole, password) {
         return res.status(429).json({message: "Authentication failed: Too many login attempts"})
     }
 
+    if (password === undefined || password === "" || typeof password !== "string") {
+        // Return a 400 if the password is missing, empty or not a string
+        return res.status(400).json({message: "invalid JSON format"})
+    }
+
     const foundRole = await Role.findOne({name: requestRole})
 
     if (foundRole) {
