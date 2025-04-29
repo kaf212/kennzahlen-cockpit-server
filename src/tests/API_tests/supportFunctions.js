@@ -9,7 +9,7 @@ async function getTokens() {
 
     const standardResponse = await axios.post(`${process.env.URL}api/auth/login`, {
         role: "Standard",
-        password: process.env.USER_PASSWORD
+        password: process.env.STANDARD_PASSWORD
     });
 
     return {
