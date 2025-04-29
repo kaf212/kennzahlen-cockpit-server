@@ -197,7 +197,7 @@ describe('Authentication Testing', () => {
                 password: 234521.02
             });
         } catch (error) {
-            expect(error.response.status).toBe(401);
+            expect(error.response.status).toBe(400);
         }
 
         try {
@@ -206,7 +206,7 @@ describe('Authentication Testing', () => {
                 password: 234521.02
             });
         } catch (error) {
-            expect(error.response.status).toBe(401);
+            expect(error.response.status).toBe(400);
         }
 
         try {
@@ -215,7 +215,7 @@ describe('Authentication Testing', () => {
                 password: null
             });
         } catch (error) {
-            expect(error.response.status).toBe(401);
+            expect(error.response.status).toBe(400);
         }
 
         try {
@@ -224,7 +224,7 @@ describe('Authentication Testing', () => {
                 password: null
             });
         } catch (error) {
-            expect(error.response.status).toBe(401);
+            expect(error.response.status).toBe(400);
         }
 
         try {
