@@ -135,7 +135,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-router.post("/", authenticateToken, upload.single("file"), async (req, res)=>{
+router.post("/", authenticateToken, upload.single("file"), catchAsync(async (req, res)=>{
     // File must be sent using multipart/form-data with the key "file" in the form
     if (!req.file) {
         return res.status(400).json({message: "no file provided"})
@@ -214,6 +214,6 @@ router.post("/", authenticateToken, upload.single("file"), async (req, res)=>{
 
     cleanUploadDirectory()
 
-})
+}))
 
 module.exports = router

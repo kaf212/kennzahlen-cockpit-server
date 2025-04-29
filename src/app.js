@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const path = require("path")
+const morgan = require("morgan")
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 const authRoutes = require("./routes/authRoutes")
@@ -21,6 +22,9 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+
+// Source: https://expressjs.com/en/resources/middleware/morgan.html
+app.use(morgan(":remote-addr  :method  :url  :status  :response-time ms"))
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
