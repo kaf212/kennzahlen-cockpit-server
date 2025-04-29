@@ -135,61 +135,7 @@ describe('Authentication Testing', () => {
         }
     });
 
-    it('Testfall 6: Bruteforce Login ', async () => {
-        let accountLocked = false
-        let limitReached = false
-        for (let i = 0; i < 20; i++) {
-            const password = "password" + i;
-
-            try {
-                const response = await axios.post(`${process.env.URL}api/auth/login`, {
-                    role: "Standard",
-                    password: password
-                });
-
-            } catch (error) {
-                if (error.response.status === 401) {
-                    console.log(`Attempt ${i + 1}`);
-                } else if (error.response.status === 429) {
-                    limitReached = true
-                } else if (error.response.status === 403) {
-                    accountLocked = true
-                } else {
-                    console.error(`${error}`);
-                }
-            }
-        }
-        expect(limitReached || accountLocked).toBeTruthy();
-
-        accountLocked = false
-        limitReached = false
-
-        for (let i = 0; i < 11; i++) {
-            const password = "password2" + i;
-
-            try {
-                const response = await axios.post(`${process.env.URL}api/auth/login`, {
-                    role: "Admin",
-                    password: password
-                });
-
-
-            } catch (error) {
-                if (error.response) {
-                    if (error.response.status === 429) {
-                        limitReached = true
-                    } else if (error.response.status === 403) {
-                        accountLocked = true
-                    } else {
-                        console.error(`${error}`);
-                    }
-                }
-            }
-        }
-        expect(limitReached || accountLocked).toBeTruthy();
-    });
-
-    it('Testfall 7: Login mit Angaben im falschen Format', async () => {
+    it('Testfall 6: Login mit Angaben im falschen Format', async () => {
         // This will crash the server if not handled correctly
         try {
             const response = await axios.post(`${process.env.URL}api/auth/login`, {
@@ -263,5 +209,61 @@ describe('Authentication Testing', () => {
             expect(error.response.status).toBe(401);
         }
     });
+
+    it('Testfall 7: Bruteforce Login ', async () => {
+        let accountLocked = false
+        let limitReached = false
+        for (let i = 0; i < 20; i++) {
+            const password = "password" + i;
+
+            try {
+                const response = await axios.post(`${process.env.URL}api/auth/login`, {
+                    role: "Standard",
+                    password: password
+                });
+
+            } catch (error) {
+                if (error.response.status === 401) {
+                    console.log(`Attempt ${i + 1}`);
+                } else if (error.response.status === 429) {
+                    limitReached = true
+                } else if (error.response.status === 403) {
+                    accountLocked = true
+                } else {
+                    console.error(`${error}`);
+                }
+            }
+        }
+        expect(limitReached || accountLocked).toBeTruthy();
+
+        accountLocked = false
+        limitReached = false
+
+        for (let i = 0; i < 11; i++) {
+            const password = "password2" + i;
+
+            try {
+                const response = await axios.post(`${process.env.URL}api/auth/login`, {
+                    role: "Admin",
+                    password: password
+                });
+
+
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 429) {
+                        limitReached = true
+                    } else if (error.response.status === 403) {
+                        accountLocked = true
+                    } else {
+                        console.error(`${error}`);
+                    }
+                }
+            }
+        }
+        expect(limitReached || accountLocked).toBeTruthy();
+    });
+
+
 
 });
