@@ -164,7 +164,7 @@ router.post("/", authenticateToken, upload.single("file"), catchAsync(async (req
 
     if (error) {
         // If the python script has encountered an error that was caused by an invalid file format
-        if (error.includes("TypeError")) {
+        if (error.includes("TypeError") || error.includes("IndexError")) {
             return res.status(400).json(
                 {message: "The provided file could not be processed. Please verify its integrity."})
         }
