@@ -25,7 +25,7 @@ app.use(express.json())
 
 // Source: https://chatgpt.com/share/6810f831-5cac-8011-a280-f902680ed604
 morgan.token('methodPad', (req) => req.method.padEnd(6)) // Indent the HTTP method by 6 chars in the logs
-morgan.token("urlPad", (req) => req.url.padEnd(50)) // Indent the URL by 50 chars in the logs
+morgan.token("urlPad", (req) => req.originalUrl.padEnd(50)) // Indent the URL by 50 chars in the logs
 
 
 // Source: https://expressjs.com/en/resources/middleware/morgan.html
