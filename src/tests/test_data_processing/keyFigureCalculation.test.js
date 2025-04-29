@@ -176,7 +176,7 @@ describe("Test key figure calculation", () => {
 
         const expectedResult = (equity + longTermDebt) / fixedAssets
 
-        expect(calculationResults["fixedAssetCoverage1"]).toEqual(expectedResult)
+        expect(calculationResults["fixedAssetCoverage2"]).toEqual(expectedResult)
     })
 
     it("11_test_roe", async () => {

@@ -248,9 +248,9 @@ async function fixedAssetCoverage1(request){
         await data.forEach((dataset) => {
             if (dataset) {
                 const fixedAssets = dataset.balance_sheet.actives.fixed_assets.total;
-                const shares = dataset.balance_sheet.passives.equity.shares;
+                const equity = dataset.balance_sheet.passives.equity.total
 
-                const keyFigure = shares / fixedAssets
+                const keyFigure = equity / fixedAssets
 
                 result.push({
                     "period": dataset.period,
@@ -276,10 +276,10 @@ async function fixedAssetCoverage2(request){
         await data.forEach((dataset) => {
             if (dataset) {
                 const fixedAssets = dataset.balance_sheet.actives.fixed_assets.total;
-                const shares = dataset.balance_sheet.passives.equity.shares;
+                const equity = dataset.balance_sheet.passives.equity.total
                 const ltDebt = dataset.balance_sheet.passives.debt.long_term.total;
 
-                const keyFigure = (shares + ltDebt) / fixedAssets
+                const keyFigure = (equity + ltDebt) / fixedAssets
 
                 result.push({
                     "period": dataset.period,
@@ -307,9 +307,9 @@ async function roe(request){
             if (dataset) {
                 const expenses = dataset.income_statement.expense.total;
                 const earnings = dataset.income_statement.earnings.total;
-                const shares = dataset.balance_sheet.passives.equity.shares;
+                const equity = dataset.balance_sheet.passives.equity.total
 
-                const keyFigure = (earnings - expenses) / shares
+                const keyFigure = (earnings - expenses) / equity
 
                 result.push({
                     "period": dataset.period,
