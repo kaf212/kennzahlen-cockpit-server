@@ -6,6 +6,7 @@ const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValid
 const {customKeyFigure} = require("../data_processing/queries")
 const {number} = require("mathjs");
 const {validateInput} = require("../utils/validateUserInput");
+const {catchAsync} = require("../middleware/errorHandling");
 
 const router = express.Router()
 
@@ -66,35 +67,26 @@ async function validateFormula(formula) {
     }
 }
 
-router.get("/", authenticateToken, async (req, res, next)=>{
-    try {
-        const keyFigures = await CustomKeyFigure.find({})
-        return res.json(keyFigures)
-    } catch (err) {
-        next(err)
+router.get("/", authenticateToken, catchAsync(async (req, res, next)=>{
+    const keyFigures = await CustomKeyFigure.find({})
+    return res.json(keyFigures)
+}))
+
+router.get("/:id", authenticateToken, catchAsync(async (req, res, next)=> {
+    // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
+        return res.status(400).json({message: "invalid ID format"})
     }
 
-})
-
-router.get("/:id", authenticateToken, async (req, res, next)=> {
-    try {
-        // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
-            return res.status(400).json({message: "invalid ID format"})
-        }
-
-        const customKeyFigure = await CustomKeyFigure.findById(req.params.id)
-        if (!customKeyFigure) {
-            return res.status(404).json({message: "custom key figure not found"})
-        }
-        return res.json(customKeyFigure)
-    } catch (err) {
-        next(err)
+    const customKeyFigure = await CustomKeyFigure.findById(req.params.id)
+    if (!customKeyFigure) {
+        return res.status(404).json({message: "custom key figure not found"})
     }
-})
+    return res.json(customKeyFigure)
+}))
 
 
-router.post("/", authenticateToken, async (req, res, next)=> {
+router.post("/", authenticateToken, catchAsync(async (req, res, next)=> {
     if (await checkCustomKeyFigureExistenceByName(req.body.name)) {
         return res.status(400).json({message: `custom key figure ${req.body.name} already exists`})
     }
@@ -123,10 +115,10 @@ router.post("/", authenticateToken, async (req, res, next)=> {
         return res.status(400).json({message: "Invalid JSON format"})
     }
 
-})
+}))
 
 
-router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
+router.patch("/:id", authenticateAdmin, catchAsync(async (req, res, next)=>{
     const customKeyFigureJson = req.body
     const customKeyFigureId = req.params.id
 
@@ -186,10 +178,10 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
 
     return res.status(201).json({message: "custom key figure updated successfully"})
 
-})
+}))
 
 
-router.delete("/:id", authenticateAdmin, async (req, res, next)=>{
+router.delete("/:id", authenticateAdmin, catchAsync(async (req, res, next)=>{
     const customKeyFigureId = req.params.id
 
     if (!(await checkCustomFigureExistenceById(customKeyFigureId))) {
@@ -199,7 +191,7 @@ router.delete("/:id", authenticateAdmin, async (req, res, next)=>{
     await CustomKeyFigure.findByIdAndDelete(customKeyFigureId)
     return res.status(200).json({message: "custom key figure deleted successfully"})
 
-})
+}))
 
 
 
