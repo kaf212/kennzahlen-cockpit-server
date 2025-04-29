@@ -62,7 +62,7 @@ async function authenticateUser(req, res, requestRole, password) {
      */
 
     if (!checkLoginAttempts(req.ip)) {
-        return res.status(401).json({message: "Authentication failed: Too many login attempts"})
+        return res.status(429).json({message: "Authentication failed: Too many login attempts"})
     }
 
     const foundRole = await Role.findOne({name: requestRole})
