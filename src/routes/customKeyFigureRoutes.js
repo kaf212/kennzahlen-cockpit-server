@@ -5,11 +5,19 @@ const Report = require("../models/Report")
 const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
 const {customKeyFigure} = require("../data_processing/queries")
 const {number} = require("mathjs");
+const {validateInput} = require("../utils/validateUserInput");
+const {catchAsync} = require("../middleware/errorHandling");
 
 const router = express.Router()
 
 
 async function checkCustomKeyFigureExistenceByName(customKeyFigureName) {
+    /**
+     * Searches the database for a custom key figure with the provided name and returns a boolean based on the result.
+     *
+     * @param {String} customKeyFigureName - The name of the custom key figure
+     * @returns {Boolean} True, if the custom key figure exists, false otherwise
+     */
     const found = await CustomKeyFigure.find({name: customKeyFigureName})
     if (found.length > 0) {
         return true
@@ -18,6 +26,12 @@ async function checkCustomKeyFigureExistenceByName(customKeyFigureName) {
 }
 
 async function checkCustomFigureExistenceById(customFigureId) {
+    /**
+     * Searches the database for a custom key figure with the provided ID and returns a boolean based on the result.
+     *
+     * @param {String} customFigureId - The ID of the custom key figure
+     * @returns {Boolean} True, if the custom key figure exists, false otherwise
+     */
     try {
         const found = await CustomKeyFigure.findById(customFigureId)
         if (found !== null) {
@@ -53,35 +67,26 @@ async function validateFormula(formula) {
     }
 }
 
-router.get("/", authenticateToken, async (req, res, next)=>{
-    try {
-        const keyFigures = await CustomKeyFigure.find({})
-        return res.json(keyFigures)
-    } catch (err) {
-        next(err)
+router.get("/", authenticateToken, catchAsync(async (req, res, next)=>{
+    const keyFigures = await CustomKeyFigure.find({})
+    return res.json(keyFigures)
+}))
+
+router.get("/:id", authenticateToken, catchAsync(async (req, res, next)=> {
+    // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
+        return res.status(400).json({message: "invalid ID format"})
     }
 
-})
-
-router.get("/:id", authenticateToken, async (req, res, next)=> {
-    try {
-        // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
-            return res.status(400).json({message: "invalid ID format"})
-        }
-
-        const customKeyFigure = await CustomKeyFigure.findById(req.params.id)
-        if (!customKeyFigure) {
-            return res.status(404).json({message: "custom key figure not found"})
-        }
-        return res.json(customKeyFigure)
-    } catch (err) {
-        next(err)
+    const customKeyFigure = await CustomKeyFigure.findById(req.params.id)
+    if (!customKeyFigure) {
+        return res.status(404).json({message: "custom key figure not found"})
     }
-})
+    return res.json(customKeyFigure)
+}))
 
 
-router.post("/", authenticateToken, async (req, res, next)=> {
+router.post("/", authenticateToken, catchAsync(async (req, res, next)=> {
     if (await checkCustomKeyFigureExistenceByName(req.body.name)) {
         return res.status(400).json({message: `custom key figure ${req.body.name} already exists`})
     }
@@ -94,18 +99,26 @@ router.post("/", authenticateToken, async (req, res, next)=> {
         return res.status(400).json({message: "name must be shorter than 30 characters"})
     }
 
+    if (!validateInput(req.body.name)) {
+        return res.status(400).json({message: "custom key figure name contains illegal characters"})
+    }
+
+    if (!validateInput(req.body.reference_value)) {
+        return res.status(400).json({message: "reference value contains illegal characters"})
+    }
+
     try {
-        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type})
+        const newCustomKeyFigure = new CustomKeyFigure({name: req.body.name, formula: req.body.formula, type: req.body.type, reference_value: req.body.reference_value})
         await newCustomKeyFigure.save()
         return res.status(201).json({message: "custom key figure created successfully"})
     } catch (err) { // If mongoose model validation fails
         return res.status(400).json({message: "Invalid JSON format"})
     }
 
-})
+}))
 
 
-router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
+router.patch("/:id", authenticateAdmin, catchAsync(async (req, res, next)=>{
     const customKeyFigureJson = req.body
     const customKeyFigureId = req.params.id
 
@@ -124,6 +137,20 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
     if (req.body.hasOwnProperty("name")) {
         if (req.body.name.length > 30) {
             return res.status(400).json({message: "name must be shorter than 30 characters"})
+        }
+
+        if (!validateInput(req.body.name)) {
+            return res.status(400).json({message: "custom key figure name contains illegal characters"})
+        }
+    }
+
+    if (req.body.hasOwnProperty("reference_value")) {
+        if (req.body.reference_value.length > 15) {
+            return res.status(400).json({message: "reference value must be shorter than 15 characters"})
+        }
+
+        if (!validateInput(req.body.reference_value)) {
+            return res.status(400).json({message: "reference value contains illegal characters"})
         }
     }
 
@@ -151,10 +178,10 @@ router.patch("/:id", authenticateAdmin, async (req, res, next)=>{
 
     return res.status(201).json({message: "custom key figure updated successfully"})
 
-})
+}))
 
 
-router.delete("/:id", authenticateAdmin, async (req, res, next)=>{
+router.delete("/:id", authenticateAdmin, catchAsync(async (req, res, next)=>{
     const customKeyFigureId = req.params.id
 
     if (!(await checkCustomFigureExistenceById(customKeyFigureId))) {
@@ -164,7 +191,7 @@ router.delete("/:id", authenticateAdmin, async (req, res, next)=>{
     await CustomKeyFigure.findByIdAndDelete(customKeyFigureId)
     return res.status(200).json({message: "custom key figure deleted successfully"})
 
-})
+}))
 
 
 

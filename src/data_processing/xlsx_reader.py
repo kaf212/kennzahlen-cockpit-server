@@ -54,13 +54,16 @@ def valid_values(slot, data, years_count, value_indexes):
         #print(f'{data.iloc[1, 1]} is not int')
         return False
     for value_index in value_indexes:
-        val = data.iloc[value_index[0], value_index[1] + slot]
-        is_number, value = null_nan_value_check(val)
-        if is_number and value >= 0:
-            results.append(value)
-        else:
-            #print(data.iloc[value_index[0], value_index[1] + slot])
-            #print(f'bad value on: {value_index[0]}, {value_index[1] + slot}')
+        try:
+            val = data.iloc[value_index[0], value_index[1] + slot]
+            is_number, value = null_nan_value_check(val)
+            if is_number and value >= 0:
+                results.append(value)
+            else:
+                #print(data.iloc[value_index[0], value_index[1] + slot])
+                #print(f'bad value on: {value_index[0]}, {value_index[1] + slot}')
+                return False, None
+        except IndexError:
             return False, None
     return True, results
 

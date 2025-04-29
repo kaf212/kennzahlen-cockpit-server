@@ -1,28 +1,45 @@
 const Company = require("../src/models/Company")
 const Report = require("../src/models/Report")
 const Role = require("../src/models/Role")
+const bcrypt = require("bcrypt");
 
 
 function seedDB() {
+    /**
+     * Executes all three database seeding functions.
+     *
+     * @returns {void}
+     */
     seedCompanyCollection()
     seedReportCollection()
     seedRoleCollection()
 }
 
 async function seedCompanyCollection() {
+    /**
+     * Checks if the company collection in the database is empty and inserts a test document if that is the case.
+     * @return {Promise} A promise without a return value
+     */
     const documentCount = await Company.countDocuments()
     if (documentCount === 0) {
         const testCompany = new Company({
             name: "TestCompany"
         })
         await testCompany.save()
-        console.log('seeded collection "company"')
+        console.log('Seeded collection "company"')
     }
 }
 
 async function seedReportCollection() {
-    const documentCount = await Report.countDocuments()
-    if (documentCount === 0) {
+    /**
+     * Checks if the test report is present in the report collection and inserts it if that isn't the case.
+     * The testreport is used to validate custom key figure formulas. Its existence in the db is guaranteed
+     * by this function.
+     *
+     * @return {Promise} A promise without a return value
+     */
+    const testReport = await Report.findOne({company_id: "testReport"})
+    if (!testReport) {
         const testReport = new Report({
             company_id: "testReport",
             period: 2025,
@@ -86,28 +103,47 @@ async function seedReportCollection() {
             }
         })
         await testReport.save()
-        console.log('seeded collection "report"')
+        console.log('Seeded collection "report"')
     }
 
 }
 
 async function seedRoleCollection() {
-    const documentCount = await Role.countDocuments()
-    if (documentCount !== 2) {
-        await Role.deleteMany({}) // delete all documents
+    /**
+     * Deletes both roles inside the role collection upon server start and saves new ones with
+     * fresh password hashes so that password changes in the .env file are always applied if the
+     * server is restarted.
+     * @return {Promise} A promise without a return value
+     */
 
-        const adminRole = new Role({
-            name: "Admin",
-            password: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
-        })
-        const standardRole = new Role({
-            name: "Standard",
-            password: "fe6d3468cf5c74d8ec2a95b40f2e05338c37a4202f8fad692d2b64a9cf9b468a"
-        })
-        await adminRole.save()
-        await standardRole.save()
-        console.log('seeded collection "role"')
+    await Role.deleteMany({}) // delete all documents
+
+    const standardPassword = process.env.STANDARD_PASSWORD
+    const adminPassword = process.env.ADMIN_PASSWORD
+
+    // Raise an error if one of the passwords is undefined
+    if (!standardPassword || !adminPassword) {
+        throw new Error("standard or admin password could not be found in environment variables.")
     }
+
+    // Hash the standard and admin passwords
+    const standardPwHash = bcrypt.hashSync(standardPassword, bcrypt.genSaltSync(10))
+    const adminPwHash = bcrypt.hashSync(adminPassword, bcrypt.genSaltSync(10))
+
+    const adminRole = new Role({
+        name: "Admin",
+        password: adminPwHash,
+    })
+    const standardRole = new Role({
+        name: "Standard",
+        password: standardPwHash
+    })
+
+    // Insert the roles into the database
+    await adminRole.save()
+    await standardRole.save()
+
+    console.log('Seeded collection "role"')
 
 }
 
