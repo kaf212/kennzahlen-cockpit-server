@@ -95,9 +95,12 @@ router.post("/", authenticateToken, catchAsync(async (req, res, next)=> {
         return res.status(400).json({message: "invalid formula"})
     }
 
-    if (req.body.name.length > 30) {
-        return res.status(400).json({message: "name must be shorter than 30 characters"})
+    if (req.body.hasOwnProperty("name")) {
+        if (req.body.name.length > 30) {
+            return res.status(400).json({message: "name must be shorter than 30 characters"})
+        }
     }
+
 
     if (!validateInput(req.body.name)) {
         return res.status(400).json({message: "custom key figure name contains illegal characters"})
