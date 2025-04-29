@@ -6,7 +6,13 @@
   "scripts": {
     "test": "npm run test:pytest && npm run test:jest",
     "test:jest": "jest",
-    "test:pytest": "python -m pytest"
+    "test:pytest": "python3 -m pytest"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "node_modules",
+      "node_modules_old"
+    ]
   },
   "repository": {
     "type": "git",
