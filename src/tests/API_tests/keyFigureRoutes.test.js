@@ -70,7 +70,6 @@ describe('KeyFigure Routes Testing', () => {
                 });
                 expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
                 let all_companies = companiesRes.data;
-                console.log(all_companies)
                 for (i in all_companies) {
                     let res2 = await axios.get(`${process.env.URL}api/KeyFigures/historic/${all_companies[i]._id}`, {
                         headers: {Authorization: `Bearer ${tokens.standard}`}
@@ -96,7 +95,6 @@ describe('KeyFigure Routes Testing', () => {
                 });
                 expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
                 let all_companies = companiesRes.data;
-                console.log(all_companies)
                 for (i in all_companies) {
                     let res2 = await axios.get(`${process.env.URL}api/KeyFigures/historic/${all_companies[i]._id}`, {
                         headers: {Authorization: `Bearer ${tokens.admin}`}

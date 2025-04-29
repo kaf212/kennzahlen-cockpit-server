@@ -99,7 +99,6 @@ describe('Authentication Testing', () => {
 
 
         } catch (error) {
-            console.log(error)
             expect(error.response.status).toBe(403);
         }
     });
@@ -224,7 +223,6 @@ describe('Authentication Testing', () => {
 
             } catch (error) {
                 if (error.response.status === 401) {
-                    console.log(`Attempt ${i + 1}`);
                 } else if (error.response.status === 429) {
                     limitReached = true
                 } else if (error.response.status === 403) {
