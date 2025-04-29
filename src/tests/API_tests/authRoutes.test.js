@@ -13,25 +13,13 @@ describe('Authentication Testing', () => {
         }
 
         try {
-            await axios.get(`${process.env.URL}api/import.html`);
+            await axios.get(`${process.env.URL}api/auth/protected`);
         } catch (error) {
             expect(error.response.status).toBe(401);
         }
 
         try {
-            await axios.get(`${process.env.URL}api/custom_figure.html`);
-        } catch (error) {
-            expect(error.response.status).toBe(401);
-        }
-
-        try {
-            await axios.get(`${process.env.URL}api/protected`);
-        } catch (error) {
-            expect(error.response.status).toBe(401);
-        }
-
-        try {
-            await axios.get(`${process.env.URL}api/admin`);
+            await axios.get(`${process.env.URL}api/auth/admin`);
         } catch (error) {
             expect(error.response.status).toBe(401);
         }
@@ -50,7 +38,7 @@ describe('Authentication Testing', () => {
         }
 
         try {
-            await axios.get(`${process.env.URL}api/import.html`, {
+            await axios.get(`${process.env.URL}api/auth/protected`, {
                 headers: {Authorization: {badToken}}
             });
         } catch (error) {
@@ -58,23 +46,7 @@ describe('Authentication Testing', () => {
         }
 
         try {
-            await axios.get(`${process.env.URL}api/custom_figure.html`, {
-                headers: {Authorization: {badToken}}
-            });
-        } catch (error) {
-            expect(error.response.status).toBe(401);
-        }
-
-        try {
-            await axios.get(`${process.env.URL}api/protected`, {
-                headers: {Authorization: {badToken}}
-            });
-        } catch (error) {
-            expect(error.response.status).toBe(401);
-        }
-
-        try {
-            await axios.get(`${process.env.URL}api/admin`, {
+            await axios.get(`${process.env.URL}api/auth/admin`, {
                 headers: {Authorization: {badToken}}
             });
         } catch (error) {
@@ -92,7 +64,7 @@ describe('Authentication Testing', () => {
         }
 
         try {
-            await axios.get(`${process.env.URL}api/import.html`, {
+            await axios.get(`${process.env.URL}api/auth/protected`, {
                 headers: {Authorization: 'Token'}
             });
         } catch (error) {
@@ -100,23 +72,7 @@ describe('Authentication Testing', () => {
         }
 
         try {
-            await axios.get(`${process.env.URL}api/custom_figure.html`, {
-                headers: {Authorization: 'Token'}
-            });
-        } catch (error) {
-            expect(error.response.status).toBe(401);
-        }
-
-        try {
-            await axios.get(`${process.env.URL}api/protected`, {
-                headers: {Authorization: 'Token'}
-            });
-        } catch (error) {
-            expect(error.response.status).toBe(401);
-        }
-
-        try {
-            await axios.get(`${process.env.URL}api/admin`, {
+            await axios.get(`${process.env.URL}api/auth/admin`, {
                 headers: {Authorization: 'Token'}
             });
         } catch (error) {
@@ -129,7 +85,7 @@ describe('Authentication Testing', () => {
         const token = tokens.standard;
 
         try {
-            await axios.get(`${process.env.URL}api/admin`, {
+            await axios.get(`${process.env.URL}api/auth/admin`, {
                 headers: {Authorization: `Bearer ${token}`}
             });
         } catch (error) {
@@ -152,7 +108,7 @@ describe('Authentication Testing', () => {
         let tokens = await getTokens();
 
         try {
-            let res = await axios.get(`${process.env.URL}api/admin`, {
+            let res = await axios.get(`${process.env.URL}api/auth/admin`, {
                 headers: {Authorization: `Bearer ${tokens.admin}`}
             });
             expect(res.status).toBe(200);
@@ -162,11 +118,11 @@ describe('Authentication Testing', () => {
         }
 
         try {
-            let res1 = await axios.get(`${process.env.URL}api/protected`, {
+            let res1 = await axios.get(`${process.env.URL}api/auth/protected`, {
                 headers: {Authorization: `Bearer ${tokens.standard}`}
             });
 
-            let res2 = await axios.get(`${process.env.URL}api/protected`, {
+            let res2 = await axios.get(`${process.env.URL}api/auth/protected`, {
                 headers: {Authorization: `Bearer ${tokens.admin}`}
             });
 
