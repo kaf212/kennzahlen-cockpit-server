@@ -67,7 +67,7 @@ function authenticateAdmin(req, res, next) {
         return null // exit the function if token validation has failed in order to prevent double response sending
     }
     if (jwtPayload.role !== "Admin") {
-        return res.status(401).json({message: "Authentication failed: admin privileges required"})
+        return res.status(403).json({message: "Authentication failed: admin privileges required"})
     }
     else {
         req.jwtPayload = jwtPayload
