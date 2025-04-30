@@ -502,6 +502,21 @@ paths:
                   summary: Der Referenzwert enthält unerlaubte Zeichen
                   value:
                     message: reference value contains illegal characters
+        403:
+          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          content:
+            application/json:
+              examples:
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
+
+
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -674,6 +689,19 @@ paths:
                   summary: Der Referenzwert enthält unerlaubte Zeichen
                   value:
                     message: reference value contains illegal characters
+        403:
+          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          content:
+            application/json:
+              examples:
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
         404:
           description: "Nicht gefunden: Die Custom-Kennzahl existiert nicht."
           content:
@@ -723,6 +751,19 @@ paths:
                     type: string
                 example:
                   message: custom key figure deleted successfully
+        403:
+          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          content:
+            application/json:
+              examples:
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
         404:
           description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
           content:
@@ -855,6 +896,19 @@ paths:
                   summary: Der Name enthält unerlaubte Zeichen
                   value:
                     message: company name contains illegal characters
+        403:
+          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          content:
+            application/json:
+              examples:
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -972,6 +1026,19 @@ paths:
                   summary: Der Name enthält unerlaubte Zeichen
                   value:
                     message: company name contains illegal characters
+        403:
+          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          content:
+            application/json:
+              examples:
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -1021,6 +1088,19 @@ paths:
                     type: string
                 example:
                   message: company deleted successfully
+        403:
+          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          content:
+            application/json:
+              examples:
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -1109,6 +1189,19 @@ paths:
                   summary: Die Tabelle in der Datei ist falsch formatiert
                   value:
                     message: The provided file could not be processed. Please verify its integrity.
+        403:
+          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          content:
+            application/json:
+              examples:
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -1261,4 +1354,17 @@ paths:
               schema:
                 type: string
               example: Access granted to protected route Admin
+        403:
+          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          content:
+            application/json:
+              examples:
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
 
