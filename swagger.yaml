@@ -568,6 +568,16 @@ paths:
                   summary: Der Referenzwert enthält unerlaubte Zeichen
                   value:
                     message: reference value contains illegal characters
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
         403:
           description: "Verboten: Admin-Berechtigungen werden benötigt."
           content:
@@ -581,8 +591,6 @@ paths:
                   summary: Die benötigten Admin-Berechtigungen fehlen.
                   value:
                     message: "Authentication failed: admin privileges required"
-
-
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -776,6 +784,16 @@ paths:
                   summary: Der Referenzwert enthält unerlaubte Zeichen
                   value:
                     message: reference value contains illegal characters
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
         403:
           description: "Verboten: Admin-Berechtigungen werden benötigt."
           content:
@@ -838,6 +856,16 @@ paths:
                     type: string
                 example:
                   message: custom key figure deleted successfully
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
         403:
           description: "Verboten: Admin-Berechtigungen werden benötigt."
           content:
@@ -1005,6 +1033,16 @@ paths:
                   summary: Der Name enthält unerlaubte Zeichen
                   value:
                     message: company name contains illegal characters
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
         403:
           description: "Verboten: Admin-Berechtigungen werden benötigt."
           content:
@@ -1157,6 +1195,16 @@ paths:
                   summary: Der Name enthält unerlaubte Zeichen
                   value:
                     message: company name contains illegal characters
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
         403:
           description: "Verboten: Admin-Berechtigungen werden benötigt."
           content:
@@ -1219,6 +1267,16 @@ paths:
                     type: string
                 example:
                   message: company deleted successfully
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
         403:
           description: "Verboten: Admin-Berechtigungen werden benötigt."
           content:
