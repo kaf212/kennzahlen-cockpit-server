@@ -973,6 +973,10 @@ paths:
                   summary: Die Datei enthält mehrere Abschlussberichte für dasselbe Jahr
                   value:
                     message: file contains duplicate reports for period 2024
+                "Ungültiges Tabellenformat":
+                  summary: Die Tabelle in der Datei ist falsch formatiert
+                  value:
+                    message: The provided file could not be processed. Please verify its integrity.
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -994,7 +998,7 @@ paths:
                   message:
                     type: string
                 example:
-                  message: internal server error
+                  message: An error has occurred during processing of the file.
 
   /api/auth/login:
     post:
