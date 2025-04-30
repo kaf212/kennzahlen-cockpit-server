@@ -583,14 +583,15 @@ paths:
           content:
             application/json:
               examples:
-                "Ungültiges Token":
-                  summary: Das Token ist abgelaufen oder ungültig.
-                  value:
-                    message: Token is invalid
                 "Fehlende Admin-Berechtigungen":
                   summary: Die benötigten Admin-Berechtigungen fehlen.
                   value:
                     message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -799,14 +800,15 @@ paths:
           content:
             application/json:
               examples:
-                "Ungültiges Token":
-                  summary: Das Token ist abgelaufen oder ungültig.
-                  value:
-                    message: Token is invalid
                 "Fehlende Admin-Berechtigungen":
                   summary: Die benötigten Admin-Berechtigungen fehlen.
                   value:
                     message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         404:
           description: "Nicht gefunden: Die Custom-Kennzahl existiert nicht."
           content:
@@ -871,14 +873,15 @@ paths:
           content:
             application/json:
               examples:
-                "Ungültiges Token":
-                  summary: Das Token ist abgelaufen oder ungültig.
-                  value:
-                    message: Token is invalid
                 "Fehlende Admin-Berechtigungen":
                   summary: Die benötigten Admin-Berechtigungen fehlen.
                   value:
                     message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         404:
           description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
           content:
@@ -1048,14 +1051,15 @@ paths:
           content:
             application/json:
               examples:
-                "Ungültiges Token":
-                  summary: Das Token ist abgelaufen oder ungültig.
-                  value:
-                    message: Token is invalid
                 "Fehlende Admin-Berechtigungen":
                   summary: Die benötigten Admin-Berechtigungen fehlen.
                   value:
                     message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -1210,14 +1214,15 @@ paths:
           content:
             application/json:
               examples:
-                "Ungültiges Token":
-                  summary: Das Token ist abgelaufen oder ungültig.
-                  value:
-                    message: Token is invalid
                 "Fehlende Admin-Berechtigungen":
                   summary: Die benötigten Admin-Berechtigungen fehlen.
                   value:
                     message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -1282,14 +1287,15 @@ paths:
           content:
             application/json:
               examples:
-                "Ungültiges Token":
-                  summary: Das Token ist abgelaufen oder ungültig.
-                  value:
-                    message: Token is invalid
                 "Fehlende Admin-Berechtigungen":
                   summary: Die benötigten Admin-Berechtigungen fehlen.
                   value:
                     message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -1557,12 +1563,13 @@ paths:
           content:
             application/json:
               examples:
-                "Ungültiges Token":
-                  summary: Das Token ist abgelaufen oder ungültig.
-                  value:
-                    message: Token is invalid
                 "Fehlende Admin-Berechtigungen":
                   summary: Die benötigten Admin-Berechtigungen fehlen.
                   value:
                     message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
 
