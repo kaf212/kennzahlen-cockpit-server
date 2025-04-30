@@ -71,7 +71,7 @@ paths:
                 example:
                   message: Authentication token missing or malformed
         403:
-          description: "Verboten: Das Token ist abgelaufen."
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
           content:
             application/json:
               schema:
@@ -367,7 +367,7 @@ paths:
                 example:
                   message: Authentication token missing or malformed
         403:
-          description: "Verboten: Das Token ist abgelaufen."
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
           content:
             application/json:
               schema:
@@ -459,7 +459,7 @@ paths:
                 example:
                   message: Authentication token missing or malformed
         403:
-          description: "Verboten: Das Token ist abgelaufen."
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
           content:
             application/json:
               schema:
@@ -579,7 +579,7 @@ paths:
               example:
                 message: Authentication token missing or malformed
         403:
-          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          description: "Verboten: Das Token ist ungültig"
           content:
             application/json:
               examples:
@@ -674,7 +674,7 @@ paths:
                 example:
                   message: Authentication token missing or malformed
         403:
-          description: "Verboten: Das Token ist abgelaufen."
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
           content:
             application/json:
               schema:
@@ -795,7 +795,7 @@ paths:
               example:
                 message: Authentication token missing or malformed
         403:
-          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          description: "Verboten: Das Token ist ungültig"
           content:
             application/json:
               examples:
@@ -867,7 +867,7 @@ paths:
               example:
                 message: Authentication token missing or malformed
         403:
-          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          description: "Verboten: Das Token ist ungültig"
           content:
             application/json:
               examples:
@@ -955,7 +955,7 @@ paths:
                 example:
                   message: Authentication token missing or malformed
         403:
-          description: "Verboten: Das Token ist abgelaufen."
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
           content:
             application/json:
               schema:
@@ -1044,7 +1044,7 @@ paths:
               example:
                 message: Authentication token missing or malformed
         403:
-          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          description: "Verboten: Das Token ist ungültig"
           content:
             application/json:
               examples:
@@ -1115,7 +1115,7 @@ paths:
                 example:
                   message: Authentication token missing or malformed
         403:
-          description: "Verboten: Das Token ist abgelaufen."
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
           content:
             application/json:
               schema:
@@ -1206,7 +1206,7 @@ paths:
               example:
                 message: Authentication token missing or malformed
         403:
-          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          description: "Verboten: Das Token ist ungültig"
           content:
             application/json:
               examples:
@@ -1278,7 +1278,7 @@ paths:
               example:
                 message: Authentication token missing or malformed
         403:
-          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          description: "Verboten: Das Token ist ungültig"
           content:
             application/json:
               examples:
@@ -1390,7 +1390,7 @@ paths:
                 example:
                   message: Authentication token missing or malformed
         403:
-          description: "Verboten: Das Token ist abgelaufen."
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
           content:
             application/json:
               schema:
@@ -1553,7 +1553,7 @@ paths:
                 type: string
               example: Access granted to protected route Admin
         403:
-          description: "Verboten: Admin-Berechtigungen werden benötigt."
+          description: "Verboten: Das Token ist ungültig"
           content:
             application/json:
               examples:
