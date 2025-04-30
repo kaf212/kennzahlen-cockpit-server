@@ -59,6 +59,28 @@ paths:
                     roe: 0.7081081081081081
                     roa: 0.24444444444444444
                     profitMargin: 0.4337748344370861
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         404:
           description: "Nicht gefunden: Für dieses Unternehmen existieren keine Abschlussberichte"
           content:
@@ -333,6 +355,28 @@ paths:
                       key_figure: 0.3333333333333333
                     - period: 2022
                       key_figure: 0.44660194174757284
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         404:
           description: "Nicht gefunden: Für dieses Unternehmen existieren keine Abschlussberichte"
           content:
@@ -403,6 +447,28 @@ paths:
                   reference_value: "Mind. 30 %"
                   type: "percentage"
                   __v: 0
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -577,18 +643,6 @@ paths:
                 formula: "liquid_assets+depreciation"
                 type: "numeric"
                 __v: 0
-
-        404:
-          description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: custom key figure not found
         400:
           description: "Ungültige Anfrage: Das Format der gesuchten ID ist ungültig."
           content:
@@ -600,6 +654,39 @@ paths:
                     type: string
               example:
                 message: invalid ID format
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
+        404:
+          description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: custom key figure not found
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -828,6 +915,28 @@ paths:
                 - _id: "680b877372e7191c1b28a66c"
                   name: "Armin Bäckerei GmbH"
                   __v: 0
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -956,6 +1065,28 @@ paths:
                 _id: "6809f2626f468128112190e2"
                 name: "SBB CFF FFS AG"
                 __v: 0
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         500:
           description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
           content:
@@ -1189,19 +1320,28 @@ paths:
                   summary: Die Tabelle in der Datei ist falsch formatiert
                   value:
                     message: The provided file could not be processed. Please verify its integrity.
-        403:
-          description: "Verboten: Admin-Berechtigungen werden benötigt."
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
           content:
             application/json:
-              examples:
-                "Ungültiges Token":
-                  summary: Das Token ist abgelaufen oder ungültig.
-                  value:
-                    message: Token is invalid
-                "Fehlende Admin-Berechtigungen":
-                  summary: Die benötigten Admin-Berechtigungen fehlen.
-                  value:
-                    message: "Authentication failed: admin privileges required"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
