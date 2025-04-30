@@ -70,6 +70,17 @@ paths:
                     type: string
                 example:
                   message: no reports were found for company Beispiel AG
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/keyFigures/historic/:id:
     get:
@@ -333,6 +344,17 @@ paths:
                     type: string
                 example:
                   message: no reports were found for company Beispiel AG
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
   /api/customKeyFigures:
     get:
       tags:
@@ -381,6 +403,17 @@ paths:
                   reference_value: "Mind. 30 %"
                   type: "percentage"
                   __v: 0
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     post:
       summary: Erstellt eine neue Custom-Kennzahl
       tags:
@@ -469,6 +502,17 @@ paths:
                   summary: Der Referenzwert enthält unerlaubte Zeichen
                   value:
                     message: reference value contains illegal characters
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/customKeyFigures/:id:
     get:
@@ -541,6 +585,17 @@ paths:
                     type: string
               example:
                 message: invalid ID format
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     patch:
       summary: Bearbeitet eine Custom-Kennzahl
       tags:
@@ -630,6 +685,17 @@ paths:
                     type: string
               example:
                 message: custom key figure not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     delete:
       summary: Löscht eine Custom-Kennzahl
       tags:
@@ -668,6 +734,17 @@ paths:
                     type: string
                 example:
                   message: custom key figure not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/compananies:
     get:
@@ -710,6 +787,17 @@ paths:
                 - _id: "680b877372e7191c1b28a66c"
                   name: "Armin Bäckerei GmbH"
                   __v: 0
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     post:
       summary: Erstellt ein neues Unternehmen
       tags:
@@ -767,6 +855,17 @@ paths:
                   summary: Der Name enthält unerlaubte Zeichen
                   value:
                     message: company name contains illegal characters
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/companies/:id:
     get:
@@ -803,6 +902,17 @@ paths:
                 _id: "6809f2626f468128112190e2"
                 name: "SBB CFF FFS AG"
                 __v: 0
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     patch:
       summary: Bearbeitet ein Unternehmen
       tags:
@@ -873,6 +983,17 @@ paths:
                     type: string
               example:
                 message: company figure not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     delete:
       summary: Löscht ein ein Unternehmen
       tags:
@@ -911,6 +1032,17 @@ paths:
                     type: string
                 example:
                   message: company not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/upload:
     summary: Upload von XLSX-Dateien mit Abschlussberichten
@@ -1056,6 +1188,17 @@ paths:
                     type: string
                 example:
                   message: "Authentication failed: Incorrect password or role"
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/auth/protected:
     get:
