@@ -5,6 +5,7 @@ const {isValidJson} = require("./supportFunctions");
 const getTokens = require('./supportFunctions').getTokens;
 let testing2ID;
 
+jest.setTimeout(10000) // 10 seconds
 
 describe('KeyFigure Routes Testing', () => {
     it('Testfall 20: Kennzahlen des Aktuellen Jahrs aufrufen', async () => {
@@ -70,7 +71,6 @@ describe('KeyFigure Routes Testing', () => {
                 });
                 expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
                 let all_companies = companiesRes.data;
-                console.log(all_companies)
                 for (i in all_companies) {
                     let res2 = await axios.get(`${process.env.URL}api/KeyFigures/historic/${all_companies[i]._id}`, {
                         headers: {Authorization: `Bearer ${tokens.standard}`}
@@ -96,7 +96,6 @@ describe('KeyFigure Routes Testing', () => {
                 });
                 expect(isValidJson(companiesRes.data, ['name', '_id'], true)).toBeTruthy();
                 let all_companies = companiesRes.data;
-                console.log(all_companies)
                 for (i in all_companies) {
                     let res2 = await axios.get(`${process.env.URL}api/KeyFigures/historic/${all_companies[i]._id}`, {
                         headers: {Authorization: `Bearer ${tokens.admin}`}

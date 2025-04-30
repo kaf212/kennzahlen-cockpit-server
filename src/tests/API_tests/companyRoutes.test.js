@@ -9,6 +9,9 @@ const isValidJson = require('./supportFunctions').isValidJson;
 const companyName = 'ApiTestCompany'
 const companyName2 = 'Api-TestCompany'
 
+jest.setTimeout(10000) // 10 seconds
+
+
 describe('Company Routes Testing', () => {
     it('Testfall 8: Aufruf einer Liste aller Firmen', async () => {
         let tokens = await getTokens();
@@ -29,7 +32,6 @@ describe('Company Routes Testing', () => {
         let tokens = await getTokens();
 
         try {
-            console.log(`Bearer ${tokens.standard}`)
             let res = await axios.post(`${process.env.URL}api/companies`, {
                 name: companyName
             }, {
@@ -37,7 +39,6 @@ describe('Company Routes Testing', () => {
             });
 
         } catch (error) {
-            console.log(error)
             expect(error.response.status).toBe(403);
         }
     });
@@ -68,7 +69,6 @@ describe('Company Routes Testing', () => {
                 headers: {'Authorization': `Bearer ${tokens.admin}`}
             });
         } catch (error) {
-            console.log(error.response)
             expect(error.response.status).toBe(400);
             expect(error.response.data.message).toBe('company ApiTestCompany already exists')
         }
@@ -108,7 +108,6 @@ describe('Company Routes Testing', () => {
                     });
                     throw new Error('it should not reach here')
                 } catch (error) {
-                    console.log(error)
                     expect(error.response.status).toBe(400);
                 }
             }
@@ -133,7 +132,6 @@ describe('Company Routes Testing', () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log(res.data.message)
             expect(res.status).toBe(201);
             expect(res.data.message).toBe('successfully saved 2 reports');
         } catch (error) {
@@ -153,7 +151,6 @@ describe('Company Routes Testing', () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log(res.data.message)
             expect(res.status).toBe(201);
             expect(res.data.message).toBe('successfully saved 1 reports');
         } catch (error) {
