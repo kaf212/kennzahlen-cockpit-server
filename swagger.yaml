@@ -1012,6 +1012,17 @@ paths:
                     type: string
                 example:
                   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NDU2OTc3MTUsImV4cCI6MTc0NTcwMTMxNX0.IQN2_wfKAXYuKtINfQCnaiXNsNctOCcH1IGQ4CR0zjk
+        400:
+          description: "Ungültige Anfrage: Die Rolle oder das Passwort fehlen oder sind kein String."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    message: string
+                example:
+                  message: Invalid JSON format
         401:
           description: "Unautorisiert: Die gesendeten Login-Daten sind inkorrekt."
           content:
