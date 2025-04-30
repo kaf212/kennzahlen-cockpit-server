@@ -378,6 +378,7 @@ paths:
                 - _id: "680b838372e7191c1b28a474"
                   name: "Vorratsanteil"
                   formula: "stocks/current_assets"
+                  reference_value: "Mind. 30 %"
                   type: "percentage"
                   __v: 0
     post:
@@ -406,14 +407,27 @@ paths:
                 type:
                   type: string
                   enum: [ numeric, percentage ]
+                reference_value:
+                  type: string
               required:
                 - name
                 - formula
                 - type
-            example:
-              name: "Cashflow"
-              formula: "liquid_assets+depreciation"
-              type: "numeric"
+            examples:
+              example1:
+                summary: Custom-Kennzahl mit Referenzwert
+                value:
+                  name: "Vorratsanteil"
+                  formula: "stocks/current_assets"
+                  reference_value: "Mind. 30 %"
+                  type: "percentage"
+              example2:
+                summary: Custom-Kennzahl ohne Referenzwert
+                value:
+                  name: "Cashflow"
+                  formula: "liquid_assets+depreciation"
+                  type: "numeric"
+
       responses:
         201:
           description: "Anfrage erfolgreich: Custom-Kennzahl wurde erstellt."
@@ -493,6 +507,8 @@ paths:
                       enum:
                         - numeric
                         - percentage
+                    reference_value:
+                      type: string
                     __v:
                       type: integer
                       example: 0
@@ -554,6 +570,8 @@ paths:
                 type:
                   type: string
                   enum: [ numeric, percentage ]
+                reference_value:
+                  type: string
             example:
               name: "Geldfluss"
       responses:
