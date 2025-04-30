@@ -447,6 +447,14 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+                "Unerlaubte Zeichen im Name":
+                  summary: Der Name enthält unerlaubte Zeichen
+                  value:
+                    message: custom key figure name contains illegal characters
+                "Unerlaubte Zeichen im Referenzwert":
+                  summary: Der Referenzwert enthält unerlaubte Zeichen
+                  value:
+                    message: reference value contains illegal characters
 
   /api/customKeyFigures/:id:
     get:
@@ -585,6 +593,14 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+                "Unerlaubte Zeichen im Name":
+                  summary: Der Name enthält unerlaubte Zeichen
+                  value:
+                    message: custom key figure name contains illegal characters
+                "Unerlaubte Zeichen im Referenzwert":
+                  summary: Der Referenzwert enthält unerlaubte Zeichen
+                  value:
+                    message: reference value contains illegal characters
         404:
           description: "Nicht gefunden: Die Custom-Kennzahl existiert nicht."
           content:
@@ -729,6 +745,11 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+                "Unerlaubte Zeichen im Name":
+                  summary: Der Name enthält unerlaubte Zeichen
+                  value:
+                    message: company name contains illegal characters
+
   /api/companies/:id:
     get:
       tags:
@@ -819,6 +840,10 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+                "Unerlaubte Zeichen im Name":
+                  summary: Der Name enthält unerlaubte Zeichen
+                  value:
+                    message: company name contains illegal characters
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
