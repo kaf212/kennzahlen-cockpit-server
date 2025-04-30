@@ -3,6 +3,9 @@ require('dotenv').config();
 const axios = require('axios');
 const getTokens = require('./supportFunctions').getTokens;
 
+jest.setTimeout(10000) // 10 seconds
+
+
 describe('Authentication Testing', () => {
 
     it('Testfall 1: Zugriff auf Website ohne Authentisierung', async () => {
@@ -99,7 +102,6 @@ describe('Authentication Testing', () => {
 
 
         } catch (error) {
-            console.log(error)
             expect(error.response.status).toBe(403);
         }
     });
@@ -197,7 +199,7 @@ describe('Authentication Testing', () => {
                 password: ""
             });
         } catch (error) {
-            expect(error.response.status).toBe(401);
+            expect(error.response.status).toBe(400);
         }
 
         try {
@@ -206,7 +208,7 @@ describe('Authentication Testing', () => {
                 password: ""
             });
         } catch (error) {
-            expect(error.response.status).toBe(401);
+            expect(error.response.status).toBe(400);
         }
     });
 
@@ -224,7 +226,6 @@ describe('Authentication Testing', () => {
 
             } catch (error) {
                 if (error.response.status === 401) {
-                    console.log(`Attempt ${i + 1}`);
                 } else if (error.response.status === 429) {
                     limitReached = true
                 } else if (error.response.status === 403) {

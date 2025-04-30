@@ -28,6 +28,8 @@ describe("Tests for reports", () => {
         expect(r).not.toBeNull();
         expect(r.company_id).toEqual("12345");
         expect(r.period).toEqual(2025);
+
+        await Report.deleteOne({company_id: "12345"}) // Clean up testdata afterwards
     });
 
     it("Löschen eines Reports aus der Datenbank", async () => {
@@ -49,6 +51,8 @@ describe("Tests for reports", () => {
         const ur = await Report.findOne({ company_id: "67890" });
         expect(ur).not.toBeNull();
         expect(ur.period).toEqual(2026);
+
+        await Report.deleteOne({company_id: "67890"}) // Clean up testdata afterwards
     });
 
     it("Änderung eines Reports mit fehlendem Pflichtfeld", async () => {
@@ -67,6 +71,8 @@ describe("Tests for reports", () => {
             expect(error).toBeDefined();
             console.log("Wert darf nicht Negativ sein")
         }
+
+        await Report.deleteOne({company_id: "11111"}) // Clean up testdata afterwards
     });
 });
 
@@ -79,6 +85,8 @@ describe("Tests for companies", () => {
         const c = await Company.findOne({ name: "Kennzahlen AG" });
         expect(c).not.toBeNull();
         expect(c.name).toEqual("Kennzahlen AG");
+
+        await Company.deleteOne({name: "Kennzahlen AG"}) // Clean up testdata afterwards
     });
 
     it("Löschen eines Unternehmens", async () => {
@@ -95,6 +103,8 @@ describe("Tests for companies", () => {
         const uc = await Company.findOne({ name: "Kennzahlen 2 AG" });
         expect(uc).not.toBeNull();
         expect(uc.name).toEqual("Kennzahlen 2 AG");
+
+        await Company.deleteOne({name: "Kennzahlen 2 AG"}) // Clean up testdata afterwards
     });
 
 
@@ -117,6 +127,8 @@ describe("Tests for roles", () => {
         const r = await Role.findOne({ name: "laib" });
         expect(r).not.toBeNull();
         expect(r.name).toEqual("laib");
+
+        await Role.deleteOne({name: "laib"}) // Clean up testdata afterwards
     });
 
     it("Löschen einer Rolle", async () => {
@@ -132,6 +144,8 @@ describe("Tests for roles", () => {
         const uc = await Role.findOne({ name: "admin 121" });
         expect(uc).not.toBeNull();
         expect(uc.name).toEqual("admin 121");
+
+        await Role.deleteOne({name: "admin 121"}) // Clean up testdata afterwards
     });
 
     it("Erstellen einer Rolle ohne Namen", async () => {
@@ -149,7 +163,9 @@ describe("Tests for custom key figures", ()=> {
     it("Create new custom key figure", async ()=> {
         const newKeyFigure = new CustomKeyFigure({
             name: "Liquiditätsgrad 1",
-            formula: "liquid_assets*100/long_term"
+            formula: "liquid_assets*100/long_term",
+            type: "percentage",
+            reference_value: "Mind. 20 %"
         })
 
         const savedKeyFigure = await newKeyFigure.save()
@@ -157,6 +173,8 @@ describe("Tests for custom key figures", ()=> {
         expect(savedKeyFigure).toHaveProperty("_id")
         expect(savedKeyFigure.name).toBe("Liquiditätsgrad 1")
         expect(savedKeyFigure.formula).toBe("liquid_assets*100/long_term")
+        expect(savedKeyFigure.type).toBe("percentage")
+        expect(savedKeyFigure.reference_value).toBe("Mind. 20 %")
 
         await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
     })
@@ -164,7 +182,9 @@ describe("Tests for custom key figures", ()=> {
     it("Modify an existing custom key figure", async ()=> {
         const newKeyFigure = new CustomKeyFigure({
             name: "Liquiditätsgrad 1",
-            formula: "liquid_assets*100/long_term"
+            formula: "liquid_assets*100/long_term",
+            type: "percentage",
+            reference_value: "Mind. 20 %"
         })
 
         const savedKeyFigure = await newKeyFigure.save()
@@ -181,7 +201,9 @@ describe("Tests for custom key figures", ()=> {
     it("Should delete an existing document", async () => {
         const newKeyFigure = new CustomKeyFigure({
             name: "Liquiditätsgrad 1",
-            formula: "liquid_assets*100/long_term"
+            formula: "liquid_assets*100/long_term",
+            type: "percentage",
+            reference_value: "Mind. 20 %"
         })
 
         const savedKeyFigure = await newKeyFigure.save()
