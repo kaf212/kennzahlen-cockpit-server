@@ -1,7 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const Company = require("../models/Company")
-const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
+const {authorizeStandard, authorizeStandard} = require("../middleware/tokenValidation")
 const {validateInput} = require("../utils/validateUserInput");
 const {catchAsync} = require("../middleware/errorHandling");
 
@@ -40,13 +40,13 @@ async function checkCompanyExistenceById(companyId) {
 
 }
 
-router.get("/", authenticateToken, catchAsync(async (req, res, next) => {
+router.get("/", authorizeStandard, catchAsync(async (req, res, next) => {
     const companies = await Company.find({})
     return res.json(companies)
 
 }))
 
-router.get("/:id", authenticateToken, catchAsync(async (req, res, next) => {
+router.get("/:id", authorizeStandard, catchAsync(async (req, res, next) => {
     // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
         return res.status(400).json({message: "invalid ID format"})
@@ -60,7 +60,7 @@ router.get("/:id", authenticateToken, catchAsync(async (req, res, next) => {
 
 }))
 
-router.post("/", authenticateAdmin, catchAsync(async (req, res, next) => {
+router.post("/", authorizeAdmin, catchAsync(async (req, res, next) => {
     if (!req.body.hasOwnProperty("name")) {
         return res.status(400).json({message: "invalid json format"})
     }
@@ -82,7 +82,7 @@ router.post("/", authenticateAdmin, catchAsync(async (req, res, next) => {
 }))
 
 
-router.patch("/:id", authenticateAdmin, catchAsync(async (req, res, next) => {
+router.patch("/:id", authorizeAdmin, catchAsync(async (req, res, next) => {
     const companyJson = req.body
     const companyId = req.params.id
 
@@ -112,7 +112,7 @@ router.patch("/:id", authenticateAdmin, catchAsync(async (req, res, next) => {
     return res.status(201).json({message: "company updated successfully"})
 }))
 
-router.delete("/:id", authenticateAdmin, catchAsync(async (req, res, next) => {
+router.delete("/:id", authorizeAdmin, catchAsync(async (req, res, next) => {
     const companyId = req.params.id
 
     if (!(await checkCompanyExistenceById(companyId))) {

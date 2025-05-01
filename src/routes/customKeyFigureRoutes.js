@@ -2,7 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const CustomKeyFigure = require("../models/customKeyFigure")
 const Report = require("../models/Report")
-const {authenticateAdmin, authenticateToken} = require("../middleware/tokenValidation")
+const {authorizeStandard, authorizeAdmin} = require("../middleware/tokenValidation")
 const {customKeyFigure} = require("../data_processing/queries")
 const {number} = require("mathjs");
 const {validateInput} = require("../utils/validateUserInput");
@@ -67,12 +67,12 @@ async function validateFormula(formula) {
     }
 }
 
-router.get("/", authenticateToken, catchAsync(async (req, res, next)=>{
+router.get("/", authorizeStandard, catchAsync(async (req, res, next)=>{
     const keyFigures = await CustomKeyFigure.find({})
     return res.json(keyFigures)
 }))
 
-router.get("/:id", authenticateToken, catchAsync(async (req, res, next)=> {
+router.get("/:id", authorizeStandard, catchAsync(async (req, res, next)=> {
     // Source: https://stackoverflow.com/questions/53686554/validate-mongodb-objectid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) { // check if objectID is of valid format
         return res.status(400).json({message: "invalid ID format"})
@@ -86,7 +86,7 @@ router.get("/:id", authenticateToken, catchAsync(async (req, res, next)=> {
 }))
 
 
-router.post("/", authenticateToken, catchAsync(async (req, res, next)=> {
+router.post("/", authorizeAdmin, catchAsync(async (req, res, next)=> {
     if (await checkCustomKeyFigureExistenceByName(req.body.name)) {
         return res.status(400).json({message: `custom key figure ${req.body.name} already exists`})
     }
@@ -121,7 +121,7 @@ router.post("/", authenticateToken, catchAsync(async (req, res, next)=> {
 }))
 
 
-router.patch("/:id", authenticateAdmin, catchAsync(async (req, res, next)=>{
+router.patch("/:id", authorizeAdmin, catchAsync(async (req, res, next)=>{
     const customKeyFigureJson = req.body
     const customKeyFigureId = req.params.id
 
@@ -184,7 +184,7 @@ router.patch("/:id", authenticateAdmin, catchAsync(async (req, res, next)=>{
 }))
 
 
-router.delete("/:id", authenticateAdmin, catchAsync(async (req, res, next)=>{
+router.delete("/:id", authorizeAdmin, catchAsync(async (req, res, next)=>{
     const customKeyFigureId = req.params.id
 
     if (!(await checkCustomFigureExistenceById(customKeyFigureId))) {

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const express = require("express")
 const authenticateUser = require("../auth/auth")
-const {authenticateToken, authenticateAdmin} = require("../middleware/tokenValidation")
+const {authorizeStandard, authorizeStandard} = require("../middleware/tokenValidation")
 const {catchAsync} = require("../middleware/errorHandling");
 
 const router = express.Router()
@@ -18,11 +18,11 @@ router.post("/login", catchAsync(async (req, res)=>{
     return await authenticateUser(req, res, role, password)
 }))
 
-router.get("/protected", authenticateToken, ((req, res)=>{
+router.get("/protected", authorizeStandard, ((req, res)=>{
     res.json(`Access granted to protected route ${req.jwtPayload.role}`)
 }))
 
-router.get("/admin", authenticateAdmin, ((req, res)=>{
+router.get("/admin", authorizeAdmin, ((req, res)=>{
     res.json(`Access granted to protected route ${req.jwtPayload.role}`)
 }))
 

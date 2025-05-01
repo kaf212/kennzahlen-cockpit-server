@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const express = require("express")
 
 const secretKey = process.env.SECRET_KEY
 
@@ -34,9 +33,10 @@ function validateToken(req, res) {
     return payload
 }
 
-function authenticateToken(req, res, next) {
+function authorizeStandard(req, res, next) {
     /**
-     * Authenticates a JWT for both standard and admin roles.
+     * Authorization middleware for API endpoints that only require standard permissions.
+     * Both standard and admin tokens are allowed.
      *
      * @param {Request} req - Http-request
      * @param {Response} res - Http-response
@@ -52,13 +52,14 @@ function authenticateToken(req, res, next) {
     next()
 }
 
-function authenticateAdmin(req, res, next) {
+function authorizeAdmin(req, res, next) {
     /**
-     * Authenticates JWT for admin-only API endpoints.
+     * Authorization middleware for API endpoints that require admin permissions.
+     * Only admin tokens are allowed, standard tokens will receive a 403.
      *
      * @param {Object} req - HTTP request
      * @param {Object} res - HTTP response
-     * @param {Function} next - API route
+     * @param {Function} next - API route to be called next
      * @returns {Void}
      */
 
@@ -75,5 +76,5 @@ function authenticateAdmin(req, res, next) {
     }
 }
 
-module.exports = {authenticateToken, authenticateAdmin}
+module.exports = {authorizeStandard, authorizeAdmin}
 
