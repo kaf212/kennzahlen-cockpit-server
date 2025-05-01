@@ -59,6 +59,28 @@ paths:
                     roe: 0.7081081081081081
                     roa: 0.24444444444444444
                     profitMargin: 0.4337748344370861
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         404:
           description: "Nicht gefunden: Für dieses Unternehmen existieren keine Abschlussberichte"
           content:
@@ -70,6 +92,17 @@ paths:
                     type: string
                 example:
                   message: no reports were found for company Beispiel AG
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/keyFigures/historic/:id:
     get:
@@ -322,6 +355,28 @@ paths:
                       key_figure: 0.3333333333333333
                     - period: 2022
                       key_figure: 0.44660194174757284
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         404:
           description: "Nicht gefunden: Für dieses Unternehmen existieren keine Abschlussberichte"
           content:
@@ -333,6 +388,17 @@ paths:
                     type: string
                 example:
                   message: no reports were found for company Beispiel AG
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
   /api/customKeyFigures:
     get:
       tags:
@@ -378,8 +444,42 @@ paths:
                 - _id: "680b838372e7191c1b28a474"
                   name: "Vorratsanteil"
                   formula: "stocks/current_assets"
+                  reference_value: "Mind. 30 %"
                   type: "percentage"
                   __v: 0
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     post:
       summary: Erstellt eine neue Custom-Kennzahl
       tags:
@@ -406,14 +506,27 @@ paths:
                 type:
                   type: string
                   enum: [ numeric, percentage ]
+                reference_value:
+                  type: string
               required:
                 - name
                 - formula
                 - type
-            example:
-              name: "Cashflow"
-              formula: "liquid_assets+depreciation"
-              type: "numeric"
+            examples:
+              example1:
+                summary: Custom-Kennzahl mit Referenzwert
+                value:
+                  name: "Vorratsanteil"
+                  formula: "stocks/current_assets"
+                  reference_value: "Mind. 30 %"
+                  type: "percentage"
+              example2:
+                summary: Custom-Kennzahl ohne Referenzwert
+                value:
+                  name: "Cashflow"
+                  formula: "liquid_assets+depreciation"
+                  type: "numeric"
+
       responses:
         201:
           description: "Anfrage erfolgreich: Custom-Kennzahl wurde erstellt."
@@ -447,6 +560,49 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+                "Unerlaubte Zeichen im Name":
+                  summary: Der Name enthält unerlaubte Zeichen
+                  value:
+                    message: custom key figure name contains illegal characters
+                "Unerlaubte Zeichen im Referenzwert":
+                  summary: Der Referenzwert enthält unerlaubte Zeichen
+                  value:
+                    message: reference value contains illegal characters
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist ungültig"
+          content:
+            application/json:
+              examples:
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/customKeyFigures/:id:
     get:
@@ -485,6 +641,8 @@ paths:
                       enum:
                         - numeric
                         - percentage
+                    reference_value:
+                      type: string
                     __v:
                       type: integer
                       example: 0
@@ -494,18 +652,6 @@ paths:
                 formula: "liquid_assets+depreciation"
                 type: "numeric"
                 __v: 0
-
-        404:
-          description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: custom key figure not found
         400:
           description: "Ungültige Anfrage: Das Format der gesuchten ID ist ungültig."
           content:
@@ -517,6 +663,50 @@ paths:
                     type: string
               example:
                 message: invalid ID format
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
+        404:
+          description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: custom key figure not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     patch:
       summary: Bearbeitet eine Custom-Kennzahl
       tags:
@@ -546,6 +736,8 @@ paths:
                 type:
                   type: string
                   enum: [ numeric, percentage ]
+                reference_value:
+                  type: string
             example:
               name: "Geldfluss"
       responses:
@@ -585,6 +777,38 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+                "Unerlaubte Zeichen im Name":
+                  summary: Der Name enthält unerlaubte Zeichen
+                  value:
+                    message: custom key figure name contains illegal characters
+                "Unerlaubte Zeichen im Referenzwert":
+                  summary: Der Referenzwert enthält unerlaubte Zeichen
+                  value:
+                    message: reference value contains illegal characters
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist ungültig"
+          content:
+            application/json:
+              examples:
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         404:
           description: "Nicht gefunden: Die Custom-Kennzahl existiert nicht."
           content:
@@ -596,6 +820,17 @@ paths:
                     type: string
               example:
                 message: custom key figure not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     delete:
       summary: Löscht eine Custom-Kennzahl
       tags:
@@ -623,6 +858,30 @@ paths:
                     type: string
                 example:
                   message: custom key figure deleted successfully
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist ungültig"
+          content:
+            application/json:
+              examples:
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         404:
           description: "Nicht gefunden: Die gesuchte Custom-Kennzahl existiert nicht."
           content:
@@ -634,6 +893,17 @@ paths:
                     type: string
                 example:
                   message: custom key figure not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/compananies:
     get:
@@ -676,6 +946,39 @@ paths:
                 - _id: "680b877372e7191c1b28a66c"
                   name: "Armin Bäckerei GmbH"
                   __v: 0
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     post:
       summary: Erstellt ein neues Unternehmen
       tags:
@@ -729,6 +1032,46 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+                "Unerlaubte Zeichen im Name":
+                  summary: Der Name enthält unerlaubte Zeichen
+                  value:
+                    message: company name contains illegal characters
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist ungültig"
+          content:
+            application/json:
+              examples:
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
+
   /api/companies/:id:
     get:
       tags:
@@ -764,6 +1107,39 @@ paths:
                 _id: "6809f2626f468128112190e2"
                 name: "SBB CFF FFS AG"
                 __v: 0
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     patch:
       summary: Bearbeitet ein Unternehmen
       tags:
@@ -819,6 +1195,34 @@ paths:
                   summary: Der Name der Custom-Kennzahl ist zu lang
                   value:
                     message: name must be shorter than 30 characters
+                "Unerlaubte Zeichen im Name":
+                  summary: Der Name enthält unerlaubte Zeichen
+                  value:
+                    message: company name contains illegal characters
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist ungültig"
+          content:
+            application/json:
+              examples:
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -830,6 +1234,17 @@ paths:
                     type: string
               example:
                 message: company figure not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
     delete:
       summary: Löscht ein ein Unternehmen
       tags:
@@ -857,6 +1272,30 @@ paths:
                     type: string
                 example:
                   message: company deleted successfully
+        401:
+          description: "Unautorisiert: Token fehlt oder ist deformiert"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist ungültig"
+          content:
+            application/json:
+              examples:
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -868,6 +1307,17 @@ paths:
                     type: string
                 example:
                   message: company not found
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/upload:
     summary: Upload von XLSX-Dateien mit Abschlussberichten
@@ -930,6 +1380,32 @@ paths:
                   summary: Die Datei enthält mehrere Abschlussberichte für dasselbe Jahr
                   value:
                     message: file contains duplicate reports for period 2024
+                "Ungültiges Tabellenformat":
+                  summary: Die Tabelle in der Datei ist falsch formatiert
+                  value:
+                    message: The provided file could not be processed. Please verify its integrity.
+        401:
+          description: "Unautorisiert: Das Token fehlt oder ist deformiert."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Authentication token missing or malformed
+        403:
+          description: "Verboten: Das Token ist abgelaufen oder ungültig."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Token is invalid
         404:
           description: "Nicht gefunden: Das gesuchte Unternehmen existiert nicht."
           content:
@@ -951,7 +1427,7 @@ paths:
                   message:
                     type: string
                 example:
-                  message: internal server error
+                  message: An error has occurred during processing of the file.
 
   /api/auth/login:
     post:
@@ -987,6 +1463,17 @@ paths:
                     type: string
                 example:
                   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NDU2OTc3MTUsImV4cCI6MTc0NTcwMTMxNX0.IQN2_wfKAXYuKtINfQCnaiXNsNctOCcH1IGQ4CR0zjk
+        400:
+          description: "Ungültige Anfrage: Die Rolle oder das Passwort fehlen oder sind kein String."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    message: string
+                example:
+                  message: Invalid JSON format
         401:
           description: "Unautorisiert: Die gesendeten Login-Daten sind inkorrekt."
           content:
@@ -998,6 +1485,17 @@ paths:
                     type: string
                 example:
                   message: "Authentication failed: Incorrect password or role"
+        500:
+          description: "Interner Fehler: Auf dem Server ist ein unerwarteter Fehler aufgetreten."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Internal Server Error
 
   /api/auth/protected:
     get:
@@ -1060,4 +1558,18 @@ paths:
               schema:
                 type: string
               example: Access granted to protected route Admin
+        403:
+          description: "Verboten: Das Token ist ungültig"
+          content:
+            application/json:
+              examples:
+                "Fehlende Admin-Berechtigungen":
+                  summary: Die benötigten Admin-Berechtigungen fehlen.
+                  value:
+                    message: "Authentication failed: admin privileges required"
+                "Ungültiges Token":
+                  summary: Das Token ist abgelaufen oder ungültig.
+                  value:
+                    message: Token is invalid
+
 
