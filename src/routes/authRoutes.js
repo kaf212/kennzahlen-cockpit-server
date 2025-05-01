@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const express = require("express")
 const authenticateUser = require("../auth/auth")
-const {authorizeStandard, authorizeStandard} = require("../middleware/tokenValidation")
+const {authorizeStandard, authorizeAdmin} = require("../middleware/tokenValidation")
 const {catchAsync} = require("../middleware/errorHandling");
 
 const router = express.Router()
