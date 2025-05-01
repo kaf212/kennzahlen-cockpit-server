@@ -1,12 +1,12 @@
 const express = require("express")
 const {getCurrentKeyFigures, getHistoricKeyFigures} = require("../data_processing/queries")
-const {authenticateToken} = require("../middleware/tokenValidation");
+const {authorizeStandard} = require("../middleware/tokenValidation");
 const {catchAsync} = require("../middleware/errorHandling");
 
 const router = express.Router()
 
 
-router.get("/current/:companyId", authenticateToken, catchAsync(async (req, res) => {
+router.get("/current/:companyId", authorizeStandard, catchAsync(async (req, res) => {
     const companyId = req.params.companyId
     const result = await getCurrentKeyFigures(companyId)
 
@@ -17,7 +17,7 @@ router.get("/current/:companyId", authenticateToken, catchAsync(async (req, res)
     return res.json(result)
 }))
 
-router.get("/historic/:companyId", authenticateToken, catchAsync(async (req, res, next)=>{
+router.get("/historic/:companyId", authorizeStandard, catchAsync(async (req, res, next)=>{
     const companyId = req.params.companyId
     const result = await getHistoricKeyFigures(companyId)
 
