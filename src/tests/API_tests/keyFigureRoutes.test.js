@@ -122,7 +122,7 @@ describe('KeyFigure Routes Testing', () => {
                 formula: undefined,
                 type:  'percentage'
             }, {
-                headers: {'Authorization': `Bearer ${tokens.standard}`}
+                headers: {'Authorization': `Bearer ${tokens.admin}`}
             });
             throw new Error('it should not come this far')
 
@@ -136,7 +136,7 @@ describe('KeyFigure Routes Testing', () => {
                 formula: 'cash / (bank + postal)',
                 type:  'numeric'
             }, {
-                headers: {'Authorization': `Bearer ${tokens.standard}`}
+                headers: {'Authorization': `Bearer ${tokens.admin}`}
             });
             throw new Error('it should not come this far')
 
@@ -150,7 +150,7 @@ describe('KeyFigure Routes Testing', () => {
                 formula: 'cash / (bank + postal)',
                 type:  undefined
             }, {
-                headers: {'Authorization': `Bearer ${tokens.standard}`}
+                headers: {'Authorization': `Bearer ${tokens.admin}`}
             });
             throw new Error('it should not come this far')
 
@@ -196,7 +196,7 @@ describe('KeyFigure Routes Testing', () => {
                 formula: 'cash / (bank + postal)',
                 type:  'numeric'
             }, {
-                headers: {'Authorization': `Bearer ${tokens.standard}`}
+                headers: {'Authorization': `Bearer ${tokens.admin}`}
             });
             expect(res.status).toBe(201);
             expect(res.data.message).toBe('custom key figure created successfully')
