@@ -78,7 +78,7 @@ async function authenticateUser(req, res, requestRole, password) {
         // Source: https://dev.to/jaimaldullat/a-step-by-step-guide-to-creating-a-restful-api-using-nodejs-and-express-including-crud-operations-and-authentication-2mo2
         if (bcrypt.compareSync(password, foundRole.password)) {
             const token = jwt.sign({role: foundRole.name}, secretKey, {
-                expiresIn: '1h'
+                expiresIn: process.env.TOKEN_EXPIRATION
             });
             return res.json({"token": token})
         }

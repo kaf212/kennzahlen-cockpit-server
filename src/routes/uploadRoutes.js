@@ -7,7 +7,7 @@ const mongoose = require("mongoose")
 const Report = require("../models/Report")
 const Company = require("../models/Company")
 const {re} = require("mathjs");
-const {authenticateToken} = require("../middleware/tokenValidation");
+const {authorizeStandard} = require("../middleware/tokenValidation");
 const {catchAsync} = require("../middleware/errorHandling");
 
 const router = express.Router()
@@ -136,7 +136,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-router.post("/", authenticateToken, upload.single("file"), catchAsync(async (req, res)=>{
+router.post("/", authorizeStandard, upload.single("file"), catchAsync(async (req, res)=>{
     // File must be sent using multipart/form-data with the key "file" in the form
     if (!req.file) {
         return res.status(400).json({message: "no file provided"})
