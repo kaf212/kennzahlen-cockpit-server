@@ -160,7 +160,7 @@ describe("Tests for roles", () => {
 
 describe("Tests for custom key figures", ()=> {
 
-    it("13_create_custom_key_figure", async ()=> {
+    it("14_create_custom_key_figure", async ()=> {
         const newKeyFigure = new CustomKeyFigure({
             name: "Liquiditätsgrad 1",
             formula: "liquid_assets*100/long_term",
@@ -179,7 +179,7 @@ describe("Tests for custom key figures", ()=> {
         await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
     })
 
-    it("14_update_custom_key_figure", async ()=> {
+    it("15_update_custom_key_figure", async ()=> {
         const newKeyFigure = new CustomKeyFigure({
             name: "Liquiditätsgrad 1",
             formula: "liquid_assets*100/long_term",
@@ -198,7 +198,7 @@ describe("Tests for custom key figures", ()=> {
         await CustomKeyFigure.findByIdAndDelete(savedKeyFigure._id)
     })
 
-    it("15_delete_custom_key_figure", async () => {
+    it("16_delete_custom_key_figure", async () => {
         const newKeyFigure = new CustomKeyFigure({
             name: "Liquiditätsgrad 1",
             formula: "liquid_assets*100/long_term",
