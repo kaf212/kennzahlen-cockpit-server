@@ -92,7 +92,7 @@ const reportSchema = new mongoose.Schema({
         passives: passivesSchema
     },
     income_statement: incomeStatementSchema
-}, { timestamps: true });
+});
 
 
 const Report = mongoose.model('Report', reportSchema, "report");
