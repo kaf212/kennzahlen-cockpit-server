@@ -6,28 +6,12 @@ const bcrypt = require("bcrypt");
 
 function seedDB() {
     /**
-     * Executes all three database seeding functions.
+     * Executes all database seeding functions.
      *
      * @returns {void}
      */
-    seedCompanyCollection()
     seedReportCollection()
     seedRoleCollection()
-}
-
-async function seedCompanyCollection() {
-    /**
-     * Checks if the company collection in the database is empty and inserts a test document if that is the case.
-     * @return {Promise} A promise without a return value
-     */
-    const documentCount = await Company.countDocuments()
-    if (documentCount === 0) {
-        const testCompany = new Company({
-            name: "TestCompany"
-        })
-        await testCompany.save()
-        console.log('Seeded collection "company"')
-    }
 }
 
 async function seedReportCollection() {

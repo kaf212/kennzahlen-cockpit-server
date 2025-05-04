@@ -1,5 +1,13 @@
 # kennzahlen-cockpit
+## Informationen für Benutzer
+### Abschlussberichts-Vorlage
+Die XLSX-Vorlage für einen Abschlussbericht befindet sich im Root-Verzeichnis des Projekts.
 ## Informationen für Entwickler
+### Produktionsumgebung
+Um den Server in der Produktionsumgebung (auf dem Webserver) auszuführen, muss
+die Branch ``origin/deployment`` verwendet werden.
+### Lokale Umgebung
+Um den Server Lokal auszuführen muss die Branch ``origin/main`` verwendet werden.
 ### Umgebungsvariablen
 Die `.env`-Datei muss im root-directory des Projekts abgespeichert werden.
 Folgende Variablen kommen darin vor:
