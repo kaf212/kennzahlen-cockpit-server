@@ -1,4 +1,7 @@
 # kennzahlen-cockpit
+## Informationen für Benutzer
+### Abschlussberichts-Vorlage
+Die XLSX-Vorlage für einen Abschlussbericht befindet sich im Root-Verzeichnis des Projekts.
 ## Informationen für Entwickler
 ### Umgebungsvariablen
 Die `.env`-Datei muss im root-directory des Projekts abgespeichert werden.
